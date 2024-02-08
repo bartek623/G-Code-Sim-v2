@@ -1,13 +1,18 @@
-import { Container, CssBaseline } from "@mui/material";
+import { Container, CssBaseline, styled } from "@mui/material";
 import { CanvasThreeD } from "./components";
+
+const StyledContainer = styled(Container)`
+  position: relative;
+  height: 100vh;
+`;
 
 function App() {
   return (
     <>
       <CssBaseline />
-      <Container sx={{ height: "100vh" }} disableGutters maxWidth={false}>
+      <StyledContainer disableGutters maxWidth={false}>
         <CanvasThreeD />
-      </Container>
+      </StyledContainer>
     </>
   );
 }
