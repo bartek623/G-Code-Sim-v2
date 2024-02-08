@@ -12,7 +12,7 @@ export function MeshBox() {
   });
 
   return (
-    <mesh ref={meshRef}>
+    <mesh ref={meshRef} position={[3, 0, 0]}>
       <boxGeometry args={[1, 2, 3]} />
       <meshStandardMaterial />
     </mesh>
