@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <Container sx={{ height: "100vh" }} disableGutters>
+      <Container sx={{ height: "100vh" }} disableGutters maxWidth={false}>
         <CanvasThreeD />
       </Container>
     </>
