@@ -1,12 +1,52 @@
 import { Canvas } from "@react-three/fiber";
-import { MeshBox } from "./MeshBox";
+import { CameraControls } from "@react-three/drei";
+import { useRef } from "react";
+import { Button, styled } from "@mui/material";
+import { LineElement } from "./LineElement";
+import {
+  AMBIENT_LIGHT_INTENSITY,
+  DIRECT_LIGHT_POS,
+  GRID_DIV,
+  GRID_ROTATION,
+  GRID_SIZE,
+  DARK_GREY,
+  LIGHT_GREY,
+} from "./constants";
+
+const StyledBtn = styled(Button)`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 999;
+`;
 
 export function CanvasThreeD() {
+  const cameraControlsRef = useRef<CameraControls>(null!);
+
+  const cameraResetHandler = () => {
+    cameraControlsRef.current.reset(true);
+  };
+
   return (
-    <Canvas>
-      <ambientLight intensity={0.1} />
-      <directionalLight color="blue" position={[0, 0, 5]} />
-      <MeshBox />
-    </Canvas>
+    <>
+      <Canvas>
+        <ambientLight intensity={AMBIENT_LIGHT_INTENSITY} />
+        <directionalLight position={DIRECT_LIGHT_POS} />
+        <gridHelper
+          args={[GRID_SIZE, GRID_DIV, DARK_GREY, LIGHT_GREY]}
+          rotation={GRID_ROTATION}
+        />
+        <LineElement type="line" start={[0, 0]} end={[2, 2]} />
+        <LineElement
+          type="arc"
+          start={[2, 2]}
+          end={[4, 3]}
+          xOffset={-1}
+          yOffset={-2}
+        />
+        <CameraControls ref={cameraControlsRef} />
+      </Canvas>
+      <StyledBtn onClick={cameraResetHandler}>reset</StyledBtn>
+    </>
   );
 }
