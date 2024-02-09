@@ -17,6 +17,7 @@ const StyledBtn = styled(Button)`
   position: absolute;
   bottom: 0;
   right: 0;
+  z-index: 999;
 `;
 
 export function CanvasThreeD() {
