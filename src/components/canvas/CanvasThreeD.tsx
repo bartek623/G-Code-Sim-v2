@@ -39,8 +39,8 @@ export function CanvasThreeD() {
         <LineElement
           type="arc"
           start={[2, 2]}
-          end={[3, 0]}
-          xOffset={0}
+          end={[4, 3]}
+          xOffset={-1}
           yOffset={-2}
         />
         <CameraControls ref={cameraControlsRef} />

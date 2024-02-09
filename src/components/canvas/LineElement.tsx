@@ -22,11 +22,29 @@ export function LineElement(props: LineProps) {
 
   if (type === "arc") {
     const { xOffset, yOffset } = props;
+    const centerX = start[0] + xOffset;
+    const centerY = start[1] + yOffset;
+
+    const dirFactorStart = (start[1] - centerY) / (start[0] - centerX);
+    const dirFactorEnd = (end[1] - centerY) / (end[0] - centerX);
+    const angleStart = Math.atan(dirFactorStart);
+    const angleEnd = Math.atan(dirFactorEnd);
     const radius = Math.sqrt(
-      (start[0] + xOffset - start[0]) ** 2 +
-        (start[1] + yOffset - start[1]) ** 2
+      (centerX - start[0]) ** 2 + (centerY - start[1]) ** 2
     );
-    const curve = new EllipseCurve(0, 0, radius, radius, 0, Math.PI);
+
+    const isObtuseStart = centerX > start[0];
+    const isObtuseEnd = centerX > end[0];
+
+    const curve = new EllipseCurve(
+      centerX,
+      centerY,
+      radius,
+      radius,
+      isObtuseStart ? angleStart + Math.PI : angleStart,
+      isObtuseEnd ? angleEnd + Math.PI : angleEnd,
+      true
+    );
     points = curve.getPoints(50);
   }
 
