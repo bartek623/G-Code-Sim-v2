@@ -4,13 +4,15 @@ import { useRef } from "react";
 import { CloseBtn } from "../UI";
 import { DrawerTextField } from "./DrawerTextField";
 import { convertProgramToLinesData } from "./utils";
+import { LineDataType } from "../../utils/types";
 
 type DrawerProps = {
   isOpen: boolean;
   onClose: () => void;
+  setLinesData: (data: LineDataType[]) => void;
 };
 
-export function Drawer({ isOpen, onClose }: DrawerProps) {
+export function Drawer({ isOpen, onClose, setLinesData }: DrawerProps) {
   const textFieldRef = useRef<TextFieldProps>(null);
 
   const runProgramHandler = () => {
@@ -20,6 +22,7 @@ export function Drawer({ isOpen, onClose }: DrawerProps) {
     if (!linesData) return;
 
     console.log(linesData);
+    setLinesData(linesData);
   };
 
   return (

@@ -1,5 +1,8 @@
 export type LineType =
   | {
+      type: "positioning";
+    }
+  | {
       type: "line";
     }
   | {
