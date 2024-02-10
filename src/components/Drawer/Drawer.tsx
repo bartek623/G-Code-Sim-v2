@@ -21,7 +21,6 @@ export function Drawer({ isOpen, onClose, setLinesData }: DrawerProps) {
 
     if (!linesData) return;
 
-    console.log(linesData);
     setLinesData(linesData);
   };
 

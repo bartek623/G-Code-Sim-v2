@@ -1,18 +1,12 @@
+import { useRef } from "react";
+
 import { Canvas } from "@react-three/fiber";
 import { CameraControls } from "@react-three/drei";
-import { useRef } from "react";
+
+import { CanvasSetup } from "./CanvasSetup";
 import { LineElement } from "./LineElement";
-import {
-  AMBIENT_LIGHT_INTENSITY,
-  DIRECT_LIGHT_POS,
-  GRID_DIV,
-  GRID_ROTATION,
-  GRID_SIZE,
-  DARK_GREY,
-  LIGHT_GREY,
-} from "./constants";
-import { LineDataType } from "../../utils/types";
 import { ResetBtn } from "../UI";
+import { LineDataType } from "../../utils/types";
 
 type CanvasThreeDProps = {
   linesData: LineDataType[];
@@ -38,14 +32,8 @@ export function CanvasThreeD({ linesData }: CanvasThreeDProps) {
   return (
     <>
       <Canvas>
-        <ambientLight intensity={AMBIENT_LIGHT_INTENSITY} />
-        <directionalLight position={DIRECT_LIGHT_POS} />
-        <gridHelper
-          args={[GRID_SIZE, GRID_DIV, DARK_GREY, LIGHT_GREY]}
-          rotation={GRID_ROTATION}
-        />
+        <CanvasSetup cameraControlsRef={cameraControlsRef} />
         {LineElements}
-        <CameraControls ref={cameraControlsRef} />
       </Canvas>
       <ResetBtn onClick={cameraResetHandler} />
     </>
