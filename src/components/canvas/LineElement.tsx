@@ -1,44 +1,38 @@
 import { useLayoutEffect, useRef } from "react";
 import { EllipseCurve, Vector2 } from "three";
+import { LineElementType } from "../../utils/types";
 
-type LineProps =
-  | {
-      type: "line";
-      start: number[];
-      end: number[];
-    }
-  | {
-      type: "arc";
-      start: number[];
-      end: number[];
-      xOffset: number;
-      yOffset: number;
-    };
+type LineElementProps = LineElementType;
 
-export function LineElement(props: LineProps) {
+export function LineElement(props: LineElementProps) {
   const { type, start, end } = props;
   const lineRef = useRef(null!);
-  let points: Vector2[] = [new Vector2(...start), new Vector2(...end)];
+  let points: Vector2[] = [
+    new Vector2(start.x, start.y),
+    new Vector2(end.x, end.y),
+  ];
 
-  if (type === "arc") {
-    const { xOffset, yOffset } = props;
-    const centerX = start[0] + xOffset;
-    const centerY = start[1] + yOffset;
+  if (type === "arc1") {
+    const { offset } = props;
+    const center = {
+      x: start.x + offset.x,
+      y: start.y + offset.y,
+    };
 
-    const dirFactorStart = (start[1] - centerY) / (start[0] - centerX);
-    const dirFactorEnd = (end[1] - centerY) / (end[0] - centerX);
+    const dirFactorStart = (start.y - center.y) / (start.x - center.x);
+    const dirFactorEnd = (end.y - center.y) / (end.x - center.x);
     const angleStart = Math.atan(dirFactorStart);
     const angleEnd = Math.atan(dirFactorEnd);
     const radius = Math.sqrt(
-      (centerX - start[0]) ** 2 + (centerY - start[1]) ** 2
+      (center.x - start.x) ** 2 + (center.y - start.y) ** 2
     );
 
-    const isObtuseStart = centerX > start[0];
-    const isObtuseEnd = centerX > end[0];
+    const isObtuseStart = center.x > start.x;
+    const isObtuseEnd = center.x > end.x;
 
     const curve = new EllipseCurve(
-      centerX,
-      centerY,
+      center.x,
+      center.y,
       radius,
       radius,
       isObtuseStart ? angleStart + Math.PI : angleStart,

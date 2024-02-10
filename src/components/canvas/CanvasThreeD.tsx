@@ -12,6 +12,7 @@ import {
   DARK_GREY,
   LIGHT_GREY,
 } from "./constants";
+import { LineDataType } from "../../utils/types";
 
 const StyledBtn = styled(Button)`
   position: absolute;
@@ -22,10 +23,37 @@ const StyledBtn = styled(Button)`
 
 export function CanvasThreeD() {
   const cameraControlsRef = useRef<CameraControls>(null!);
+  const currentToolPos = { x: 0, y: 0 };
+
+  //mocked data
+  const data: LineDataType[] = [
+    {
+      type: "line",
+      end: { x: 2, y: 2 },
+    },
+    {
+      type: "arc1",
+      end: { x: 4, y: 4 },
+      offset: { x: 2, y: 0 },
+    },
+    {
+      type: "line",
+      end: { x: 7, y: 4 },
+    },
+  ];
 
   const cameraResetHandler = () => {
     cameraControlsRef.current.reset(true);
   };
+
+  const LineElements = data.map((el) => {
+    const preparedElement = (
+      <LineElement key={Math.random()} {...el} start={{ ...currentToolPos }} />
+    );
+    currentToolPos.x = el.end.x;
+    currentToolPos.y = el.end.y;
+    return preparedElement;
+  });
 
   return (
     <>
@@ -36,15 +64,7 @@ export function CanvasThreeD() {
           args={[GRID_SIZE, GRID_DIV, DARK_GREY, LIGHT_GREY]}
           rotation={GRID_ROTATION}
         />
-        <LineElement type="line" start={[0, 0]} end={[2, 2]} />
-        <LineElement
-          type="arc"
-          start={[2, 2]}
-          end={[4, 4]}
-          xOffset={2}
-          yOffset={0}
-        />
-        <LineElement type="line" start={[4, 4]} end={[7, 4]} />
+        {LineElements}
         <CameraControls ref={cameraControlsRef} />
       </Canvas>
       <StyledBtn onClick={cameraResetHandler}>reset</StyledBtn>
