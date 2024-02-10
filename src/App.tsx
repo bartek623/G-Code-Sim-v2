@@ -9,7 +9,7 @@ const StyledContainer = styled(Container)`
 `;
 
 function App() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
   const openMenuHandler = () => {
     setIsDrawerOpen(true);

@@ -40,10 +40,11 @@ export function CanvasThreeD() {
         <LineElement
           type="arc"
           start={[2, 2]}
-          end={[4, 3]}
-          xOffset={-1}
+          end={[4, 5]}
+          xOffset={2}
           yOffset={-2}
         />
+        <LineElement type="line" start={[4, 3]} end={[7, 2]} />
         <CameraControls ref={cameraControlsRef} />
       </Canvas>
       <StyledBtn onClick={cameraResetHandler}>reset</StyledBtn>

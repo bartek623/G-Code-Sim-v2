@@ -1,5 +1,6 @@
 import { Close } from "@mui/icons-material";
 import {
+  Button,
   Container,
   Divider,
   IconButton,
@@ -13,8 +14,17 @@ const StyledIconBtn = styled(IconButton)`
   margin-left: auto;
 `;
 
-const StyledTextField = styled(TextField)`
+const StyledBtn = styled(Button)`
+  margin: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledContainer = styled(Container)`
   margin-top: ${({ theme }) => theme.spacing(1.5)};
+  height: 100%;
+  overflow-y: auto;
+`;
+
+const StyledTextField = styled(TextField)`
   border-radius: ${({ theme }) => theme.spacing(1)};
   overflow: hidden;
 
@@ -23,10 +33,15 @@ const StyledTextField = styled(TextField)`
     color: ${TEXT_FIELD_COLOR};
   }
   background-color: ${TEXT_FIELD_BACKGROUND};
+  min-height: 100%;
 
   & textarea {
     width: 320px;
-    min-height: 100px !important;
+  }
+
+  & div {
+    flex: 1 100%;
+    align-items: start;
   }
 `;
 
@@ -42,9 +57,10 @@ export function Drawer({ isOpen, onClose }: DrawerProps) {
         <Close />
       </StyledIconBtn>
       <Divider />
-      <Container sx={{ style: { height: "600px" } }}>
-        <StyledTextField multiline variant="filled" label="GCode" />
-      </Container>
+      <StyledContainer>
+        <StyledTextField multiline variant="filled" label="GCode Program" />
+      </StyledContainer>
+      <StyledBtn variant="contained">run</StyledBtn>
     </MuiDrawer>
   );
 }
