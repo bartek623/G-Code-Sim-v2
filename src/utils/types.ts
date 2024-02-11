@@ -14,7 +14,9 @@ export type LineType =
       radius: number;
     };
 
-export type LineDataType = LineType & { end: { x: number; y: number } };
+export type LineDataType = LineType & {
+  end: { x: number; y: number };
+};
 
 export type LineElementType = LineDataType & {
   start: { x: number; y: number };

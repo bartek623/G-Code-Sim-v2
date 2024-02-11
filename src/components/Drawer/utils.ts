@@ -27,7 +27,11 @@ export const convertProgramToLinesData = (
     const programLines = program.split("\n");
 
     const linesData: LineDataType[] = programLines.map((line, i) => {
-      const lineData: LineDataTempType = { end: {}, offset: {} };
+      const lineData: LineDataTempType = {
+        type: "positioning",
+        end: {},
+        offset: {},
+      };
       const singleCommands = line.split(" ");
 
       if (singleCommands[0][0] !== "G")

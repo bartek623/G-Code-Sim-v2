@@ -1,11 +1,13 @@
 import { useLayoutEffect, useRef } from "react";
 import { EllipseCurve, Vector2 } from "three";
-import { LineElementType } from "../../utils/types";
+import { LineDataType } from "../../utils/types";
+import { currentToolPosition } from "../../store/canvasStore";
 
-type LineElementProps = LineElementType;
+type LineElementProps = LineDataType;
 
 export function LineElement(props: LineElementProps) {
-  const { type, start, end } = props;
+  const { type, end } = props;
+  const start = { ...currentToolPosition };
   const lineRef = useRef(null!);
   let points: Vector2[] = [
     new Vector2(start.x, start.y),
@@ -18,6 +20,9 @@ export function LineElement(props: LineElementProps) {
       x: start.x + offset.x,
       y: start.y + offset.y,
     };
+    console.log(
+      Math.sqrt((center.x - start.x) ** 2 + (center.y - start.y) ** 2)
+    );
 
     const dirFactorStart = (start.y - center.y) / (start.x - center.x);
     const dirFactorEnd = (end.y - center.y) / (end.x - center.x);
@@ -50,6 +55,12 @@ export function LineElement(props: LineElementProps) {
       points.map((point) => new Vector2(...point))
     );
   });
+
+  const lastPoint = points.at(-1) as Vector2;
+  currentToolPosition.x = lastPoint.x;
+  currentToolPosition.y = lastPoint.y;
+
+  if (type === "positioning") return;
 
   return (
     <line ref={lineRef}>
