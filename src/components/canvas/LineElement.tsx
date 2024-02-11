@@ -15,14 +15,11 @@ export function LineElement(props: LineElementProps) {
   ];
 
   if (type === "arc1") {
-    const { offset } = props;
+    const { offset, counterClockwise } = props;
     const center = {
       x: start.x + offset.x,
       y: start.y + offset.y,
     };
-    console.log(
-      Math.sqrt((center.x - start.x) ** 2 + (center.y - start.y) ** 2)
-    );
 
     const dirFactorStart = (start.y - center.y) / (start.x - center.x);
     const dirFactorEnd = (end.y - center.y) / (end.x - center.x);
@@ -42,7 +39,7 @@ export function LineElement(props: LineElementProps) {
       radius,
       isObtuseStart ? angleStart + Math.PI : angleStart,
       isObtuseEnd ? angleEnd + Math.PI : angleEnd,
-      true
+      !counterClockwise
     );
     points = curve.getPoints(50);
   }

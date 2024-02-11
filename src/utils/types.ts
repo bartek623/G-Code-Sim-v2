@@ -8,10 +8,12 @@ export type LineType =
   | {
       type: "arc1";
       offset: { x: number; y: number };
+      counterClockwise?: boolean;
     }
   | {
       type: "arc2";
       radius: number;
+      counterClockwise?: boolean;
     };
 
 export type LineDataType = LineType & {
