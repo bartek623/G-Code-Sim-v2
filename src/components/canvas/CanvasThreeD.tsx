@@ -14,18 +14,13 @@ type CanvasThreeDProps = {
 
 export function CanvasThreeD({ linesData }: CanvasThreeDProps) {
   const cameraControlsRef = useRef<CameraControls>(null!);
-  const currentToolPos = { x: 0, y: 0 };
 
   const cameraResetHandler = () => {
     cameraControlsRef.current.reset(true);
   };
 
   const LineElements = linesData.map((el) => {
-    const preparedElement = (
-      <LineElement key={Math.random()} {...el} start={{ ...currentToolPos }} />
-    );
-    currentToolPos.x = el.end.x;
-    currentToolPos.y = el.end.y;
+    const preparedElement = <LineElement key={Math.random()} {...el} />;
     return preparedElement;
   });
 

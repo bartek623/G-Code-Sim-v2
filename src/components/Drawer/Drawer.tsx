@@ -5,6 +5,7 @@ import { CloseBtn } from "../UI";
 import { DrawerTextField } from "./DrawerTextField";
 import { convertProgramToLinesData } from "./utils";
 import { LineDataType } from "../../utils/types";
+import { currentToolPosition } from "../../store/canvasStore";
 
 type DrawerProps = {
   isOpen: boolean;
@@ -17,10 +18,12 @@ export function Drawer({ isOpen, onClose, setLinesData }: DrawerProps) {
 
   const runProgramHandler = () => {
     const program = textFieldRef.current?.value as string;
-    const linesData = convertProgramToLinesData(program);
+    const linesData = convertProgramToLinesData(program.trim());
 
     if (!linesData) return;
 
+    currentToolPosition.x = 0;
+    currentToolPosition.y = 0;
     setLinesData(linesData);
   };
 
