@@ -1,9 +1,5 @@
 import { Close } from "@mui/icons-material";
-import { IconButton, styled } from "@mui/material";
-
-const StyledIconBtn = styled(IconButton)`
-  margin-left: auto;
-`;
+import { IconButton } from "@mui/material";
 
 type CloseBtnProps = {
   onClose: () => void;
@@ -11,8 +7,8 @@ type CloseBtnProps = {
 
 export function CloseBtn({ onClose }: CloseBtnProps) {
   return (
-    <StyledIconBtn onClick={onClose}>
+    <IconButton onClick={onClose}>
       <Close />
-    </StyledIconBtn>
+    </IconButton>
   );
 }

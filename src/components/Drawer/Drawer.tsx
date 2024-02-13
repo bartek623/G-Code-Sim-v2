@@ -1,11 +1,11 @@
 import { Divider, Drawer as MuiDrawer, TextFieldProps } from "@mui/material";
 import { DrawerBtns } from "./DrawerBtns";
 import { useRef } from "react";
-import { CloseBtn } from "../UI";
 import { DrawerTextField } from "./DrawerTextField";
 import { convertProgramToLinesData } from "./utils";
 import { LineDataType } from "../../utils/types";
 import { currentToolPosition } from "../../store/canvasStore";
+import { DrawerHeader } from "./DrawerHeader";
 
 type DrawerProps = {
   isOpen: boolean;
@@ -29,7 +29,7 @@ export function Drawer({ isOpen, onClose, setLinesData }: DrawerProps) {
 
   return (
     <MuiDrawer open={isOpen} variant="persistent">
-      <CloseBtn onClose={onClose} />
+      <DrawerHeader onClose={onClose} />
       <Divider />
       <DrawerTextField textFieldRef={textFieldRef} />
       <DrawerBtns onRun={runProgramHandler} />
