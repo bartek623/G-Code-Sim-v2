@@ -8,6 +8,6 @@ export const typography = {
   h2: {
     fontSize: 32,
     fontWeight: 400,
-    letterSpacing: 2,
+    letterSpacing: -1,
   },
 };

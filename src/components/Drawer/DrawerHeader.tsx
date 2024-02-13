@@ -16,7 +16,7 @@ export function DrawerHeader({ onClose }: DrawerHeaderProps) {
     <StyledContainer disableGutters>
       <InfoBtn onClick={() => {}} />
       <Typography variant="h2" color="primary">
-        GCode Sim
+        GCodeSim
       </Typography>
       <CloseBtn onClose={onClose} />
     </StyledContainer>
