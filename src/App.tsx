@@ -1,8 +1,9 @@
-import { Container, CssBaseline, styled } from "@mui/material";
+import { Container, CssBaseline, ThemeProvider, styled } from "@mui/material";
 import { CanvasThreeD, Drawer } from "./components";
 import { MenuBtn } from "./components/UI";
 import { useState } from "react";
 import { LineDataType } from "./utils/types";
+import theme from "./theme/theme";
 
 const StyledContainer = styled(Container)`
   position: relative;
@@ -22,7 +23,7 @@ function App() {
   };
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <StyledContainer disableGutters maxWidth={false}>
         <MenuBtn onClick={openMenuHandler} />
@@ -33,7 +34,7 @@ function App() {
         onClose={closeMenuHandler}
         setLinesData={setLines}
       />
-    </>
+    </ThemeProvider>
   );
 }
 

@@ -1,16 +1,26 @@
 import { LineDataType } from "../../utils/types";
 
-type LineType = "positioning" | "line" | "arc1" | "arc2" | undefined;
-const getLineType = (code: string): LineType => {
+type LineType =
+  | "positioning"
+  | "line"
+  | "arc1"
+  | "arc1-counterclockwise"
+  | "arc2"
+  | undefined;
+type LineData = { type: LineType; counterClockwise?: boolean };
+
+const getLineType = (code: string): LineData => {
   switch (code) {
     case "00":
-      return "positioning";
+      return { type: "positioning" };
     case "01":
-      return "line";
+      return { type: "line" };
     case "02":
-      return "arc1";
+      return { type: "arc1" };
     case "03":
-      return "arc1";
+      return { type: "arc1", counterClockwise: true };
+    default:
+      return { type: undefined };
   }
 };
 
@@ -18,6 +28,7 @@ type LineDataTempType = {
   type?: LineType;
   end: { x?: number; y?: number };
   offset: { x?: number; y?: number };
+  counterClockwise?: boolean;
 };
 
 export const convertProgramToLinesData = (
@@ -39,9 +50,12 @@ export const convertProgramToLinesData = (
 
       singleCommands.forEach((command) => {
         switch (command[0]) {
-          case "G":
-            lineData.type = getLineType(command.slice(1));
+          case "G": {
+            const lineInfo = getLineType(command.slice(1));
+            lineData.type = lineInfo.type;
+            lineData.counterClockwise = lineInfo.counterClockwise;
             break;
+          }
           case "X":
             lineData.end.x = +command.slice(1);
             break;
