@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
 import { EllipseCurve, Vector2 } from "three";
-import { LineDataType } from "../../utils/types";
+import { LINE_TYPE, LineDataType } from "../../utils/types";
 import { currentToolPosition } from "../../store/canvasStore";
 
 type LineElementProps = LineDataType;
@@ -14,7 +14,7 @@ export function LineElement(props: LineElementProps) {
     new Vector2(end.x, end.y),
   ];
 
-  if (type === "arc1") {
+  if (type === LINE_TYPE.ARC1) {
     const { offset, counterClockwise } = props;
     const center = {
       x: start.x + offset.x,
@@ -57,7 +57,7 @@ export function LineElement(props: LineElementProps) {
   currentToolPosition.x = lastPoint.x;
   currentToolPosition.y = lastPoint.y;
 
-  if (type === "positioning") return;
+  if (type === LINE_TYPE.POSITIONING) return;
 
   return (
     <line ref={lineRef}>
