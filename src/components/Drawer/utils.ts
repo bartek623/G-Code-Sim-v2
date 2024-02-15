@@ -1,24 +1,19 @@
-import { LineDataType } from "../../utils/types";
+import { LineDataType, LINE_TYPE, ValuesType } from "../../utils/types";
+import { GCODE, GCODE_CMD } from "./constants";
 
-type LineType =
-  | "positioning"
-  | "line"
-  | "arc1"
-  | "arc1-counterclockwise"
-  | "arc2"
-  | undefined;
+type LineType = ValuesType<typeof LINE_TYPE> | undefined;
 type LineData = { type: LineType; counterClockwise?: boolean };
 
 const getLineType = (code: string): LineData => {
   switch (code) {
-    case "00":
-      return { type: "positioning" };
-    case "01":
-      return { type: "line" };
-    case "02":
-      return { type: "arc1" };
-    case "03":
-      return { type: "arc1", counterClockwise: true };
+    case GCODE.POSITIONING:
+      return { type: LINE_TYPE.POSITIONING };
+    case GCODE.LINE:
+      return { type: LINE_TYPE.LINE };
+    case GCODE.ARC:
+      return { type: LINE_TYPE.ARC1 };
+    case GCODE.COUNTERCLOCKWISE_ARC:
+      return { type: LINE_TYPE.ARC2, counterClockwise: true };
     default:
       return { type: undefined };
   }
@@ -39,41 +34,56 @@ export const convertProgramToLinesData = (
 
     const linesData: LineDataType[] = programLines.map((line, i) => {
       const lineData: LineDataTempType = {
-        type: "positioning",
+        type: LINE_TYPE.POSITIONING,
         end: {},
         offset: {},
       };
       const singleCommands = line.split(" ");
 
-      if (singleCommands[0][0] !== "G")
+      if (singleCommands[0][0] !== GCODE_CMD.G)
         throw new Error(`Wrong command line [${i}]`);
 
       singleCommands.forEach((command) => {
         switch (command[0]) {
-          case "G": {
+          case GCODE_CMD.G: {
             const lineInfo = getLineType(command.slice(1));
             lineData.type = lineInfo.type;
             lineData.counterClockwise = lineInfo.counterClockwise;
             break;
           }
-          case "X":
+          case GCODE_CMD.X:
             lineData.end.x = +command.slice(1);
             break;
-          case "Y":
+          case GCODE_CMD.Y:
             lineData.end.y = +command.slice(1);
             break;
-          case "I":
-            if (lineData.type !== "arc1")
+          case GCODE_CMD.I:
+            if (lineData.type !== LINE_TYPE.ARC1)
               throw new Error(`Wrong command usage [${i}]`);
             lineData.offset.x = +command.slice(1);
             break;
-          case "J":
-            if (lineData.type !== "arc1")
+          case GCODE_CMD.J:
+            if (lineData.type !== LINE_TYPE.ARC2)
               throw new Error(`Wrong command usage [${i}]`);
             lineData.offset.y = +command.slice(1);
             break;
         }
       });
+
+      if (!lineData.type) throw new Error("Wrong GCODE");
+      if (!lineData.end.x)
+        throw new Error("Not given x argument of last line point");
+      if (!lineData.end.y)
+        throw new Error("Not given y argument of last line point");
+
+      const isArc =
+        lineData.type === LINE_TYPE.ARC1 || lineData.type === LINE_TYPE.ARC2;
+      if (isArc) {
+        if (!lineData.offset.x)
+          throw new Error("Not given x argument of offset for center of arc");
+        if (!lineData.offset.y)
+          throw new Error("Not given y argument of offset for center of arc");
+      }
 
       return lineData as LineDataType;
     });

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 
 import { Canvas } from "@react-three/fiber";
 import { CameraControls } from "@react-three/drei";
@@ -19,10 +19,14 @@ export function CanvasThreeD({ linesData }: CanvasThreeDProps) {
     cameraControlsRef.current.reset(true);
   };
 
-  const LineElements = linesData.map((el) => {
-    const preparedElement = <LineElement key={Math.random()} {...el} />;
-    return preparedElement;
-  });
+  const LineElements = useMemo(
+    () =>
+      linesData.map((el) => {
+        const preparedElement = <LineElement key={Math.random()} {...el} />;
+        return preparedElement;
+      }),
+    [linesData]
+  );
 
   return (
     <>

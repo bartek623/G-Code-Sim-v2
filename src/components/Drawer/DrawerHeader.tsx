@@ -1,6 +1,5 @@
 import { Container, Typography, styled } from "@mui/material";
-import { CloseBtn } from "../UI";
-import { InfoBtn } from "../UI/InfoBtn";
+import { CloseBtn, InfoBtn } from "../UI";
 
 const StyledContainer = styled(Container)`
   display: flex;

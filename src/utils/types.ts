@@ -1,4 +1,13 @@
-export type LineType =
+export const LINE_TYPE = {
+  POSITIONING: "positioning",
+  LINE: "line",
+  ARC1: "arc1",
+  ARC2: "arc2",
+} as const;
+
+export type ValuesType<T> = T[keyof T];
+
+export type LinesType =
   | {
       type: "positioning";
     }
@@ -16,7 +25,7 @@ export type LineType =
       counterClockwise?: boolean;
     };
 
-export type LineDataType = LineType & {
+export type LineDataType = LinesType & {
   end: { x: number; y: number };
 };
 

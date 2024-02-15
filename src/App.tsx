@@ -1,9 +1,10 @@
-import { Container, CssBaseline, ThemeProvider, styled } from "@mui/material";
-import { CanvasThreeD, Drawer } from "./components";
-import { MenuBtn } from "./components/UI";
 import { useState } from "react";
+
+import { Container, CssBaseline, ThemeProvider, styled } from "@mui/material";
+
+import { CanvasThreeD, Drawer, MenuBtn } from "./components";
 import { LineDataType } from "./utils/types";
-import theme from "./theme/theme";
+import { theme } from "./theme";
 
 const StyledContainer = styled(Container)`
   position: relative;
