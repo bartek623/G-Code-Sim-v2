@@ -1,11 +1,12 @@
-import { Divider, Drawer as MuiDrawer, TextFieldProps } from "@mui/material";
-import { DrawerBtns } from "./DrawerBtns";
 import { useRef } from "react";
+import { Divider, Drawer as MuiDrawer, TextFieldProps } from "@mui/material";
+
+import { DrawerBtns } from "./DrawerBtns";
+import { DrawerHeader } from "./DrawerHeader";
 import { DrawerTextField } from "./DrawerTextField";
 import { convertProgramToLinesData } from "./utils";
 import { LineDataType } from "../../utils/types";
 import { currentToolPosition } from "../../store/canvasStore";
-import { DrawerHeader } from "./DrawerHeader";
 
 type DrawerProps = {
   isOpen: boolean;
