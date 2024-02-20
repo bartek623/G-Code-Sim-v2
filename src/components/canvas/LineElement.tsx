@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { EllipseCurve, Vector2 } from "three";
 import { LINE_TYPE, LineDataType } from "../../utils/types";
 import { currentToolPosition } from "../../store/canvasStore";
+import { PointsToGeometry } from "./PointsToGeometry";
 
 type LineElementProps = LineDataType;
 
@@ -60,9 +61,12 @@ export function LineElement(props: LineElementProps) {
   if (type === LINE_TYPE.POSITIONING) return;
 
   return (
-    <line ref={lineRef}>
-      <bufferGeometry />
-      <lineBasicMaterial color="red" />
-    </line>
+    <>
+      <line ref={lineRef}>
+        <bufferGeometry />
+        <lineBasicMaterial color="red" />
+      </line>
+      <PointsToGeometry pointsData={points.map((p) => [p.x, p.y, 0])} />
+    </>
   );
 }
