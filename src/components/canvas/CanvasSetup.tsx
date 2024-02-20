@@ -5,6 +5,7 @@ import {
   AMBIENT_LIGHT_INTENSITY,
   DARK_GREY,
   DIRECT_LIGHT_POS,
+  DIRECT_LIGHT_POS2,
   GRID_DIV,
   GRID_ROTATION,
   GRID_SIZE,
@@ -20,6 +21,7 @@ export function CanvasSetup({ cameraControlsRef }: CanvasSetupProps) {
     <>
       <ambientLight intensity={AMBIENT_LIGHT_INTENSITY} />
       <directionalLight position={DIRECT_LIGHT_POS} />
+      <directionalLight position={DIRECT_LIGHT_POS2} />
       <gridHelper
         args={[GRID_SIZE, GRID_DIV, DARK_GREY, LIGHT_GREY]}
         rotation={GRID_ROTATION}

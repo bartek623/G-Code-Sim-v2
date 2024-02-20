@@ -6,15 +6,20 @@ import { DrawerHeader } from "./DrawerHeader";
 import { DrawerTextField } from "./DrawerTextField";
 import { convertProgramToLinesData } from "./utils";
 import { LineDataType } from "../../utils/types";
-import { currentToolPosition } from "../../store/canvasStore";
 
 type DrawerProps = {
   isOpen: boolean;
   onClose: () => void;
   setLinesData: (data: LineDataType[]) => void;
+  setShowGeo: (callback: (show: boolean) => boolean) => void;
 };
 
-export function Drawer({ isOpen, onClose, setLinesData }: DrawerProps) {
+export function Drawer({
+  isOpen,
+  onClose,
+  setLinesData,
+  setShowGeo,
+}: DrawerProps) {
   const textFieldRef = useRef<TextFieldProps>(null);
 
   const runProgramHandler = () => {
@@ -23,9 +28,11 @@ export function Drawer({ isOpen, onClose, setLinesData }: DrawerProps) {
 
     if (!linesData) return;
 
-    currentToolPosition.x = 0;
-    currentToolPosition.y = 0;
     setLinesData(linesData);
+  };
+
+  const toggleGeoHandler = () => {
+    setShowGeo((prev) => !prev);
   };
 
   return (
@@ -33,7 +40,7 @@ export function Drawer({ isOpen, onClose, setLinesData }: DrawerProps) {
       <DrawerHeader onClose={onClose} />
       <Divider />
       <DrawerTextField textFieldRef={textFieldRef} />
-      <DrawerBtns onRun={runProgramHandler} />
+      <DrawerBtns onRun={runProgramHandler} onShowGeo={toggleGeoHandler} />
     </MuiDrawer>
   );
 }

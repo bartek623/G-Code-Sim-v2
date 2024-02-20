@@ -63,7 +63,7 @@ export const convertProgramToLinesData = (
             lineData.offset.x = +command.slice(1);
             break;
           case GCODE_CMD.J:
-            if (lineData.type !== LINE_TYPE.ARC2)
+            if (lineData.type !== LINE_TYPE.ARC1)
               throw new Error(`Wrong command usage [${i}]`);
             lineData.offset.y = +command.slice(1);
             break;
@@ -71,17 +71,17 @@ export const convertProgramToLinesData = (
       });
 
       if (!lineData.type) throw new Error("Wrong GCODE");
-      if (!lineData.end.x)
+      if (lineData.end.x === undefined)
         throw new Error("Not given x argument of last line point");
-      if (!lineData.end.y)
+      if (lineData.end.y === undefined)
         throw new Error("Not given y argument of last line point");
 
       const isArc =
         lineData.type === LINE_TYPE.ARC1 || lineData.type === LINE_TYPE.ARC2;
       if (isArc) {
-        if (!lineData.offset.x)
+        if (lineData.offset.x === undefined)
           throw new Error("Not given x argument of offset for center of arc");
-        if (!lineData.offset.y)
+        if (lineData.offset.y === undefined)
           throw new Error("Not given y argument of offset for center of arc");
       }
 
