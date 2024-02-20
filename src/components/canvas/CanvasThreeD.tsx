@@ -7,26 +7,26 @@ import { CanvasSetup } from "./CanvasSetup";
 import { LineElement } from "./LineElement";
 import { ResetBtn } from "../UI";
 import { LineDataType } from "../../utils/types";
+import { resetToolPosition } from "../../store/canvasStore";
 
 type CanvasThreeDProps = {
   linesData: LineDataType[];
+  showGeo: boolean;
 };
 
-export function CanvasThreeD({ linesData }: CanvasThreeDProps) {
+export function CanvasThreeD({ linesData, showGeo }: CanvasThreeDProps) {
   const cameraControlsRef = useRef<CameraControls>(null!);
 
   const cameraResetHandler = () => {
     cameraControlsRef.current.reset(true);
   };
 
-  const LineElements = useMemo(
-    () =>
-      linesData.map((el) => {
-        const preparedElement = <LineElement key={Math.random()} {...el} />;
-        return preparedElement;
-      }),
-    [linesData]
-  );
+  const LineElements = useMemo(() => {
+    resetToolPosition();
+    return linesData.map((lineData) => (
+      <LineElement key={Math.random()} {...lineData} showGeometry={showGeo} />
+    ));
+  }, [linesData, showGeo]);
 
   return (
     <>

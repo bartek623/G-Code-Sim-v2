@@ -14,6 +14,7 @@ const StyledContainer = styled(Container)`
 function App() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const [lines, setLines] = useState<LineDataType[]>([]);
+  const [showGeometry, setShowGeometry] = useState(false);
 
   const openMenuHandler = () => {
     setIsDrawerOpen(true);
@@ -28,12 +29,13 @@ function App() {
       <CssBaseline />
       <StyledContainer disableGutters maxWidth={false}>
         <MenuBtn onClick={openMenuHandler} />
-        <CanvasThreeD linesData={lines} />
+        <CanvasThreeD linesData={lines} showGeo={showGeometry} />
       </StyledContainer>
       <Drawer
         isOpen={isDrawerOpen}
         onClose={closeMenuHandler}
         setLinesData={setLines}
+        setShowGeo={setShowGeometry}
       />
     </ThemeProvider>
   );

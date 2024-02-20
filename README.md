@@ -13,7 +13,7 @@ It simulates how tool of CNC machine moves with given program.
 - Draw lines on 2D plane ✅
 - Create modal to save/load program (for now it can be local storage) 🚧
 - Error handling 🚧
-- Extrude model with given lines (by rotation around X axis)
+- Extrude model with given lines (by rotation around X axis) ✅
 - Create option to import/export model (e.g. .step file)
 - Create simple documentation
 - Import aliases

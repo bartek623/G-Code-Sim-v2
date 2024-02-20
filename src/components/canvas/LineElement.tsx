@@ -4,10 +4,10 @@ import { LINE_TYPE, LineDataType } from "../../utils/types";
 import { currentToolPosition } from "../../store/canvasStore";
 import { PointsToGeometry } from "./PointsToGeometry";
 
-type LineElementProps = LineDataType;
+type LineElementProps = LineDataType & { showGeometry: boolean };
 
 export function LineElement(props: LineElementProps) {
-  const { type, end } = props;
+  const { type, end, showGeometry } = props;
   const start = { ...currentToolPosition };
   const lineRef = useRef(null!);
   let points: Vector2[] = [
@@ -66,7 +66,9 @@ export function LineElement(props: LineElementProps) {
         <bufferGeometry />
         <lineBasicMaterial color="red" />
       </line>
-      <PointsToGeometry pointsData={points.map((p) => [p.x, p.y, 0])} />
+      {showGeometry && (
+        <PointsToGeometry pointsData={points.map((p) => [p.x, p.y, 0])} />
+      )}
     </>
   );
 }

@@ -14,9 +14,10 @@ const StyledBtn = styled(Button)`
 
 type DrawerBtnsProps = {
   onRun: () => void;
+  onShowGeo: () => void;
 };
 
-export function DrawerBtns({ onRun }: DrawerBtnsProps) {
+export function DrawerBtns({ onRun, onShowGeo }: DrawerBtnsProps) {
   return (
     <StyledBtnsContainer>
       <StyledBtn variant="contained">
@@ -25,7 +26,7 @@ export function DrawerBtns({ onRun }: DrawerBtnsProps) {
       <StyledBtn variant="contained">
         <Upload />
       </StyledBtn>
-      <StyledBtn variant="contained">
+      <StyledBtn variant="contained" onClick={onShowGeo}>
         <ViewInAr />
       </StyledBtn>
       <StyledBtn variant="contained" onClick={onRun}>
