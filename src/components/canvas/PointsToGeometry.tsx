@@ -12,7 +12,7 @@ export function PointsToGeometry({ pointsData }: PointsToGeometryProps) {
   const points = [...basePoints];
 
   for (let i = 1; i <= rotations; i++) {
-    const angle = (i * (2 * Math.PI)) / rotations;
+    const angle = (i * 2 * Math.PI) / rotations;
     const rotatedPoints = basePoints
       .map((p) => {
         if (!p.y) return;

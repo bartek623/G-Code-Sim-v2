@@ -12,6 +12,7 @@ type DrawerProps = {
   onClose: () => void;
   setLinesData: (data: LineDataType[]) => void;
   setShowGeo: (callback: (show: boolean) => boolean) => void;
+  showGeo: boolean;
 };
 
 export function Drawer({
@@ -19,6 +20,7 @@ export function Drawer({
   onClose,
   setLinesData,
   setShowGeo,
+  showGeo,
 }: DrawerProps) {
   const textFieldRef = useRef<TextFieldProps>(null);
 
@@ -40,7 +42,11 @@ export function Drawer({
       <DrawerHeader onClose={onClose} />
       <Divider />
       <DrawerTextField textFieldRef={textFieldRef} />
-      <DrawerBtns onRun={runProgramHandler} onShowGeo={toggleGeoHandler} />
+      <DrawerBtns
+        onRun={runProgramHandler}
+        onShowGeo={toggleGeoHandler}
+        showGeo={showGeo}
+      />
     </MuiDrawer>
   );
 }
