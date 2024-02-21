@@ -36,6 +36,7 @@ function App() {
         onClose={closeMenuHandler}
         setLinesData={setLines}
         setShowGeo={setShowGeometry}
+        showGeo={showGeometry}
       />
     </ThemeProvider>
   );

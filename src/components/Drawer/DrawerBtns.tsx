@@ -1,4 +1,10 @@
-import { PlayArrow, Save, Upload, ViewInAr } from "@mui/icons-material";
+import {
+  PlayArrow,
+  Save,
+  Upload,
+  ViewInAr,
+  ViewInArOutlined,
+} from "@mui/icons-material";
 import { Button, Container, styled } from "@mui/material";
 
 const StyledBtnsContainer = styled(Container)`
@@ -15,9 +21,10 @@ const StyledBtn = styled(Button)`
 type DrawerBtnsProps = {
   onRun: () => void;
   onShowGeo: () => void;
+  showGeo: boolean;
 };
 
-export function DrawerBtns({ onRun, onShowGeo }: DrawerBtnsProps) {
+export function DrawerBtns({ onRun, onShowGeo, showGeo }: DrawerBtnsProps) {
   return (
     <StyledBtnsContainer>
       <StyledBtn variant="contained">
@@ -27,7 +34,7 @@ export function DrawerBtns({ onRun, onShowGeo }: DrawerBtnsProps) {
         <Upload />
       </StyledBtn>
       <StyledBtn variant="contained" onClick={onShowGeo}>
-        <ViewInAr />
+        {showGeo ? <ViewInArOutlined /> : <ViewInAr />}
       </StyledBtn>
       <StyledBtn variant="contained" onClick={onRun}>
         <PlayArrow />
