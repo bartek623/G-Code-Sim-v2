@@ -22,15 +22,23 @@ type DrawerBtnsProps = {
   onRun: () => void;
   onShowGeo: () => void;
   showGeo: boolean;
+  onSubSave: () => void;
+  onSubLoad: () => void;
 };
 
-export function DrawerBtns({ onRun, onShowGeo, showGeo }: DrawerBtnsProps) {
+export function DrawerBtns({
+  onRun,
+  onShowGeo,
+  showGeo,
+  onSubSave,
+  onSubLoad,
+}: DrawerBtnsProps) {
   return (
     <StyledBtnsContainer>
-      <StyledBtn variant="contained">
+      <StyledBtn variant="contained" onClick={onSubSave}>
         <Save />
       </StyledBtn>
-      <StyledBtn variant="contained">
+      <StyledBtn variant="contained" onClick={onSubLoad}>
         <Upload />
       </StyledBtn>
       <StyledBtn variant="contained" onClick={onShowGeo}>

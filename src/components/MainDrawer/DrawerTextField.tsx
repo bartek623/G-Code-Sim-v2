@@ -2,7 +2,10 @@ import { RefObject } from "react";
 
 import { Container, TextField, TextFieldProps, styled } from "@mui/material";
 
-import { TEXT_FIELD_BACKGROUND, TEXT_FIELD_COLOR } from "./constants";
+import {
+  TEXT_FIELD_BACKGROUND,
+  TEXT_FIELD_COLOR,
+} from "../UI/Drawer/constants";
 
 const StyledContainer = styled(Container)`
   margin-top: ${({ theme }) => theme.spacing(1.5)};

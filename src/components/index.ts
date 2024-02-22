@@ -1,3 +1,3 @@
 export * from "./canvas";
-export * from "./Drawer";
-export * from "./UI";
+export * from "./UI/Drawer";
+export * from "./UI/Btns";
