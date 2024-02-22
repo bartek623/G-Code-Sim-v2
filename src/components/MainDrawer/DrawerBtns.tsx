@@ -6,6 +6,7 @@ import {
   ViewInArOutlined,
 } from "@mui/icons-material";
 import { Button, Container, styled } from "@mui/material";
+import { SUBDRAWER_MODES, subdrawerModesType } from "./constants";
 
 const StyledBtnsContainer = styled(Container)`
   display: flex;
@@ -22,23 +23,29 @@ type DrawerBtnsProps = {
   onRun: () => void;
   onShowGeo: () => void;
   showGeo: boolean;
-  onSubSave: () => void;
-  onSubLoad: () => void;
+  onSubOpen: (mode: subdrawerModesType) => void;
 };
 
 export function DrawerBtns({
   onRun,
   onShowGeo,
   showGeo,
-  onSubSave,
-  onSubLoad,
+  onSubOpen,
 }: DrawerBtnsProps) {
+  const onSaveHandler = () => {
+    onSubOpen(SUBDRAWER_MODES.save);
+  };
+
+  const onLoadHandler = () => {
+    onSubOpen(SUBDRAWER_MODES.load);
+  };
+
   return (
     <StyledBtnsContainer>
-      <StyledBtn variant="contained" onClick={onSubSave}>
+      <StyledBtn variant="contained" onClick={onSaveHandler}>
         <Save />
       </StyledBtn>
-      <StyledBtn variant="contained" onClick={onSubLoad}>
+      <StyledBtn variant="contained" onClick={onLoadHandler}>
         <Upload />
       </StyledBtn>
       <StyledBtn variant="contained" onClick={onShowGeo}>

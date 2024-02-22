@@ -4,7 +4,7 @@ import { CloseBtn, InfoBtn } from "../Btns";
 const StyledContainer = styled(Container)`
   display: flex;
   justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(1)};
 `;
 
 type DrawerHeaderProps = {
