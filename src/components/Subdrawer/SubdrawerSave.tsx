@@ -6,7 +6,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import { RefObject } from "react";
+import { RefObject, useRef } from "react";
 
 const StyledContainer = styled(Stack)`
   margin: ${({ theme }) => theme.spacing(1.5)};
@@ -37,12 +37,47 @@ type SubdrawerSaveProps = {
 };
 
 export function SubdrawerSave({ textFieldRef }: SubdrawerSaveProps) {
+  const inputRef = useRef<TextFieldProps>(null);
   const program = textFieldRef.current?.value as string;
+
+  const saveHandler = () => {
+    type dataType = {
+      title: string;
+      code: string;
+      date: number;
+    };
+
+    try {
+      const data: dataType = {
+        title: inputRef.current?.value as string,
+        code: program,
+        date: Date.now(),
+      };
+
+      const currentProgramsString = localStorage.getItem("saved-programs");
+      const currentPrograms: dataType[] = currentProgramsString
+        ? JSON.parse(currentProgramsString)
+        : [];
+
+      if (currentPrograms.some((el: dataType) => el.title === data.title))
+        throw new Error("Given title is already taken");
+
+      currentPrograms.push(data);
+
+      localStorage.setItem("saved-programs", JSON.stringify(currentPrograms));
+      console.log(currentPrograms);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <StyledContainer>
-      <StyledInput label="title" variant="standard" />
+      <StyledInput label="title" variant="standard" inputRef={inputRef} />
       <StyledTypography paragraph>{program}</StyledTypography>
-      <StyledButton variant="contained">Save</StyledButton>
+      <StyledButton variant="contained" onClick={saveHandler}>
+        Save
+      </StyledButton>
     </StyledContainer>
   );
 }
