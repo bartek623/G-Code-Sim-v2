@@ -2,9 +2,10 @@ import { useState } from "react";
 
 import { Container, CssBaseline, ThemeProvider, styled } from "@mui/material";
 
-import { CanvasThreeD, Drawer, MenuBtn } from "./components";
+import { CanvasThreeD, MenuBtn } from "./components";
 import { LineDataType } from "./utils/types";
 import { theme } from "./theme";
+import { Maindrawer } from "./components/MainDrawer";
 
 const StyledContainer = styled(Container)`
   position: relative;
@@ -31,7 +32,7 @@ function App() {
         <MenuBtn onClick={openMenuHandler} />
         <CanvasThreeD linesData={lines} showGeo={showGeometry} />
       </StyledContainer>
-      <Drawer
+      <Maindrawer
         isOpen={isDrawerOpen}
         onClose={closeMenuHandler}
         setLinesData={setLines}

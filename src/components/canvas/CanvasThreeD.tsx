@@ -5,7 +5,7 @@ import { CameraControls } from "@react-three/drei";
 
 import { CanvasSetup } from "./CanvasSetup";
 import { LineElement } from "./LineElement";
-import { ResetBtn } from "../UI";
+import { ResetBtn } from "../UI/Btns";
 import { LineDataType } from "../../utils/types";
 import { resetToolPosition } from "../../store/canvasStore";
 
