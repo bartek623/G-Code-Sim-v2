@@ -3,10 +3,16 @@ import { TextFieldProps } from "@mui/material";
 
 import { Drawer } from "../UI/Drawer";
 import { LineDataType } from "../../utils/types";
-import { Subdrawer, subdrawerState } from "../Subdrawer";
+import { Subdrawer } from "../Subdrawer";
 import { convertProgramToLinesData } from "./utils";
 import { DrawerTextField } from "./DrawerTextField";
 import { DrawerBtns } from "./DrawerBtns";
+import {
+  MAINDRAWER_LABEL,
+  SUBDRAWER_DEFAULT,
+  SUBDRAWER_LABEL,
+  subdrawerState,
+} from "./constants";
 
 type DrawerProps = {
   isOpen: boolean;
@@ -23,7 +29,7 @@ export function Maindrawer({
   setShowGeo,
   showGeo,
 }: DrawerProps) {
-  const [subdrawer, setSubdrawer] = useState<subdrawerState>(undefined);
+  const [subdrawer, setSubdrawer] = useState<subdrawerState>(SUBDRAWER_DEFAULT);
   const textFieldRef = useRef<TextFieldProps>(null);
 
   const runProgramHandler = () => {
@@ -39,23 +45,19 @@ export function Maindrawer({
     setShowGeo((prev) => !prev);
   };
 
-  const saveSubHandler = () => {
-    setSubdrawer("save");
-  };
-
-  const loadSubHandler = () => {
-    setSubdrawer("load");
+  const openSubHandler = (state: "save" | "load") => {
+    setSubdrawer({ open: true, label: SUBDRAWER_LABEL[state] });
   };
 
   const closeSubHandler = () => {
-    setSubdrawer(undefined);
+    setSubdrawer((prev) => ({ ...prev, open: false }));
   };
 
   return (
     <Drawer
       isOpen={isOpen}
       onClose={onClose}
-      label="GCodeSim"
+      label={MAINDRAWER_LABEL}
       variant="persistent"
     >
       <DrawerTextField textFieldRef={textFieldRef} />
@@ -63,8 +65,7 @@ export function Maindrawer({
         onRun={runProgramHandler}
         onShowGeo={toggleGeoHandler}
         showGeo={showGeo}
-        onSubSave={saveSubHandler}
-        onSubLoad={loadSubHandler}
+        onSubOpen={openSubHandler}
       />
       <Subdrawer state={subdrawer} onClose={closeSubHandler} />
     </Drawer>

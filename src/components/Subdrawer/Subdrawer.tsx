@@ -1,6 +1,5 @@
+import { subdrawerState } from "../MainDrawer/constants";
 import { Drawer } from "../UI/Drawer";
-
-export type subdrawerState = undefined | "save" | "load";
 
 type SubdrawerProps = {
   state: subdrawerState;
@@ -8,12 +7,8 @@ type SubdrawerProps = {
 };
 
 export function Subdrawer({ state, onClose }: SubdrawerProps) {
-  const label = state
-    ? state[0].toUpperCase() + state.slice(1) + " program"
-    : "";
-
   return (
-    <Drawer label={label} onClose={onClose} isOpen={!!state}>
+    <Drawer label={state.label} onClose={onClose} isOpen={state.open}>
       asd
     </Drawer>
   );

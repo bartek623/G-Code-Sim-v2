@@ -22,23 +22,29 @@ type DrawerBtnsProps = {
   onRun: () => void;
   onShowGeo: () => void;
   showGeo: boolean;
-  onSubSave: () => void;
-  onSubLoad: () => void;
+  onSubOpen: (state: "save" | "load") => void;
 };
 
 export function DrawerBtns({
   onRun,
   onShowGeo,
   showGeo,
-  onSubSave,
-  onSubLoad,
+  onSubOpen,
 }: DrawerBtnsProps) {
+  const onSaveHandler = () => {
+    onSubOpen("save");
+  };
+
+  const onLoadHandler = () => {
+    onSubOpen("load");
+  };
+
   return (
     <StyledBtnsContainer>
-      <StyledBtn variant="contained" onClick={onSubSave}>
+      <StyledBtn variant="contained" onClick={onSaveHandler}>
         <Save />
       </StyledBtn>
-      <StyledBtn variant="contained" onClick={onSubLoad}>
+      <StyledBtn variant="contained" onClick={onLoadHandler}>
         <Upload />
       </StyledBtn>
       <StyledBtn variant="contained" onClick={onShowGeo}>
