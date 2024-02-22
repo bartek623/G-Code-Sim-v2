@@ -10,7 +10,8 @@ import { DrawerBtns } from "./DrawerBtns";
 import {
   MAINDRAWER_LABEL,
   SUBDRAWER_DEFAULT,
-  SUBDRAWER_LABEL,
+  SUBDRAWER_MODES,
+  subdrawerModesType,
   subdrawerState,
 } from "./constants";
 
@@ -45,8 +46,8 @@ export function Maindrawer({
     setShowGeo((prev) => !prev);
   };
 
-  const openSubHandler = (state: "save" | "load") => {
-    setSubdrawer({ open: true, label: SUBDRAWER_LABEL[state] });
+  const openSubHandler = (mode: subdrawerModesType) => {
+    setSubdrawer({ open: true, mode: SUBDRAWER_MODES[mode] });
   };
 
   const closeSubHandler = () => {
@@ -67,7 +68,11 @@ export function Maindrawer({
         showGeo={showGeo}
         onSubOpen={openSubHandler}
       />
-      <Subdrawer state={subdrawer} onClose={closeSubHandler} />
+      <Subdrawer
+        state={subdrawer}
+        onClose={closeSubHandler}
+        textFieldRef={textFieldRef}
+      />
     </Drawer>
   );
 }

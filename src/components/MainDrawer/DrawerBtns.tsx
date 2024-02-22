@@ -6,6 +6,7 @@ import {
   ViewInArOutlined,
 } from "@mui/icons-material";
 import { Button, Container, styled } from "@mui/material";
+import { SUBDRAWER_MODES, subdrawerModesType } from "./constants";
 
 const StyledBtnsContainer = styled(Container)`
   display: flex;
@@ -22,7 +23,7 @@ type DrawerBtnsProps = {
   onRun: () => void;
   onShowGeo: () => void;
   showGeo: boolean;
-  onSubOpen: (state: "save" | "load") => void;
+  onSubOpen: (mode: subdrawerModesType) => void;
 };
 
 export function DrawerBtns({
@@ -32,11 +33,11 @@ export function DrawerBtns({
   onSubOpen,
 }: DrawerBtnsProps) {
   const onSaveHandler = () => {
-    onSubOpen("save");
+    onSubOpen(SUBDRAWER_MODES.save);
   };
 
   const onLoadHandler = () => {
-    onSubOpen("load");
+    onSubOpen(SUBDRAWER_MODES.load);
   };
 
   return (
