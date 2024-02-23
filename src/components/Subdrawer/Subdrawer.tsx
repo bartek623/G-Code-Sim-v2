@@ -1,4 +1,6 @@
 import { RefObject } from "react";
+import { TextFieldProps } from "@mui/material";
+
 import {
   SUBDRAWER_LABEL,
   SUBDRAWER_MODES,
@@ -6,7 +8,7 @@ import {
 } from "../MainDrawer/constants";
 import { Drawer } from "../UI/Drawer";
 import { SubdrawerSave } from "./SubdrawerSave";
-import { TextFieldProps } from "@mui/material";
+import { SubdrawerLoad } from "./SubdrawerLoad";
 
 type SubdrawerProps = {
   state: subdrawerState;
@@ -22,7 +24,10 @@ export function Subdrawer({ state, onClose, textFieldRef }: SubdrawerProps) {
       isOpen={state.open}
     >
       {state.mode === SUBDRAWER_MODES.save && (
-        <SubdrawerSave textFieldRef={textFieldRef} />
+        <SubdrawerSave textFieldRef={textFieldRef} onClose={onClose} />
+      )}
+      {state.mode === SUBDRAWER_MODES.load && (
+        <SubdrawerLoad textFieldRef={textFieldRef} onClose={onClose} />
       )}
     </Drawer>
   );

@@ -13,7 +13,7 @@ const getLineType = (code: string): LineData => {
     case GCODE.ARC:
       return { type: LINE_TYPE.ARC1 };
     case GCODE.COUNTERCLOCKWISE_ARC:
-      return { type: LINE_TYPE.ARC2, counterClockwise: true };
+      return { type: LINE_TYPE.ARC1, counterClockwise: true };
     default:
       return { type: undefined };
   }
@@ -58,12 +58,18 @@ export const convertProgramToLinesData = (
             lineData.end.y = +command.slice(1);
             break;
           case GCODE_CMD.I:
-            if (lineData.type !== LINE_TYPE.ARC1)
+            if (
+              lineData.type !== LINE_TYPE.ARC1 &&
+              lineData.type !== LINE_TYPE.ARC2
+            )
               throw new Error(`Wrong command usage [${i}]`);
             lineData.offset.x = +command.slice(1);
             break;
           case GCODE_CMD.J:
-            if (lineData.type !== LINE_TYPE.ARC1)
+            if (
+              lineData.type !== LINE_TYPE.ARC1 &&
+              lineData.type !== LINE_TYPE.ARC2
+            )
               throw new Error(`Wrong command usage [${i}]`);
             lineData.offset.y = +command.slice(1);
             break;
