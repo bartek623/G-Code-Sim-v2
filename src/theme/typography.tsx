@@ -10,4 +10,14 @@ export const typography = {
     fontWeight: 400,
     letterSpacing: -1,
   },
+  h6: {
+    fontSize: 18,
+    fontWeight: 400,
+    letterSpacing: 0.5,
+  },
+  subtitle2: {
+    fontSize: 12,
+    letterSpacing: 1,
+    color: "#888",
+  },
 };

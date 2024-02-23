@@ -15,6 +15,8 @@ It simulates how tool of CNC machine moves with given program.
 - Create snackbar with appropriate notifications (e.g. on program save, errors etc.)
 - Error handling 🚧
 - Extrude model with given lines (by rotation around X axis) ✅
+- Find way to extrude concave model 🐛
+- Add unit tests
 - Create option to import/export model (e.g. .step file)
 - Create simple documentation
 - Import aliases

@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { BackSide, BufferAttribute, BufferGeometry, Vector3 } from "three";
 import { ConvexGeometry } from "three/examples/jsm/Addons.js";
 
 type PointsToGeometryProps = {
@@ -24,11 +24,23 @@ export function PointsToGeometry({ pointsData }: PointsToGeometryProps) {
 
   const geometry = new ConvexGeometry(points);
 
+  // const pointsGeometry = new BufferGeometry();
+  // const vertices = points.map((p) => [p.x, p.y, p.z]).flat();
+  // pointsGeometry.setAttribute(
+  //   "position",
+  //   new BufferAttribute(new Float32Array(vertices), 3)
+  // );
+
   return (
     <>
       <mesh geometry={geometry}>
         <meshStandardMaterial />
       </mesh>
+      {
+        // <points geometry={pointsGeometry}>
+        //   <pointsMaterial size={0.01} color="black" />
+        // </points>
+      }
     </>
   );
 }

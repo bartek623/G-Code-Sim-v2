@@ -43,6 +43,7 @@ export function DrawerTextField({ textFieldRef }: DrawerTextFieldProps) {
     <StyledContainer>
       <StyledTextField
         inputRef={textFieldRef}
+        InputLabelProps={{ shrink: true }}
         multiline
         variant="filled"
         label="GCode Program"

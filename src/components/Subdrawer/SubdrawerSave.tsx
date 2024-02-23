@@ -1,19 +1,13 @@
 import {
   Button,
-  Stack,
   TextField,
   TextFieldProps,
   Typography,
   styled,
 } from "@mui/material";
 import { RefObject, useRef } from "react";
-
-const StyledContainer = styled(Stack)`
-  margin: ${({ theme }) => theme.spacing(1.5)};
-  gap: ${({ theme }) => theme.spacing(3)};
-  height: 100%;
-  overflow-y: hidden;
-`;
+import { SubdrawerContainer } from "./SubdrawerContentContainer";
+import { savedType } from "./types";
 
 const StyledInput = styled(TextField)`
   width: 100%;
@@ -34,50 +28,47 @@ const StyledButton = styled(Button)`
 
 type SubdrawerSaveProps = {
   textFieldRef: RefObject<TextFieldProps>;
+  onClose: () => void;
 };
 
-export function SubdrawerSave({ textFieldRef }: SubdrawerSaveProps) {
+export function SubdrawerSave({ textFieldRef, onClose }: SubdrawerSaveProps) {
   const inputRef = useRef<TextFieldProps>(null);
   const program = textFieldRef.current?.value as string;
 
   const saveHandler = () => {
-    type dataType = {
-      title: string;
-      code: string;
-      date: number;
-    };
-
     try {
-      const data: dataType = {
+      const data: savedType = {
         title: inputRef.current?.value as string,
         code: program,
         date: Date.now(),
       };
 
+      if (program.length === 0) throw new Error("Your code is empty");
+
       const currentProgramsString = localStorage.getItem("saved-programs");
-      const currentPrograms: dataType[] = currentProgramsString
+      const currentPrograms: savedType[] = currentProgramsString
         ? JSON.parse(currentProgramsString)
         : [];
 
-      if (currentPrograms.some((el: dataType) => el.title === data.title))
+      if (currentPrograms.some((el: savedType) => el.title === data.title))
         throw new Error("Given title is already taken");
 
       currentPrograms.push(data);
 
       localStorage.setItem("saved-programs", JSON.stringify(currentPrograms));
-      console.log(currentPrograms);
+      onClose();
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <StyledContainer>
+    <SubdrawerContainer gap={3}>
       <StyledInput label="title" variant="standard" inputRef={inputRef} />
       <StyledTypography paragraph>{program}</StyledTypography>
       <StyledButton variant="contained" onClick={saveHandler}>
         Save
       </StyledButton>
-    </StyledContainer>
+    </SubdrawerContainer>
   );
 }
