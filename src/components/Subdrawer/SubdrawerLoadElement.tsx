@@ -19,7 +19,7 @@ const StyledContainer = styled(Paper)`
 type SubdrawerLoadElementProps = {
   data: savedType;
   onDelete: (title: string) => void;
-  onLoad: (code: string) => void;
+  onLoad: (code: string, title: string) => void;
 };
 
 export function SubdrawerLoadElement({
@@ -37,7 +37,7 @@ export function SubdrawerLoadElement({
   };
 
   const loadHandler = () => {
-    onLoad(data.code);
+    onLoad(data.code, title);
   };
 
   return (

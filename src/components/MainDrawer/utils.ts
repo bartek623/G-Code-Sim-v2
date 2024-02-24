@@ -1,5 +1,5 @@
 import { LineDataType, LINE_TYPE, ValuesType } from "../../utils/types";
-import { GCODE, GCODE_CMD } from "../UI/Drawer/constants";
+import { GCODE, GCODE_CMD } from "./constants";
 
 type LineType = ValuesType<typeof LINE_TYPE> | undefined;
 type LineData = { type: LineType; counterClockwise?: boolean };

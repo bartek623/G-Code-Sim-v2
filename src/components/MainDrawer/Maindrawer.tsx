@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { TextFieldProps } from "@mui/material";
 
-import { Drawer } from "../UI/Drawer";
+import { Drawer } from "../../UI";
 import { LineDataType } from "../../utils/types";
 import { Subdrawer } from "../Subdrawer";
 import { convertProgramToLinesData } from "./utils";
@@ -14,6 +14,10 @@ import {
   subdrawerModesType,
   subdrawerState,
 } from "./constants";
+import {
+  NOTIFICATION_TYPES,
+  NotificationInfoType,
+} from "../../UI/Notifications";
 
 type DrawerProps = {
   isOpen: boolean;
@@ -21,6 +25,7 @@ type DrawerProps = {
   setLinesData: (data: LineDataType[]) => void;
   setShowGeo: (callback: (show: boolean) => boolean) => void;
   showGeo: boolean;
+  pushNotification: (notification: NotificationInfoType) => void;
 };
 
 export function Maindrawer({
@@ -29,6 +34,7 @@ export function Maindrawer({
   setLinesData,
   setShowGeo,
   showGeo,
+  pushNotification,
 }: DrawerProps) {
   const [subdrawer, setSubdrawer] = useState<subdrawerState>(SUBDRAWER_DEFAULT);
   const textFieldRef = useRef<TextFieldProps>(null);
@@ -43,7 +49,12 @@ export function Maindrawer({
   };
 
   const toggleGeoHandler = () => {
-    setShowGeo((prev) => !prev);
+    setShowGeo((prev) => {
+      const msg = `${prev ? "Hiding" : "Showing"} model`;
+      pushNotification({ message: msg, type: NOTIFICATION_TYPES.info });
+
+      return !prev;
+    });
   };
 
   const openSubHandler = (mode: subdrawerModesType) => {
@@ -72,6 +83,7 @@ export function Maindrawer({
         state={subdrawer}
         onClose={closeSubHandler}
         textFieldRef={textFieldRef}
+        pushNotification={pushNotification}
       />
     </Drawer>
   );
