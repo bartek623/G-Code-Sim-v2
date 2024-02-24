@@ -2,10 +2,15 @@ import { useState } from "react";
 
 import { Container, CssBaseline, ThemeProvider, styled } from "@mui/material";
 
-import { CanvasThreeD, MenuBtn } from "./components";
+import { CanvasThreeD, Maindrawer } from "./components";
 import { LineDataType } from "./utils/types";
 import { theme } from "./theme";
-import { Maindrawer } from "./components/MainDrawer";
+import { Notifications, MenuBtn } from "./UI";
+import {
+  NotificationInfoType,
+  SnackbarStateType,
+  AUTOHIDE_TIME,
+} from "./UI/Notifications";
 
 const StyledContainer = styled(Container)`
   position: relative;
@@ -16,6 +21,12 @@ function App() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const [lines, setLines] = useState<LineDataType[]>([]);
   const [showGeometry, setShowGeometry] = useState(false);
+  const [snackbarState, setSnackbarState] = useState<SnackbarStateType>({
+    open: true,
+    message: "success",
+    type: "success",
+  });
+  const [snackbarTimer, setSnackbarTimer] = useState(0);
 
   const openMenuHandler = () => {
     setIsDrawerOpen(true);
@@ -23,6 +34,27 @@ function App() {
 
   const closeMenuHandler = () => {
     setIsDrawerOpen(false);
+  };
+
+  const hideNotificationHandler = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") return;
+
+    setSnackbarState((prev) => ({ ...prev, open: false }));
+  };
+
+  const pushNotificationHandler = (notification: NotificationInfoType) => {
+    clearTimeout(snackbarTimer);
+
+    setSnackbarTimer(
+      setTimeout(() => {
+        hideNotificationHandler();
+      }, AUTOHIDE_TIME)
+    );
+
+    setSnackbarState({ ...notification, open: true });
   };
 
   return (
@@ -38,6 +70,11 @@ function App() {
         setLinesData={setLines}
         setShowGeo={setShowGeometry}
         showGeo={showGeometry}
+        pushNotification={pushNotificationHandler}
+      />
+      <Notifications
+        snackbarState={snackbarState}
+        onClose={hideNotificationHandler}
       />
     </ThemeProvider>
   );

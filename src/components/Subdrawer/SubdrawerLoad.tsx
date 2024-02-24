@@ -4,23 +4,33 @@ import { savedType } from "./types";
 import { SubdrawerLoadElement } from "./SubdrawerLoadElement";
 import { TextFieldProps } from "@mui/material";
 import { getSavedStorage, setSavedStorage } from "./utils";
+import { NOTIFICATION_TYPES, NotificationInfoType } from "../../UI";
 
 type SubdrawerLoadProps = {
   textFieldRef: RefObject<TextFieldProps>;
   onClose: () => void;
+  pushNotification: (notification: NotificationInfoType) => void;
 };
 
-export function SubdrawerLoad({ textFieldRef, onClose }: SubdrawerLoadProps) {
+export function SubdrawerLoad({
+  textFieldRef,
+  onClose,
+  pushNotification,
+}: SubdrawerLoadProps) {
   const [savedPrograms, setSavedPrograms] = useState<savedType[]>([]);
 
   useEffect(() => {
     setSavedPrograms(getSavedStorage());
   }, []);
 
-  const loadHandler = (code: string) => {
+  const loadHandler = (code: string, title: string) => {
     if (!textFieldRef.current) return;
 
     textFieldRef.current.value = code;
+    pushNotification({
+      message: `Program "${title}" loaded successfully`,
+      type: NOTIFICATION_TYPES.success,
+    });
     onClose();
   };
 
@@ -29,6 +39,10 @@ export function SubdrawerLoad({ textFieldRef, onClose }: SubdrawerLoadProps) {
 
     setSavedStorage(newSavedPrograms);
     setSavedPrograms(newSavedPrograms);
+    pushNotification({
+      message: `Program "${title}" removed successfully`,
+      type: NOTIFICATION_TYPES.success,
+    });
   };
 
   const LoadElements = savedPrograms.map((el) => (
