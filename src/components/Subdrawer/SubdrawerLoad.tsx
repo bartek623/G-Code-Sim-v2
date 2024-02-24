@@ -3,6 +3,7 @@ import { SubdrawerContainer } from "./SubdrawerContentContainer";
 import { savedType } from "./types";
 import { SubdrawerLoadElement } from "./SubdrawerLoadElement";
 import { TextFieldProps } from "@mui/material";
+import { getSavedStorage, setSavedStorage } from "./utils";
 
 type SubdrawerLoadProps = {
   textFieldRef: RefObject<TextFieldProps>;
@@ -13,10 +14,7 @@ export function SubdrawerLoad({ textFieldRef, onClose }: SubdrawerLoadProps) {
   const [savedPrograms, setSavedPrograms] = useState<savedType[]>([]);
 
   useEffect(() => {
-    const savedString = localStorage.getItem("saved-programs");
-    const saved: savedType[] = savedString ? JSON.parse(savedString) : [];
-
-    setSavedPrograms(saved);
+    setSavedPrograms(getSavedStorage());
   }, []);
 
   const loadHandler = (code: string) => {
@@ -29,7 +27,7 @@ export function SubdrawerLoad({ textFieldRef, onClose }: SubdrawerLoadProps) {
   const deleteHandler = (title: string) => {
     const newSavedPrograms = savedPrograms.filter((el) => el.title !== title);
 
-    localStorage.setItem("saved-programs", JSON.stringify(newSavedPrograms));
+    setSavedStorage(newSavedPrograms);
     setSavedPrograms(newSavedPrograms);
   };
 

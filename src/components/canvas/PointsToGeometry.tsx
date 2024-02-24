@@ -19,6 +19,7 @@ export function PointsToGeometry({ pointsData }: PointsToGeometryProps) {
         return p.clone().applyAxisAngle(axis, angle);
       })
       .filter((p) => p);
+
     points.push(...(rotatedPoints as Vector3[]));
   }
 

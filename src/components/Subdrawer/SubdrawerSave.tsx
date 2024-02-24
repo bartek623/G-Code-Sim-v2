@@ -8,6 +8,7 @@ import {
 import { RefObject, useRef } from "react";
 import { SubdrawerContainer } from "./SubdrawerContentContainer";
 import { savedType } from "./types";
+import { getSavedStorage, setSavedStorage } from "./utils";
 
 const StyledInput = styled(TextField)`
   width: 100%;
@@ -45,17 +46,14 @@ export function SubdrawerSave({ textFieldRef, onClose }: SubdrawerSaveProps) {
 
       if (program.length === 0) throw new Error("Your code is empty");
 
-      const currentProgramsString = localStorage.getItem("saved-programs");
-      const currentPrograms: savedType[] = currentProgramsString
-        ? JSON.parse(currentProgramsString)
-        : [];
+      const currentPrograms = getSavedStorage();
 
-      if (currentPrograms.some((el: savedType) => el.title === data.title))
+      if (currentPrograms.some((el) => el.title === data.title))
         throw new Error("Given title is already taken");
 
       currentPrograms.push(data);
 
-      localStorage.setItem("saved-programs", JSON.stringify(currentPrograms));
+      setSavedStorage(currentPrograms);
       onClose();
     } catch (err) {
       console.error(err);
