@@ -22,8 +22,8 @@ function App() {
   const [lines, setLines] = useState<LineDataType[]>([]);
   const [showGeometry, setShowGeometry] = useState(false);
   const [snackbarState, setSnackbarState] = useState<SnackbarStateType>({
-    open: true,
-    message: "success",
+    open: false,
+    message: "",
     type: "success",
   });
   const [snackbarTimer, setSnackbarTimer] = useState(0);
@@ -37,7 +37,7 @@ function App() {
   };
 
   const hideNotificationHandler = (
-    event?: React.SyntheticEvent | Event,
+    _?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
     if (reason === "clickaway") return;

@@ -29,73 +29,69 @@ type LineDataTempType = {
 export const convertProgramToLinesData = (
   program: string
 ): LineDataType[] | undefined => {
-  try {
-    const programLines = program.split("\n");
+  const programLines = program.split("\n");
 
-    const linesData: LineDataType[] = programLines.map((line, i) => {
-      const lineData: LineDataTempType = {
-        type: LINE_TYPE.POSITIONING,
-        end: {},
-        offset: {},
-      };
-      const singleCommands = line.split(" ");
+  const linesData: LineDataType[] = programLines.map((line, i) => {
+    const lineData: LineDataTempType = {
+      type: LINE_TYPE.POSITIONING,
+      end: {},
+      offset: {},
+    };
+    const singleCommands = line.split(" ");
 
-      if (singleCommands[0][0] !== GCODE_CMD.G)
-        throw new Error(`Wrong command line [${i}]`);
+    if (singleCommands[0][0] !== GCODE_CMD.G)
+      throw new Error(`Wrong command line [${i}]`);
 
-      singleCommands.forEach((command) => {
-        switch (command[0]) {
-          case GCODE_CMD.G: {
-            const lineInfo = getLineType(command.slice(1));
-            lineData.type = lineInfo.type;
-            lineData.counterClockwise = lineInfo.counterClockwise;
-            break;
-          }
-          case GCODE_CMD.X:
-            lineData.end.x = +command.slice(1);
-            break;
-          case GCODE_CMD.Y:
-            lineData.end.y = +command.slice(1);
-            break;
-          case GCODE_CMD.I:
-            if (
-              lineData.type !== LINE_TYPE.ARC1 &&
-              lineData.type !== LINE_TYPE.ARC2
-            )
-              throw new Error(`Wrong command usage [${i}]`);
-            lineData.offset.x = +command.slice(1);
-            break;
-          case GCODE_CMD.J:
-            if (
-              lineData.type !== LINE_TYPE.ARC1 &&
-              lineData.type !== LINE_TYPE.ARC2
-            )
-              throw new Error(`Wrong command usage [${i}]`);
-            lineData.offset.y = +command.slice(1);
-            break;
+    singleCommands.forEach((command) => {
+      switch (command[0]) {
+        case GCODE_CMD.G: {
+          const lineInfo = getLineType(command.slice(1));
+          lineData.type = lineInfo.type;
+          lineData.counterClockwise = lineInfo.counterClockwise;
+          break;
         }
-      });
-
-      if (!lineData.type) throw new Error("Wrong GCODE");
-      if (lineData.end.x === undefined)
-        throw new Error("Not given x argument of last line point");
-      if (lineData.end.y === undefined)
-        throw new Error("Not given y argument of last line point");
-
-      const isArc =
-        lineData.type === LINE_TYPE.ARC1 || lineData.type === LINE_TYPE.ARC2;
-      if (isArc) {
-        if (lineData.offset.x === undefined)
-          throw new Error("Not given x argument of offset for center of arc");
-        if (lineData.offset.y === undefined)
-          throw new Error("Not given y argument of offset for center of arc");
+        case GCODE_CMD.X:
+          lineData.end.x = +command.slice(1);
+          break;
+        case GCODE_CMD.Y:
+          lineData.end.y = +command.slice(1);
+          break;
+        case GCODE_CMD.I:
+          if (
+            lineData.type !== LINE_TYPE.ARC1 &&
+            lineData.type !== LINE_TYPE.ARC2
+          )
+            throw new Error(`Wrong command usage [${i}]`);
+          lineData.offset.x = +command.slice(1);
+          break;
+        case GCODE_CMD.J:
+          if (
+            lineData.type !== LINE_TYPE.ARC1 &&
+            lineData.type !== LINE_TYPE.ARC2
+          )
+            throw new Error(`Wrong command usage [${i}]`);
+          lineData.offset.y = +command.slice(1);
+          break;
       }
-
-      return lineData as LineDataType;
     });
 
-    return linesData;
-  } catch (err) {
-    console.error(err);
-  }
+    if (!lineData.type) throw new Error(`Wrong GCODE [${i}]`);
+    if (lineData.end.x === undefined)
+      throw new Error(`Element X is not specified [${i}]`);
+    if (lineData.end.y === undefined)
+      throw new Error(`Element Y is not specified [${i}]`);
+
+    const isArc =
+      lineData.type === LINE_TYPE.ARC1 || lineData.type === LINE_TYPE.ARC2;
+    if (isArc) {
+      if (lineData.offset.x === undefined)
+        throw new Error(`Element I is not specified [${i}]`);
+      if (lineData.offset.y === undefined)
+        throw new Error(`Element J is not specified [${i}]`);
+    }
+
+    return lineData as LineDataType;
+  });
+
+  return linesData;
 };

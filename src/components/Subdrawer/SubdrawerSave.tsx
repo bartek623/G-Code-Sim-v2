@@ -10,6 +10,7 @@ import { SubdrawerContainer } from "./SubdrawerContentContainer";
 import { savedType } from "./types";
 import { getSavedStorage, setSavedStorage } from "./utils";
 import { NOTIFICATION_TYPES, NotificationInfoType } from "../../UI";
+import { showError } from "../../utils/utils";
 
 const StyledInput = styled(TextField)`
   width: 100%;
@@ -70,15 +71,7 @@ export function SubdrawerSave({
       });
       onClose();
     } catch (err) {
-      let message = "Unknown error";
-      console.error(err);
-
-      if (err instanceof Error) message = err.message;
-
-      pushNotification({
-        message: message,
-        type: NOTIFICATION_TYPES.error,
-      });
+      showError(err, pushNotification);
     }
   };
 
