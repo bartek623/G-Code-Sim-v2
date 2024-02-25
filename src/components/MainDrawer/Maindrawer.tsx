@@ -18,6 +18,7 @@ import {
   NOTIFICATION_TYPES,
   NotificationInfoType,
 } from "../../UI/Notifications";
+import { showError } from "../../utils/utils";
 
 type DrawerProps = {
   isOpen: boolean;
@@ -40,12 +41,16 @@ export function Maindrawer({
   const textFieldRef = useRef<TextFieldProps>(null);
 
   const runProgramHandler = () => {
-    const program = textFieldRef.current?.value as string;
-    const linesData = convertProgramToLinesData(program.trim());
+    try {
+      const program = textFieldRef.current?.value as string;
+      const linesData = convertProgramToLinesData(program.trim());
 
-    if (!linesData) return;
+      if (!linesData) return;
 
-    setLinesData(linesData);
+      setLinesData(linesData);
+    } catch (err) {
+      showError(err, pushNotification);
+    }
   };
 
   const toggleGeoHandler = () => {
