@@ -7,7 +7,6 @@ import { CanvasSetup } from "./CanvasSetup";
 import { LineElement } from "./LineElement";
 import { ResetBtn } from "../../UI";
 import { LineDataType } from "../../utils/types";
-import { resetToolPosition } from "../../store/canvasStore";
 
 type CanvasThreeDProps = {
   linesData: LineDataType[];
@@ -22,7 +21,6 @@ export function CanvasThreeD({ linesData, showGeo }: CanvasThreeDProps) {
   };
 
   const LineElements = useMemo(() => {
-    resetToolPosition();
     return linesData.map((lineData) => (
       <LineElement key={Math.random()} {...lineData} showGeometry={showGeo} />
     ));

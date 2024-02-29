@@ -1,12 +1,11 @@
 import { EllipseCurve } from "three";
 import { CURVE_POINTS } from "./constants";
-
-type pointType = { x: number; y: number };
+import { PointType } from "../../utils/types";
 
 export const getCurvePoints = (
-  start: pointType,
-  end: pointType,
-  center: pointType,
+  start: PointType,
+  end: PointType,
+  center: PointType,
   aClockwise: boolean | undefined
 ) => {
   const dirFactorStart = (start.y - center.y) / (start.x - center.x);

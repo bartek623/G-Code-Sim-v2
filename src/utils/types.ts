@@ -1,34 +1,27 @@
 export const LINE_TYPE = {
   POSITIONING: "positioning",
   LINE: "line",
-  ARC1: "arc1",
-  ARC2: "arc2",
+  ARC: "arc",
 } as const;
 
 export type ValuesType<T> = T[keyof T];
 
+export type LineType = ValuesType<typeof LINE_TYPE>;
+
+export type PointType = { x: number; y: number };
+
 export type LinesType =
   | {
-      type: "positioning";
+      type: "positioning" | "line";
     }
   | {
-      type: "line";
-    }
-  | {
-      type: "arc1";
-      offset: { x: number; y: number };
-      counterClockwise?: boolean;
-    }
-  | {
-      type: "arc2";
-      radius: number;
+      type: "arc";
+      center: PointType;
       counterClockwise?: boolean;
     };
 
-export type LineDataType = LinesType & {
-  end: { x: number; y: number };
-};
-
-export type LineElementType = LineDataType & {
-  start: { x: number; y: number };
-};
+export type LineDataType =
+  | LinesType & {
+      end: PointType;
+      start: PointType;
+    };
