@@ -23,7 +23,22 @@ type LineDataTempType = {
   type?: LineType;
   end: { x?: number; y?: number };
   offset: { x?: number; y?: number };
+  radius?: number;
   counterClockwise?: boolean;
+};
+
+const arcCheck = (data: LineDataTempType, line: number, radiusMode = false) => {
+  let error = false;
+  if (data.type !== LINE_TYPE.ARC1 && data.type !== LINE_TYPE.ARC2)
+    error = true;
+
+  if (radiusMode) {
+    if (data.offset.x || data.offset.y) error = true;
+  } else {
+    if (data.radius) error = true;
+  }
+
+  if (error) throw new Error(`Wrong command usage [${line}]`);
 };
 
 export const convertProgramToLinesData = (
@@ -33,7 +48,7 @@ export const convertProgramToLinesData = (
 
   const linesData: LineDataType[] = programLines.map((line, i) => {
     const lineData: LineDataTempType = {
-      type: LINE_TYPE.POSITIONING,
+      type: undefined,
       end: {},
       offset: {},
     };
@@ -43,7 +58,9 @@ export const convertProgramToLinesData = (
       throw new Error(`Wrong command line [${i}]`);
 
     singleCommands.forEach((command) => {
-      switch (command[0]) {
+      const code = command[0];
+      const value = +command.slice(1);
+      switch (code) {
         case GCODE_CMD.G: {
           const lineInfo = getLineType(command.slice(1));
           lineData.type = lineInfo.type;
@@ -51,26 +68,23 @@ export const convertProgramToLinesData = (
           break;
         }
         case GCODE_CMD.X:
-          lineData.end.x = +command.slice(1);
+          lineData.end.x = value;
           break;
         case GCODE_CMD.Y:
-          lineData.end.y = +command.slice(1);
+          lineData.end.y = value;
           break;
         case GCODE_CMD.I:
-          if (
-            lineData.type !== LINE_TYPE.ARC1 &&
-            lineData.type !== LINE_TYPE.ARC2
-          )
-            throw new Error(`Wrong command usage [${i}]`);
-          lineData.offset.x = +command.slice(1);
+          arcCheck(lineData, i);
+          lineData.offset.x = value;
           break;
         case GCODE_CMD.J:
-          if (
-            lineData.type !== LINE_TYPE.ARC1 &&
-            lineData.type !== LINE_TYPE.ARC2
-          )
-            throw new Error(`Wrong command usage [${i}]`);
-          lineData.offset.y = +command.slice(1);
+          arcCheck(lineData, i);
+          lineData.offset.y = value;
+          break;
+        case GCODE_CMD.R:
+          arcCheck(lineData, i);
+          lineData.type = LINE_TYPE.ARC2;
+          lineData.radius = value;
           break;
       }
     });
@@ -81,9 +95,9 @@ export const convertProgramToLinesData = (
     if (lineData.end.y === undefined)
       throw new Error(`Element Y is not specified [${i}]`);
 
-    const isArc =
-      lineData.type === LINE_TYPE.ARC1 || lineData.type === LINE_TYPE.ARC2;
-    if (isArc) {
+    if (lineData.type === LINE_TYPE.ARC1) {
+      if (lineData.offset.x === undefined && lineData.offset.y === undefined)
+        throw new Error(`Element I and J or R is not specified [${i}]`);
       if (lineData.offset.x === undefined)
         throw new Error(`Element I is not specified [${i}]`);
       if (lineData.offset.y === undefined)

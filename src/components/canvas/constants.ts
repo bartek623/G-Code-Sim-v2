@@ -9,3 +9,4 @@ export const GRID_DIV = 200;
 export const DARK_GREY = "#777";
 export const LIGHT_GREY = "#ddd";
 export const RED = "red";
+export const CURVE_POINTS = 50;

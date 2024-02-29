@@ -9,6 +9,7 @@ export const GCODE_CMD = {
   Y: "Y",
   I: "I",
   J: "J",
+  R: "R",
 } as const;
 
 export const GCODE = {

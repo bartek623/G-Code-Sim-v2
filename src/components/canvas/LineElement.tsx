@@ -1,13 +1,19 @@
 import { useLayoutEffect, useRef } from "react";
-import { EllipseCurve, Vector2 } from "three";
+import { Vector2 } from "three";
 import { LINE_TYPE, LineDataType } from "../../utils/types";
 import { currentToolPosition } from "../../store/canvasStore";
 import { PointsToGeometry } from "./PointsToGeometry";
+import { getCurvePoints } from "./utils";
+import { NotificationInfoType } from "../../UI";
+import { showError } from "../../utils/utils";
 
-type LineElementProps = LineDataType & { showGeometry: boolean };
+type LineElementProps = LineDataType & {
+  showGeometry: boolean;
+  pushNotification: (notification: NotificationInfoType) => void;
+};
 
 export function LineElement(props: LineElementProps) {
-  const { type, end, showGeometry } = props;
+  const { type, end, showGeometry, pushNotification } = props;
   const start = { ...currentToolPosition };
   const lineRef = useRef(null!);
   let points: Vector2[] = [
@@ -22,27 +28,40 @@ export function LineElement(props: LineElementProps) {
       y: start.y + offset.y,
     };
 
-    const dirFactorStart = (start.y - center.y) / (start.x - center.x);
-    const dirFactorEnd = (end.y - center.y) / (end.x - center.x);
-    const angleStart = Math.atan(dirFactorStart);
-    const angleEnd = Math.atan(dirFactorEnd);
-    const radius = Math.sqrt(
-      (center.x - start.x) ** 2 + (center.y - start.y) ** 2
-    );
+    points = getCurvePoints(start, end, center, counterClockwise);
+  }
 
-    const isObtuseStart = center.x > start.x;
-    const isObtuseEnd = center.x > end.x;
+  if (type === LINE_TYPE.ARC2) {
+    try {
+      const { radius, counterClockwise } = props;
+      const distanceBetweenPointsSquared =
+        (end.x - start.x) ** 2 + (end.y - start.y) ** 2;
+      const diameterSquared = 4 * radius ** 2;
+      const center = { x: 0, y: 0 };
 
-    const curve = new EllipseCurve(
-      center.x,
-      center.y,
-      radius,
-      radius,
-      isObtuseStart ? angleStart + Math.PI : angleStart,
-      isObtuseEnd ? angleEnd + Math.PI : angleEnd,
-      !counterClockwise
-    );
-    points = curve.getPoints(50);
+      if (diameterSquared < distanceBetweenPointsSquared) {
+        throw new Error("No solutions for given radius");
+      } else if (diameterSquared > distanceBetweenPointsSquared) {
+        const xMid = (end.x + start.x) / 2;
+        const yMid = (end.y + start.y) / 2;
+
+        center.x =
+          xMid -
+          (radius ** 2 - distanceBetweenPointsSquared / 4) ** 0.5 *
+            ((start.y - end.y) / distanceBetweenPointsSquared ** 0.5);
+        center.y =
+          yMid -
+          (radius ** 2 - distanceBetweenPointsSquared / 4) ** 0.5 *
+            ((end.x - start.x) / distanceBetweenPointsSquared ** 0.5);
+      } else {
+        center.x = (end.x + start.x) / 2;
+        center.y = (end.y + start.y) / 2;
+      }
+
+      points = getCurvePoints(start, end, center, counterClockwise);
+    } catch (err) {
+      showError(err, pushNotification);
+    }
   }
 
   useLayoutEffect(() => {
