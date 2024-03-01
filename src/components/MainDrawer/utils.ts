@@ -6,9 +6,9 @@ import {
 } from "../../utils/types";
 import { GCODE, GCODE_CMD } from "./constants";
 
-type LineData = { type: LineType | undefined; counterClockwise?: boolean };
+type LineData = { type: LineType; counterClockwise?: boolean };
 
-const getLineType = (code: string): LineData => {
+const getLineType = (code: number, errorMsg: string): LineData => {
   switch (code) {
     case GCODE.POSITIONING:
       return { type: LINE_TYPE.POSITIONING };
@@ -19,14 +19,15 @@ const getLineType = (code: string): LineData => {
     case GCODE.COUNTERCLOCKWISE_ARC:
       return { type: LINE_TYPE.ARC, counterClockwise: true };
     default:
-      return { type: undefined };
+      throw new Error(errorMsg);
   }
 };
 
 const getCenterWithRadius = (
   radius: number,
   start: PointType,
-  end: PointType
+  end: PointType,
+  dir: 1 | -1
 ) => {
   const distanceBetweenPointsSquared =
     (end.x - start.x) ** 2 + (end.y - start.y) ** 2;
@@ -39,14 +40,18 @@ const getCenterWithRadius = (
     const xMid = (end.x + start.x) / 2;
     const yMid = (end.y + start.y) / 2;
 
+    const sign = (radius / Math.abs(radius)) * dir;
+
     center.x =
       xMid -
       (radius ** 2 - distanceBetweenPointsSquared / 4) ** 0.5 *
-        ((start.y - end.y) / distanceBetweenPointsSquared ** 0.5);
+        ((start.y - end.y) / distanceBetweenPointsSquared ** 0.5) *
+        sign;
     center.y =
       yMid -
       (radius ** 2 - distanceBetweenPointsSquared / 4) ** 0.5 *
-        ((end.x - start.x) / distanceBetweenPointsSquared ** 0.5);
+        ((end.x - start.x) / distanceBetweenPointsSquared ** 0.5) *
+        sign;
   } else {
     center.x = (end.x + start.x) / 2;
     center.y = (end.y + start.y) / 2;
@@ -55,7 +60,7 @@ const getCenterWithRadius = (
   return center;
 };
 
-type TempPoint = { x: number | unknown; y: number | unknown };
+type TempPoint = { x: unknown; y: unknown };
 
 export const convertProgramToLinesData = (
   program: string
@@ -65,7 +70,7 @@ export const convertProgramToLinesData = (
 
   const linesData: LineDataType[] = programLines.map((line, i) => {
     const start: PointType = { ...currentToolPosition };
-    let type: LineType | unknown = undefined;
+    let type: unknown = undefined;
     const end: TempPoint = { x: undefined, y: undefined };
     const center: TempPoint = { x: undefined, y: undefined };
     let counterClockwise = false;
@@ -73,11 +78,10 @@ export const convertProgramToLinesData = (
 
     const singleCommands = line.split(" ");
 
-    const throwError = (msg: string) => {
-      throw new Error(`[${i}] ${msg}`);
-    };
+    const errorMsg = (msg: string) => `[${i}] ${msg}`;
 
-    if (singleCommands[0][0] !== GCODE_CMD.G) throwError("Wrong command line");
+    if (singleCommands[0][0] !== GCODE_CMD.G)
+      throw new Error(errorMsg("Wrong command line"));
 
     singleCommands.forEach((command) => {
       const code = command[0];
@@ -85,45 +89,53 @@ export const convertProgramToLinesData = (
 
       switch (code) {
         case GCODE_CMD.G: {
-          const lineInfo = getLineType(command.slice(1));
+          const lineInfo = getLineType(value, errorMsg("Wrong GCODE"));
           type = lineInfo.type;
           counterClockwise = !!lineInfo.counterClockwise;
           break;
         }
         case GCODE_CMD.X:
-          if (value < 0) throwError("Value X must not be negative");
+          if (value < 0)
+            throw new Error(errorMsg("Value X must not be negative"));
           end.x = value;
           break;
         case GCODE_CMD.Y:
-          if (value < 0) throwError("Value Y must not be negative");
+          if (value < 0)
+            throw new Error(errorMsg("Value Y must not be negative"));
           end.y = value;
           break;
         case GCODE_CMD.I:
-          if (type !== LINE_TYPE.ARC) throwError("Wrong command usage");
+          if (type !== LINE_TYPE.ARC)
+            throw new Error(errorMsg("Wrong command usage"));
           center.x = start.x + value;
           break;
         case GCODE_CMD.J:
-          if (type !== LINE_TYPE.ARC) throwError("Wrong command usage");
+          if (type !== LINE_TYPE.ARC)
+            throw new Error(errorMsg("Wrong command usage"));
           center.y = start.y + value;
           break;
         case GCODE_CMD.R:
-          if (type !== LINE_TYPE.ARC) throwError("Wrong command usage");
+          if (type !== LINE_TYPE.ARC)
+            throw new Error(errorMsg("Wrong command usage"));
           radius = value;
           break;
       }
     });
 
-    if (!type) throwError("Wrong GCODE");
-    if (end.x === undefined) throwError("Element X is not specified");
-    else if (end.y === undefined) throwError("Element Y is not specified");
+    if (end.x === undefined)
+      throw new Error(errorMsg("Element X is not specified"));
+    else if (end.y === undefined)
+      throw new Error(errorMsg("Element Y is not specified"));
 
     // * from now end object is type of PointType so it is safe to use as PointType
 
     if (radius) {
+      const dir = counterClockwise ? -1 : 1;
       const calculatedCenter = getCenterWithRadius(
         radius,
         start,
-        end as PointType
+        end as PointType,
+        dir
       );
       center.x = calculatedCenter.x;
       center.y = calculatedCenter.y;
@@ -134,7 +146,7 @@ export const convertProgramToLinesData = (
       isNaN(center.x as number) &&
       isNaN(center.y as number)
     )
-      throwError("Element I and J or R is not specified");
+      throw new Error(errorMsg("Element I and J or R is not specified"));
 
     currentToolPosition.x = end.x as number;
     currentToolPosition.y = end.y as number;

@@ -50,6 +50,7 @@ export function Maindrawer({
       setLinesData(linesData);
     } catch (err) {
       showError(err, pushNotification);
+      setLinesData([]);
     }
   };
 
@@ -68,6 +69,7 @@ export function Maindrawer({
 
   const closeSubHandler = () => {
     setSubdrawer((prev) => ({ ...prev, open: false }));
+    runProgramHandler();
   };
 
   return (
