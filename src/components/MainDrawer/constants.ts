@@ -13,10 +13,10 @@ export const GCODE_CMD = {
 } as const;
 
 export const GCODE = {
-  POSITIONING: "00",
-  LINE: "01",
-  ARC: "02",
-  COUNTERCLOCKWISE_ARC: "03",
+  POSITIONING: 0,
+  LINE: 1,
+  ARC: 2,
+  COUNTERCLOCKWISE_ARC: 3,
 } as const;
 
 export const MAINDRAWER_LABEL = "GCodeSim";
