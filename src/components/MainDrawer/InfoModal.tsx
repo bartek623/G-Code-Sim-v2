@@ -13,7 +13,7 @@ type InfoModalProps = {
 
 export function InfoModal({ isOpen, onClose }: InfoModalProps) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="md">
       <ModalText title="What is G-code?">
         G-code, an abbreviation for "Geometric Code," stands as the
         quintessential programming language in the domains of computer-aided

@@ -1,4 +1,4 @@
-import { Button, styled } from "@mui/material";
+import { Button, Tooltip, styled } from "@mui/material";
 
 const StyledBtn = styled(Button)`
   position: absolute;
@@ -12,5 +12,9 @@ type ResetBtnProps = {
 };
 
 export function ResetBtn({ onClick }: ResetBtnProps) {
-  return <StyledBtn onClick={onClick}>reset</StyledBtn>;
+  return (
+    <Tooltip title="Camera reset">
+      <StyledBtn onClick={onClick}>reset</StyledBtn>
+    </Tooltip>
+  );
 }
