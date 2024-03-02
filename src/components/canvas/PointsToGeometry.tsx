@@ -34,9 +34,11 @@ export function PointsToGeometry({ pointsData }: PointsToGeometryProps) {
 
   return (
     <>
-      <mesh geometry={geometry}>
-        <meshStandardMaterial />
-      </mesh>
+      {
+        <mesh geometry={geometry}>
+          <meshStandardMaterial />
+        </mesh>
+      }
       {
         // <points geometry={pointsGeometry}>
         //   <pointsMaterial size={0.01} color="black" />

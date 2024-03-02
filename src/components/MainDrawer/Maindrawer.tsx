@@ -19,6 +19,7 @@ import {
   NotificationInfoType,
 } from "../../UI/Notifications";
 import { showError } from "../../utils/utils";
+import { InfoModal } from "./InfoModal";
 
 type DrawerProps = {
   isOpen: boolean;
@@ -37,12 +38,16 @@ export function Maindrawer({
   showGeo,
   pushNotification,
 }: DrawerProps) {
+  const [openModal, setOpenModal] = useState(false);
   const [subdrawer, setSubdrawer] = useState<subdrawerState>(SUBDRAWER_DEFAULT);
   const textFieldRef = useRef<TextFieldProps>(null);
 
   const runProgramHandler = () => {
     try {
       const program = textFieldRef.current?.value as string;
+
+      if (!program.length) return;
+
       const linesData = convertProgramToLinesData(program.trim());
 
       if (!linesData) return;
@@ -68,8 +73,17 @@ export function Maindrawer({
   };
 
   const closeSubHandler = () => {
+    if (subdrawer.mode === SUBDRAWER_MODES.load) runProgramHandler();
+
     setSubdrawer((prev) => ({ ...prev, open: false }));
-    runProgramHandler();
+  };
+
+  const openModalHandler = () => {
+    setOpenModal(true);
+  };
+
+  const closeModalHandler = () => {
+    setOpenModal(false);
   };
 
   return (
@@ -78,6 +92,7 @@ export function Maindrawer({
       onClose={onClose}
       label={MAINDRAWER_LABEL}
       variant="persistent"
+      onModalOpen={openModalHandler}
     >
       <DrawerTextField textFieldRef={textFieldRef} />
       <DrawerBtns
@@ -92,6 +107,7 @@ export function Maindrawer({
         textFieldRef={textFieldRef}
         pushNotification={pushNotification}
       />
+      <InfoModal isOpen={openModal} onClose={closeModalHandler} />
     </Drawer>
   );
 }
