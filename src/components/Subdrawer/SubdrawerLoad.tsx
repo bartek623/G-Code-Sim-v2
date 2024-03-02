@@ -10,12 +10,14 @@ type SubdrawerLoadProps = {
   textFieldRef: RefObject<TextFieldProps>;
   onClose: () => void;
   pushNotification: (notification: NotificationInfoType) => void;
+  onRun: () => void;
 };
 
 export function SubdrawerLoad({
   textFieldRef,
   onClose,
   pushNotification,
+  onRun,
 }: SubdrawerLoadProps) {
   const [savedPrograms, setSavedPrograms] = useState<savedType[]>([]);
 
@@ -32,6 +34,7 @@ export function SubdrawerLoad({
       type: NOTIFICATION_TYPES.success,
     });
     onClose();
+    onRun();
   };
 
   const deleteHandler = (title: string) => {

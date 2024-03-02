@@ -1,1 +1,1 @@
-export const AUTOHIDE_TIME = 3000;
+export const AUTOHIDE_TIME = 4000;

@@ -17,6 +17,6 @@ It simulates how tool of CNC machine moves with given program.
 - Extrude model with given lines (by rotation around X axis) ✅
 - Find way to extrude concave model 🐛
 - Create modals with info about program, saving/loading models etc. ✅
-- Add unit tests
+- Add unit tests 🚧
 - Create option to import/export model (e.g. .step file)
 - Create simple documentation

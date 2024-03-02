@@ -48,7 +48,11 @@ export function Maindrawer({
 
       if (!program.length) return;
 
-      const linesData = convertProgramToLinesData(program.trim());
+      const showWarning = (message: string) => {
+        pushNotification({ message, type: NOTIFICATION_TYPES.warning });
+      };
+
+      const linesData = convertProgramToLinesData(program.trim(), showWarning);
 
       if (!linesData) return;
 
@@ -73,8 +77,6 @@ export function Maindrawer({
   };
 
   const closeSubHandler = () => {
-    if (subdrawer.mode === SUBDRAWER_MODES.load) runProgramHandler();
-
     setSubdrawer((prev) => ({ ...prev, open: false }));
   };
 
@@ -106,6 +108,7 @@ export function Maindrawer({
         onClose={closeSubHandler}
         textFieldRef={textFieldRef}
         pushNotification={pushNotification}
+        onRun={runProgramHandler}
       />
       <InfoModal isOpen={openModal} onClose={closeModalHandler} />
     </Drawer>

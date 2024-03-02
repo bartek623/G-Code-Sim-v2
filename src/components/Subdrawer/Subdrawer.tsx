@@ -17,6 +17,7 @@ type SubdrawerProps = {
   onClose: () => void;
   textFieldRef: RefObject<TextFieldProps>;
   pushNotification: (notification: NotificationInfoType) => void;
+  onRun: () => void;
 };
 
 export function Subdrawer({
@@ -24,6 +25,7 @@ export function Subdrawer({
   onClose,
   textFieldRef,
   pushNotification,
+  onRun,
 }: SubdrawerProps) {
   const [openModal, setOpenModal] = useState(false);
 
@@ -58,6 +60,7 @@ export function Subdrawer({
             textFieldRef={textFieldRef}
             onClose={onClose}
             pushNotification={pushNotification}
+            onRun={onRun}
           />
           <LoadInfoModal isOpen={openModal} onClose={closeModalHandler} />
         </>
