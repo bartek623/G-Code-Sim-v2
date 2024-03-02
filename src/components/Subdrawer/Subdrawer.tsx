@@ -1,4 +1,4 @@
-import { RefObject } from "react";
+import { RefObject, useState } from "react";
 import { TextFieldProps } from "@mui/material";
 
 import {
@@ -9,6 +9,8 @@ import {
 import { Drawer, NotificationInfoType } from "../../UI";
 import { SubdrawerSave } from "./SubdrawerSave";
 import { SubdrawerLoad } from "./SubdrawerLoad";
+import { SaveInfoModal } from "./SaveInfoModal";
+import { LoadInfoModal } from "./LoadInfoModal";
 
 type SubdrawerProps = {
   state: subdrawerState;
@@ -23,25 +25,42 @@ export function Subdrawer({
   textFieldRef,
   pushNotification,
 }: SubdrawerProps) {
+  const [openModal, setOpenModal] = useState(false);
+
+  const openModalHandler = () => {
+    setOpenModal(true);
+  };
+
+  const closeModalHandler = () => {
+    setOpenModal(false);
+  };
+
   return (
     <Drawer
       label={SUBDRAWER_LABEL[state.mode]}
       onClose={onClose}
       isOpen={state.open}
+      onModalOpen={openModalHandler}
     >
       {state.mode === SUBDRAWER_MODES.save && (
-        <SubdrawerSave
-          textFieldRef={textFieldRef}
-          onClose={onClose}
-          pushNotification={pushNotification}
-        />
+        <>
+          <SubdrawerSave
+            textFieldRef={textFieldRef}
+            onClose={onClose}
+            pushNotification={pushNotification}
+          />
+          <SaveInfoModal isOpen={openModal} onClose={closeModalHandler} />
+        </>
       )}
       {state.mode === SUBDRAWER_MODES.load && (
-        <SubdrawerLoad
-          textFieldRef={textFieldRef}
-          onClose={onClose}
-          pushNotification={pushNotification}
-        />
+        <>
+          <SubdrawerLoad
+            textFieldRef={textFieldRef}
+            onClose={onClose}
+            pushNotification={pushNotification}
+          />
+          <LoadInfoModal isOpen={openModal} onClose={closeModalHandler} />
+        </>
       )}
     </Drawer>
   );

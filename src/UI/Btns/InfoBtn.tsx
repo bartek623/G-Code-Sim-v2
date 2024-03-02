@@ -1,5 +1,5 @@
 import { InfoOutlined } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 
 type InfoBtnProps = {
   onClick: () => void;
@@ -7,8 +7,10 @@ type InfoBtnProps = {
 
 export function InfoBtn({ onClick }: InfoBtnProps) {
   return (
-    <IconButton onClick={onClick}>
-      <InfoOutlined />
-    </IconButton>
+    <Tooltip title="More info">
+      <IconButton onClick={onClick}>
+        <InfoOutlined />
+      </IconButton>
+    </Tooltip>
   );
 }

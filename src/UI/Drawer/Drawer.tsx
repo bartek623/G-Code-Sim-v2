@@ -1,17 +1,18 @@
 import { ReactNode } from "react";
 import {
   Divider,
-  DrawerProps as MUIDrawerProps,
+  DrawerProps as MuiDrawerProps,
   Drawer as MuiDrawer,
 } from "@mui/material";
 
 import { DrawerHeader } from "./DrawerHeader";
 
-type DrawerProps = MUIDrawerProps & {
+type DrawerProps = MuiDrawerProps & {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
   label: string;
+  onModalOpen: () => void;
 };
 
 export function Drawer({
@@ -19,11 +20,12 @@ export function Drawer({
   onClose,
   children,
   label,
+  onModalOpen,
   ...restDrawerProps
 }: DrawerProps) {
   return (
     <MuiDrawer open={isOpen} onClose={onClose} {...restDrawerProps}>
-      <DrawerHeader onClose={onClose} label={label} />
+      <DrawerHeader onClose={onClose} label={label} onModalOpen={onModalOpen} />
       <Divider />
       {children}
     </MuiDrawer>

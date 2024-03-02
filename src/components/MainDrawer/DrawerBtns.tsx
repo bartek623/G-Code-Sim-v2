@@ -5,7 +5,7 @@ import {
   ViewInAr,
   ViewInArOutlined,
 } from "@mui/icons-material";
-import { Button, Container, styled } from "@mui/material";
+import { Button, Container, Tooltip, styled } from "@mui/material";
 import { SUBDRAWER_MODES, subdrawerModesType } from "./constants";
 
 const StyledBtnsContainer = styled(Container)`
@@ -42,18 +42,29 @@ export function DrawerBtns({
 
   return (
     <StyledBtnsContainer>
-      <StyledBtn variant="contained" onClick={onSaveHandler}>
-        <Save />
-      </StyledBtn>
-      <StyledBtn variant="contained" onClick={onLoadHandler}>
-        <Upload />
-      </StyledBtn>
-      <StyledBtn variant="contained" onClick={onShowGeo}>
-        {showGeo ? <ViewInArOutlined /> : <ViewInAr />}
-      </StyledBtn>
-      <StyledBtn variant="contained" onClick={onRun}>
-        <PlayArrow />
-      </StyledBtn>
+      <Tooltip title="Save program">
+        <StyledBtn variant="contained" onClick={onSaveHandler}>
+          <Save />
+        </StyledBtn>
+      </Tooltip>
+
+      <Tooltip title="Load program">
+        <StyledBtn variant="contained" onClick={onLoadHandler}>
+          <Upload />
+        </StyledBtn>
+      </Tooltip>
+
+      <Tooltip title="Show 3D model">
+        <StyledBtn variant="contained" onClick={onShowGeo}>
+          {showGeo ? <ViewInArOutlined /> : <ViewInAr />}
+        </StyledBtn>
+      </Tooltip>
+
+      <Tooltip title="Run program">
+        <StyledBtn variant="contained" onClick={onRun}>
+          <PlayArrow />
+        </StyledBtn>
+      </Tooltip>
     </StyledBtnsContainer>
   );
 }

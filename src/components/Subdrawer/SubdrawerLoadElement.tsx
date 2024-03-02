@@ -1,13 +1,6 @@
-import {
-  Container,
-  IconButton,
-  Paper,
-  Stack,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Container, Paper, Stack, Typography, styled } from "@mui/material";
 import { savedType } from "./types";
-import { DeleteOutline, UploadOutlined } from "@mui/icons-material";
+import { DeleteBtn, LoadBtn } from "../../UI";
 
 const StyledContainer = styled(Paper)`
   display: flex;
@@ -48,12 +41,8 @@ export function SubdrawerLoadElement({
       </Container>
 
       <Stack direction="row" sx={{ margin: "auto" }}>
-        <IconButton color="primary" onClick={loadHandler}>
-          <UploadOutlined />
-        </IconButton>
-        <IconButton color="error" onClick={deleteHandler}>
-          <DeleteOutline />
-        </IconButton>
+        <LoadBtn onClick={loadHandler} />
+        <DeleteBtn onClick={deleteHandler} />
       </Stack>
     </StyledContainer>
   );

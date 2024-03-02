@@ -10,12 +10,17 @@ const StyledContainer = styled(Container)`
 type DrawerHeaderProps = {
   onClose: () => void;
   label: string;
+  onModalOpen: () => void;
 };
 
-export function DrawerHeader({ onClose, label }: DrawerHeaderProps) {
+export function DrawerHeader({
+  onClose,
+  label,
+  onModalOpen,
+}: DrawerHeaderProps) {
   return (
     <StyledContainer disableGutters>
-      <InfoBtn onClick={() => {}} />
+      <InfoBtn onClick={onModalOpen} />
       <Typography variant="h2" color="primary">
         {label}
       </Typography>
