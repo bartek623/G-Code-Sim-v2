@@ -12,6 +12,7 @@ export function Notifications({ snackbarState, onClose }: NotificationsProps) {
       open={snackbarState.open}
       onClose={onClose}
       anchorOrigin={{ horizontal: "right", vertical: "top" }}
+      sx={{ maxWidth: "500px" }}
     >
       <Alert severity={snackbarState.type} onClose={onClose} variant="filled">
         {snackbarState.message}
