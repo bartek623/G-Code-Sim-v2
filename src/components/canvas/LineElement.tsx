@@ -28,15 +28,21 @@ export function LineElement(props: LineElementProps) {
     lineRef.current.geometry.setFromPoints(
       points.map((point) => new Vector2(...point))
     );
+    // @ts-expect-error as above
+    if (type === LINE_TYPE.POSITIONING) lineRef.current.computeLineDistances();
   });
 
-  if (type === LINE_TYPE.POSITIONING) return;
+  const isDashed = type === LINE_TYPE.POSITIONING;
 
   return (
     <>
       <line ref={lineRef}>
         <bufferGeometry />
-        <lineBasicMaterial color="red" />
+        {isDashed ? (
+          <lineDashedMaterial color="blue" dashSize={0.08} gapSize={0.03} />
+        ) : (
+          <lineBasicMaterial color="red" />
+        )}
       </line>
       {showGeometry && (
         <PointsToGeometry pointsData={points.map((p) => [p.x, p.y, 0])} />
