@@ -44,7 +44,7 @@ export function LineElement(props: LineElementProps) {
           <lineBasicMaterial color="red" />
         )}
       </line>
-      {showGeometry && (
+      {showGeometry && !isDashed && (
         <PointsToGeometry pointsData={points.map((p) => [p.x, p.y, 0])} />
       )}
     </>
