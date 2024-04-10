@@ -69,14 +69,21 @@ export const convertProgramToLinesData = (
 ): LineDataType[] | undefined => {
   const programLines = program.split("\n");
   const currentToolPosition = { x: 0, y: 0 };
+  const prevLineValues = {
+    x: 0,
+    y: 0,
+    r: 0,
+    i: 0,
+    j: 0,
+  };
 
   const linesData: LineDataType[] = programLines.map((line, i) => {
     const start: PointType = { ...currentToolPosition };
     let type: unknown = undefined;
-    const end: TempPoint = { x: undefined, y: undefined };
+    const end: PointType = { x: prevLineValues.x, y: prevLineValues.y };
     const center: TempPoint = { x: undefined, y: undefined };
     let counterClockwise = false;
-    let radius = 0;
+    let radius: number | undefined;
 
     const singleCommands = line.split(" ");
 
@@ -98,56 +105,54 @@ export const convertProgramToLinesData = (
         }
         case GCODE_CMD.X:
           if (value < 0) throw new Error(errorMsg(ERROR_MSG.Xnegative));
-          end.x = value;
+          end.x = prevLineValues.x = value;
           break;
         case GCODE_CMD.Y:
           if (value < 0) throw new Error(errorMsg(ERROR_MSG.Ynegative));
-          end.y = value;
+          end.y = prevLineValues.y = value;
           break;
         case GCODE_CMD.I:
           if (type !== LINE_TYPE.ARC)
             throw new Error(errorMsg(ERROR_MSG.Itype));
-          center.x = start.x + value;
+          center.x = prevLineValues.i = start.x + value;
           break;
         case GCODE_CMD.J:
           if (type !== LINE_TYPE.ARC)
             throw new Error(errorMsg(ERROR_MSG.Jtype));
-          center.y = start.y + value;
+          center.y = prevLineValues.j = start.y + value;
           break;
         case GCODE_CMD.R:
           if (type !== LINE_TYPE.ARC)
             throw new Error(errorMsg(ERROR_MSG.Rtype));
-          radius = value;
+          radius = prevLineValues.r = value;
           break;
       }
     });
 
-    if (end.x === undefined) throw new Error(errorMsg(ERROR_MSG.Xmissing));
-    else if (end.y === undefined) throw new Error(errorMsg(ERROR_MSG.Ymissing));
+    if (type === LINE_TYPE.ARC) {
+      if (center.x === undefined && center.y === undefined) {
+        if (!radius) {
+          warningFn(errorMsg(ERROR_MSG.IJRmissing));
+          radius = prevLineValues.r;
+        }
 
-    // * from now end object is type of PointType so it is safe to use as PointType
+        const dir = counterClockwise ? -1 : 1;
+        const calculatedCenter = getCenterWithRadius(
+          radius,
+          start,
+          end,
+          dir,
+          errorMsg(ERROR_MSG.noRsolution)
+        );
+        center.x = calculatedCenter.x;
+        center.y = calculatedCenter.y;
+      } else {
+        if (radius) warningFn(ERROR_MSG.Roverrided);
 
-    if (radius) {
-      if (center.x !== undefined || center.y !== undefined)
-        warningFn(errorMsg(ERROR_MSG.Roverrides));
-
-      const dir = counterClockwise ? -1 : 1;
-      const calculatedCenter = getCenterWithRadius(
-        radius,
-        start,
-        end as PointType,
-        dir,
-        errorMsg(ERROR_MSG.noRsolution)
-      );
-      center.x = calculatedCenter.x;
-      center.y = calculatedCenter.y;
+        if (center.x === undefined) center.x = prevLineValues.i;
+        else if (center.y === undefined) center.y = prevLineValues.j;
+      }
     }
-
-    if (
-      type === LINE_TYPE.ARC &&
-      (center.x === undefined || center.y === undefined)
-    )
-      throw new Error(errorMsg(ERROR_MSG.IJRmissing));
 
     currentToolPosition.x = end.x as number;
     currentToolPosition.y = end.y as number;
@@ -156,7 +161,7 @@ export const convertProgramToLinesData = (
       const lineData: LineDataType = {
         type: type,
         start,
-        end: end as PointType,
+        end: end,
         center: center as PointType,
         counterClockwise,
       };
@@ -165,7 +170,7 @@ export const convertProgramToLinesData = (
       const lineData: LineDataType = {
         type: type,
         start,
-        end: end as PointType,
+        end: end,
       };
       return lineData;
     } else throw new Error(errorMsg(ERROR_MSG.command));

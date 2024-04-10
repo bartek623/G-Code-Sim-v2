@@ -154,24 +154,4 @@ describe("gcode interpreter error throwing", () => {
       convertProgramToLinesData(programString3);
     }).toThrow("[0] " + ERROR_MSG.Rtype);
   });
-
-  test("missing arguments", () => {
-    const programString1 = "G01 Y1";
-
-    expect(() => {
-      convertProgramToLinesData(programString1);
-    }).toThrow("[0] " + ERROR_MSG.Xmissing);
-
-    const programString2 = "G01 X1 ";
-
-    expect(() => {
-      convertProgramToLinesData(programString2);
-    }).toThrow("[0] " + ERROR_MSG.Ymissing);
-
-    const programString3 = "G03 X1 Y1";
-
-    expect(() => {
-      convertProgramToLinesData(programString3);
-    }).toThrow("[0] " + ERROR_MSG.IJRmissing);
-  });
 });
