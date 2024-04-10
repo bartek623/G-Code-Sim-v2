@@ -49,18 +49,17 @@ export const ERROR_MSG = {
   G: "Invalid G code. Please use a valid G code for the machining operation.",
   line: "Incorrect command line format. Ensure that a valid G code is specified at the beginning of the command line.",
   Xnegative:
-    "X value must be non-negative. Please provide valid, positive coordinates.",
+    "'X' value must be non-negative. Please provide valid, positive coordinates.",
   Ynegative:
-    "Y value must be non-negative. Please provide valid, positive coordinates.",
-  Itype: "I argument is only applicable for arc commands (G02 or G03).",
-  Jtype: "J argument is only applicable for arc commands (G02 or G03).",
-  Rtype: "R argument is only applicable for arc commands (G02 or G03).",
-  Xmissing: "Missing argument X.",
-  Ymissing: "Missing argument Y.",
-  IJRmissing: "Missing argument I and J or R.",
+    "'Y' value must be non-negative. Please provide valid, positive coordinates.",
+  Itype: "'I' argument is only applicable for arc commands (G02 or G03).",
+  Jtype: "'J' argument is only applicable for arc commands (G02 or G03).",
+  Rtype: "'R' argument is only applicable for arc commands (G02 or G03).",
+  IJRmissing:
+    "Missing argument 'I' and 'J' or 'R'. 'R' from the previous line will be utilized as a substitute.",
   command:
     "Unable to process the command. Check the command syntax and try again.",
   noRsolution:
-    "No solution for the provided R argument. The distance between points is longer than the diameter of the circle.",
-  Roverrides: "R argument overrides I and J.",
+    "No solution for the provided 'R' argument. The distance between points is longer than the diameter of the circle.",
+  Roverrided: "'R' argument overridden by 'I' and 'J'.",
 };
