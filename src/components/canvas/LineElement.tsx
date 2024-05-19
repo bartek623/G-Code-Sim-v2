@@ -79,9 +79,7 @@ export function LineElement({ linesData, showGeometry }: LineElementProps) {
           gapSize={GAP_SIZE}
         />
       ))}
-      {showGeometry && (
-        <PointsToGeometry pointsData={points.map((p) => [p.x, p.y, 0])} />
-      )}
+      {showGeometry && <PointsToGeometry pointsData={points} />}
     </>
   );
 }

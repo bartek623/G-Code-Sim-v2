@@ -15,5 +15,8 @@ export const CURVE_POINTS = 50;
 export const DASH_SIZE = 0.08;
 export const GAP_SIZE = 0.05;
 export const LINE_ANIMATION_RATE = 0.02;
-export const LINE_COLOR = "red";
-export const POSITION_LINE_COLOR = "blue";
+export const LINE_COLOR = "crimson";
+export const POSITION_LINE_COLOR = "royalblue";
+
+export const GEO_ROTATIONS = 100;
+export const GEO_COLOR = "white";
