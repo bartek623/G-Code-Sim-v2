@@ -1,5 +1,5 @@
 import { LatheGeometry, Vector2 } from "three";
-import { GEO_COLOR, GEO_ROTATIONS } from "./constants";
+import { GEO_ROTATIONS } from "./constants";
 
 type PointsToGeometryProps = {
   pointsData: Vector2[];
@@ -16,7 +16,7 @@ export function PointsToGeometry({ pointsData }: PointsToGeometryProps) {
 
   return (
     <mesh geometry={geometry}>
-      <meshStandardMaterial color={GEO_COLOR} />
+      <meshStandardMaterial />
     </mesh>
   );
 }

@@ -5,6 +5,7 @@ const StyledContainer = styled(Container)`
   display: flex;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing(1)};
+  padding: 5px;
 `;
 
 type DrawerHeaderProps = {
