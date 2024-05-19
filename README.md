@@ -12,11 +12,12 @@ It simulates how tool of CNC machine moves with given program.
 - 🚧 Create better validation of gcode
 - ✅ Draw lines on 2D plane
 - ✅ Draw different line types
+- ✅ Draw lines with animation
 - ✅ Create drawer to save/load program (for now it can be local storage)
 - ✅ Create snackbar with appropriate notifications (e.g. on program save, errors etc.)
 - ✅ Error handling
 - ✅ Extrude model with given lines (by rotation around X axis)
-- 🐛 Find way to extrude concave model
+- ✅ Find way to extrude concave model
 - ✅ Create modals with info about program, saving/loading models etc.
 - 🚧 Add unit tests
 - ❔ Create option to import/export model (e.g. .step file)
