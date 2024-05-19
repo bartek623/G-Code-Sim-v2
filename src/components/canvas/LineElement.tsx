@@ -1,4 +1,3 @@
-import { useLayoutEffect, useRef } from "react";
 import { Vector2 } from "three";
 import { LINE_TYPE, LineDataType } from "../../utils/types";
 import { PointsToGeometry } from "./PointsToGeometry";
@@ -11,7 +10,6 @@ type LineElementProps = LineDataType & {
 
 export function LineElement(props: LineElementProps) {
   const { type, start, end, showGeometry } = props;
-  const lineRef = useRef(null!);
   let points: Vector2[] = [
     new Vector2(start.x, start.y),
     new Vector2(end.x, end.y),
