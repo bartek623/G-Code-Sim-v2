@@ -3,35 +3,83 @@ import { LINE_TYPE, LineDataType } from "../../utils/types";
 import { PointsToGeometry } from "./PointsToGeometry";
 import { getCurvePoints } from "./utils";
 import { Line } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
+import {
+  DASH_SIZE,
+  GAP_SIZE,
+  LINE_ANIMATION_RATE,
+  LINE_COLOR,
+  POSITION_LINE_COLOR,
+} from "./constants";
 
-type LineElementProps = LineDataType & {
+type LineElementProps = {
+  linesData: LineDataType[];
   showGeometry: boolean;
 };
 
-export function LineElement(props: LineElementProps) {
-  const { type, start, end, showGeometry } = props;
-  let points: Vector2[] = [
-    new Vector2(start.x, start.y),
-    new Vector2(end.x, end.y),
-  ];
+export function LineElement({ linesData, showGeometry }: LineElementProps) {
+  const points: Vector2[] = [];
+  const linesDashed: Vector2[][] = [];
+  const lineRef = useRef(null!);
+  let approximateLength = 0;
 
-  if (type === LINE_TYPE.ARC) {
-    const { center, counterClockwise } = props;
-    points = getCurvePoints(start, end, center, counterClockwise);
-  }
+  linesData.forEach((lineData) => {
+    const { type, start, end } = lineData;
+    const startPoint = new Vector2(start.x, start.y);
+    const endPoint = new Vector2(end.x, end.y);
 
-  const isDashed = type === LINE_TYPE.POSITIONING;
+    if (type === LINE_TYPE.POSITIONING) {
+      linesDashed.push([startPoint, endPoint]);
+
+      approximateLength += startPoint.distanceTo(endPoint);
+    } else if (type === LINE_TYPE.ARC) {
+      const { curvePoints, curveLength } = getCurvePoints(lineData);
+      points.push(...curvePoints);
+
+      approximateLength += curveLength;
+    } else {
+      points.push(...[startPoint, endPoint]);
+
+      approximateLength += startPoint.distanceTo(endPoint);
+    }
+  });
+
+  // Line animation
+  useEffect(() => {
+    //dont rerun animation on showgeometry
+    if (showGeometry) return;
+    //@ts-expect-error there is currently no type for line ref
+    lineRef.current.material.dashSize = 0;
+  });
+
+  useFrame(() => {
+    //@ts-expect-error there is currently no type for line ref
+    if (lineRef.current.material.dashSize >= approximateLength) return;
+    //@ts-expect-error as above
+    lineRef.current.material.dashSize += LINE_ANIMATION_RATE;
+  });
 
   return (
     <>
       <Line
+        ref={lineRef}
         points={points}
-        color={isDashed ? "blue" : "red"}
-        dashed={isDashed}
-        dashSize={0.08}
-        gapSize={0.03}
+        color={LINE_COLOR}
+        dashed
+        gapSize={approximateLength}
       />
-      {showGeometry && !isDashed && (
+      {linesDashed.map((line) => (
+        <Line
+          key={Math.random()}
+          points={line}
+          color={POSITION_LINE_COLOR}
+          dashed
+          dashSize={DASH_SIZE}
+          gapSize={GAP_SIZE}
+        />
+      ))}
+      {showGeometry && (
         <PointsToGeometry pointsData={points.map((p) => [p.x, p.y, 0])} />
       )}
     </>

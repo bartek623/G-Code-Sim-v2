@@ -21,9 +21,11 @@ export function CanvasThreeD({ linesData, showGeo }: CanvasThreeDProps) {
   };
 
   const LineElements = useMemo(() => {
-    return linesData.map((lineData) => (
-      <LineElement key={Math.random()} {...lineData} showGeometry={showGeo} />
-    ));
+    return linesData.length > 0 ? (
+      <LineElement linesData={linesData} showGeometry={showGeo} />
+    ) : (
+      <></>
+    );
   }, [linesData, showGeo]);
 
   return (

@@ -1,13 +1,12 @@
 import { EllipseCurve } from "three";
 import { CURVE_POINTS } from "./constants";
-import { PointType } from "../../utils/types";
+import { LINE_TYPE, LineDataType } from "../../utils/types";
 
-export const getCurvePoints = (
-  start: PointType,
-  end: PointType,
-  center: PointType,
-  aClockwise: boolean | undefined
-) => {
+export const getCurvePoints = (lineData: LineDataType) => {
+  if (lineData.type !== LINE_TYPE.ARC)
+    return { curvePoints: [], curveLength: 0 };
+
+  const { start, end, center, counterClockwise } = lineData;
   const angleStart = Math.atan2(start.y - center.y, start.x - center.x);
   const angleEnd = Math.atan2(end.y - center.y, end.x - center.x);
 
@@ -16,14 +15,19 @@ export const getCurvePoints = (
   );
   const radius2 = Math.sqrt((center.x - end.x) ** 2 + (center.y - end.y) ** 2);
 
-  return new EllipseCurve(
+  const curve = new EllipseCurve(
     center.x,
     center.y,
     radius1,
     radius2,
     angleStart + angleEnd,
     angleEnd + angleEnd,
-    !aClockwise,
+    !counterClockwise,
     -angleEnd
-  ).getPoints(CURVE_POINTS);
+  );
+
+  return {
+    curvePoints: curve.getPoints(CURVE_POINTS),
+    curveLength: curve.getLength(),
+  };
 };
