@@ -26,7 +26,9 @@ function App() {
     message: "",
     type: "success",
   });
-  const [snackbarTimer, setSnackbarTimer] = useState(0);
+  const [snackbarTimer, setSnackbarTimer] = useState<
+    ReturnType<typeof setTimeout> | undefined
+  >(undefined);
 
   const openMenuHandler = () => {
     setIsDrawerOpen(true);

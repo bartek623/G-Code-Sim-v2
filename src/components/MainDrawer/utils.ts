@@ -79,7 +79,7 @@ export const convertProgramToLinesData = (
 
   const linesData: LineDataType[] = programLines.map((line, i) => {
     const start: PointType = { ...currentToolPosition };
-    let type: unknown = undefined;
+    let type: LineType | undefined = undefined;
     const end: PointType = { x: prevLineValues.x, y: prevLineValues.y };
     const center: TempPoint = { x: undefined, y: undefined };
     let counterClockwise = false;

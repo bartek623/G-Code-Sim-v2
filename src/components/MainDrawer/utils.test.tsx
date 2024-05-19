@@ -2,6 +2,8 @@ import { LINE_TYPE } from "../../utils/types";
 import { ERROR_MSG } from "./constants";
 import { convertProgramToLinesData } from "./utils";
 
+const getErrorMsg = (msg: string) => "[0] " + msg;
+
 describe("gcode interpreter testing", () => {
   test("positioning", () => {
     const programString = "G00 X1 Y3";
@@ -124,7 +126,7 @@ describe("gcode interpreter error throwing", () => {
 
     expect(() => {
       convertProgramToLinesData(programString);
-    }).toThrow("[0] " + ERROR_MSG.G);
+    }).toThrow(getErrorMsg(ERROR_MSG.G));
   });
 
   test("wrong command", () => {
@@ -132,7 +134,7 @@ describe("gcode interpreter error throwing", () => {
 
     expect(() => {
       convertProgramToLinesData(programString);
-    }).toThrow("[0] " + ERROR_MSG.line);
+    }).toThrow(getErrorMsg(ERROR_MSG.line));
   });
 
   test("unexpected arc arguments", () => {
@@ -140,18 +142,40 @@ describe("gcode interpreter error throwing", () => {
 
     expect(() => {
       convertProgramToLinesData(programString1);
-    }).toThrow("[0] " + ERROR_MSG.Itype);
+    }).toThrow(getErrorMsg(ERROR_MSG.Itype));
 
     const programString2 = "G01 X1 Y1 J1";
 
     expect(() => {
       convertProgramToLinesData(programString2);
-    }).toThrow("[0] " + ERROR_MSG.Jtype);
+    }).toThrow(getErrorMsg(ERROR_MSG.Jtype));
 
     const programString3 = "G00 X1 Y1 R1";
 
     expect(() => {
       convertProgramToLinesData(programString3);
-    }).toThrow("[0] " + ERROR_MSG.Rtype);
+    }).toThrow(getErrorMsg(ERROR_MSG.Rtype));
+  });
+
+  test("negative arguments", () => {
+    const programString1 = "G01 X-1 Y1";
+
+    expect(() => {
+      convertProgramToLinesData(programString1);
+    }).toThrow(getErrorMsg(ERROR_MSG.Xnegative));
+
+    const programString2 = "G02 X1 Y-1 I1 J1";
+
+    expect(() => {
+      convertProgramToLinesData(programString2);
+    }).toThrow(getErrorMsg(ERROR_MSG.Ynegative));
+  });
+
+  test("invalid radius", () => {
+    const programString = "G02 X2 Y2 R1";
+
+    expect(() => {
+      convertProgramToLinesData(programString);
+    }).toThrow(getErrorMsg(ERROR_MSG.noRsolution));
   });
 });

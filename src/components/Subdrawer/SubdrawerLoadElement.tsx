@@ -1,4 +1,11 @@
-import { Container, Paper, Stack, Typography, styled } from "@mui/material";
+import {
+  Container,
+  Paper,
+  Stack,
+  Tooltip,
+  Typography,
+  styled,
+} from "@mui/material";
 import { savedType } from "./types";
 import { DeleteBtn, LoadBtn } from "../../UI";
 
@@ -36,7 +43,9 @@ export function SubdrawerLoadElement({
   return (
     <StyledContainer variant="outlined">
       <Container disableGutters>
-        <Typography variant="h6">{title}</Typography>
+        <Tooltip title={data.title} followCursor>
+          <Typography variant="h6">{title}</Typography>
+        </Tooltip>
         <Typography variant="subtitle2">{date}</Typography>
       </Container>
 
