@@ -25,6 +25,7 @@ export function CanvasSetup({ cameraControlsRef }: CanvasSetupProps) {
       <gridHelper
         args={[GRID_SIZE, GRID_DIV, DARK_GREY, LIGHT_GREY]}
         rotation={GRID_ROTATION}
+        position={[0, 0, -0.001]}
       />
       <CameraControls ref={cameraControlsRef} />
     </>
