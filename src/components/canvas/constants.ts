@@ -1,6 +1,7 @@
 import { Euler, Vector3 } from "@react-three/fiber";
 
 export const AMBIENT_LIGHT_INTENSITY = 0.6;
+export const DEFAULT_CAMERA_POS: Vector3 = [0, 0, 10];
 export const DIRECT_LIGHT_POS: Vector3 = [-1, 1, 3];
 export const DIRECT_LIGHT_POS2: Vector3 = [1, -2, -3];
 export const GRID_ROTATION: Euler = [Math.PI * 0.5, 0, 0];
