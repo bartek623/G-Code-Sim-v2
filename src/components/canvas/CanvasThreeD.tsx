@@ -7,6 +7,7 @@ import { CanvasSetup } from "./CanvasSetup";
 import { LineElement } from "./LineElement";
 import { ResetBtn } from "../../UI";
 import { LineDataType } from "../../utils/types";
+import { DEFAULT_CAMERA_POS } from "./constants";
 
 type CanvasThreeDProps = {
   linesData: LineDataType[];
@@ -20,17 +21,17 @@ export function CanvasThreeD({ linesData, showGeo }: CanvasThreeDProps) {
     cameraControlsRef.current.reset(true);
   };
 
-  const LineElements = useMemo(() => {
-    return linesData.length > 0 ? (
-      <LineElement linesData={linesData} showGeometry={showGeo} />
-    ) : (
-      <></>
-    );
-  }, [linesData, showGeo]);
+  const LineElements = useMemo(
+    () =>
+      !!linesData.length && (
+        <LineElement linesData={linesData} showGeometry={showGeo} />
+      ),
+    [linesData, showGeo]
+  );
 
   return (
     <>
-      <Canvas>
+      <Canvas camera={{ position: DEFAULT_CAMERA_POS }}>
         <CanvasSetup cameraControlsRef={cameraControlsRef} />
         {LineElements}
       </Canvas>

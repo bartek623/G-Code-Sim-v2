@@ -19,7 +19,7 @@ type CanvasSetupProps = {
 export function CanvasSetup({ cameraControlsRef }: CanvasSetupProps) {
   return (
     <>
-      <ambientLight intensity={AMBIENT_LIGHT_INTENSITY} />
+      <ambientLight color={"#000"} intensity={AMBIENT_LIGHT_INTENSITY} />
       <directionalLight position={DIRECT_LIGHT_POS} />
       <directionalLight position={DIRECT_LIGHT_POS2} />
       <gridHelper
