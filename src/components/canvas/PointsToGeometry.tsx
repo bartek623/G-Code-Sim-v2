@@ -1,4 +1,4 @@
-import { LatheGeometry, Vector2 } from "three";
+import { DoubleSide, LatheGeometry, Vector2 } from "three";
 import { GEO_ROTATIONS } from "./constants";
 
 type PointsToGeometryProps = {
@@ -16,7 +16,13 @@ export function PointsToGeometry({ pointsData }: PointsToGeometryProps) {
 
   return (
     <mesh geometry={geometry}>
-      <meshStandardMaterial />
+      <meshStandardMaterial
+        color="white"
+        roughness={0}
+        metalness={0}
+        flatShading={true}
+        side={DoubleSide}
+      />
     </mesh>
   );
 }

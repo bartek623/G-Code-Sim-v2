@@ -19,4 +19,4 @@ export const LINE_ANIMATION_RATE = 0.04;
 export const LINE_COLOR = "crimson";
 export const POSITION_LINE_COLOR = "royalblue";
 
-export const GEO_ROTATIONS = 100;
+export const GEO_ROTATIONS = 1000;

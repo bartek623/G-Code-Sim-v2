@@ -159,18 +159,18 @@ export const convertProgramToLinesData = (
 
     if (type === LINE_TYPE.ARC) {
       const lineData: LineDataType = {
-        type: type,
+        type,
         start,
-        end: end,
+        end,
         center: center as PointType,
         counterClockwise,
       };
       return lineData;
     } else if (type === LINE_TYPE.LINE || type === LINE_TYPE.POSITIONING) {
       const lineData: LineDataType = {
-        type: type,
+        type,
         start,
-        end: end,
+        end,
       };
       return lineData;
     } else throw new Error(errorMsg(ERROR_MSG.command));
