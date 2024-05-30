@@ -1,6 +1,6 @@
 import { Ref } from "react";
 
-import { CameraControls } from "@react-three/drei";
+import { CameraControls, Environment } from "@react-three/drei";
 import {
   AMBIENT_LIGHT_INTENSITY,
   DARK_GREY,
@@ -28,6 +28,7 @@ export function CanvasSetup({ cameraControlsRef }: CanvasSetupProps) {
         position={[0, 0, -0.001]}
       />
       <CameraControls ref={cameraControlsRef} />
+      <Environment preset="studio" />
     </>
   );
 }

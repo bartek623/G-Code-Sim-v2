@@ -17,10 +17,9 @@ export function PointsToGeometry({ pointsData }: PointsToGeometryProps) {
   return (
     <mesh geometry={geometry}>
       <meshStandardMaterial
-        color="white"
-        roughness={0}
-        metalness={0}
-        flatShading={true}
+        color="#888"
+        roughness={0.5}
+        metalness={1}
         side={DoubleSide}
       />
     </mesh>
