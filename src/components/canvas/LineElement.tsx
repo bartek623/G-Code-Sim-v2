@@ -1,11 +1,11 @@
-import { Group, Object3D, Vector2 } from "three";
+import { Group, Vector2 } from "three";
 import { LINE_TYPE, LineDataType } from "../../utils/types";
-import { getCurvePoints } from "./utils";
+import { getCurvePoints, lineAnimation } from "./utils";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import { DASH_SIZE, GAP_SIZE, LINE_ANIMATION_RATE } from "./constants";
 import { LineSegment } from "./LineSegment";
 import { LineElementType } from "./types";
+import { LINE_ANIMATION_RATE } from "./constants";
 
 type LineElementProps = {
   linesData: LineDataType[];
@@ -16,7 +16,9 @@ export function LineElement({ linesData, showGeometry }: LineElementProps) {
   const geometryPoints: Vector2[] = [];
   const lines: LineElementType[] = [];
   const groupRef = useRef<Group>(null!);
-  let approximateLength = 0;
+
+  let animationLength = 0;
+  let animationProgress = 0;
 
   linesData.forEach((lineData) => {
     const { type, start, end } = lineData;
@@ -29,59 +31,40 @@ export function LineElement({ linesData, showGeometry }: LineElementProps) {
 
       lines.push({
         points: curvePoints,
-        length: curveLength,
-        initProgress: approximateLength,
-        endProgress: approximateLength + curveLength,
+        lineLength: curveLength,
+        initProgress: animationLength,
+        endProgress: animationLength + curveLength,
         positioning: false,
       });
 
-      approximateLength += curveLength;
+      animationLength += curveLength;
     } else {
       if (type !== LINE_TYPE.POSITIONING)
         geometryPoints.push(...[startPoint, endPoint]);
 
-      const length = startPoint.distanceTo(endPoint);
+      const lineLength = startPoint.distanceTo(endPoint);
       lines.push({
         points: [startPoint, endPoint],
-        length,
-        initProgress: approximateLength,
-        endProgress: approximateLength + length,
+        lineLength,
+        initProgress: animationLength,
+        endProgress: animationLength + lineLength,
         positioning: type === LINE_TYPE.POSITIONING,
       });
 
-      approximateLength += length;
+      animationLength += lineLength;
     }
   });
 
-  let animationProgress = 0;
   useFrame(() => {
-    if (animationProgress >= approximateLength) return;
+    if (animationProgress > animationLength) return;
+
+    const rate = animationLength / LINE_ANIMATION_RATE;
 
     groupRef.current.children
       .filter((object) => object.type === "Line2")
-      .forEach((line: Object3D, i: number) => {
-        if (
-          lines[i].initProgress > animationProgress ||
-          lines[i].endProgress < animationProgress
-        )
-          return;
+      .forEach(lineAnimation(lines, animationProgress, rate));
 
-        //@ts-expect-error three js types error
-        const lineMaterial = line.material;
-
-        lineMaterial.dashSize = animationProgress - lines[i].initProgress;
-
-        if (lines[i].endProgress <= animationProgress + LINE_ANIMATION_RATE) {
-          lineMaterial.dashSize = lines[i].length;
-
-          if (lines[i].positioning) {
-            lineMaterial.dashSize = DASH_SIZE;
-            lineMaterial.gapSize = GAP_SIZE;
-          }
-        }
-      });
-
-    animationProgress += LINE_ANIMATION_RATE;
+    animationProgress += rate;
   });
 
   return (
