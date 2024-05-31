@@ -16,7 +16,7 @@ export function LineSegment({ showGeometry, line }: LineSegmentProps) {
         color={line.positioning ? POSITION_LINE_COLOR : LINE_COLOR}
         dashed
         dashSize={0}
-        gapSize={line.length}
+        gapSize={line.lineLength}
       />
 
       {showGeometry && !line.positioning && (

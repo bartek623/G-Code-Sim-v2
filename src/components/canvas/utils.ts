@@ -1,6 +1,7 @@
-import { EllipseCurve } from "three";
-import { CURVE_POINTS } from "./constants";
+import { EllipseCurve, Object3D } from "three";
+import { CURVE_POINTS, DASH_SIZE, GAP_SIZE } from "./constants";
 import { LINE_TYPE, LineDataType } from "../../utils/types";
+import { LineElementType } from "./types";
 
 export const getCurvePoints = (lineData: LineDataType) => {
   if (lineData.type !== LINE_TYPE.ARC)
@@ -30,3 +31,24 @@ export const getCurvePoints = (lineData: LineDataType) => {
     curveLength: curve.getLength(),
   };
 };
+
+export const lineAnimation =
+  (lines: LineElementType[], progress: number, rate: number) =>
+  (line: Object3D, i: number) => {
+    if (lines[i].initProgress > progress || lines[i].endProgress < progress)
+      return;
+
+    //@ts-expect-error three js types error
+    const lineMaterial = line.material;
+
+    lineMaterial.dashSize = progress - lines[i].initProgress;
+
+    if (lines[i].endProgress <= progress + rate) {
+      lineMaterial.dashSize = lines[i].lineLength;
+
+      if (lines[i].positioning) {
+        lineMaterial.dashSize = DASH_SIZE;
+        lineMaterial.gapSize = GAP_SIZE;
+      }
+    }
+  };
