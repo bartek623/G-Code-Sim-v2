@@ -3,6 +3,8 @@
 Simple project that draws two dimensional lines on flat XY plane from given program written in GCODE.
 It simulates how tool of CNC machine moves with given program.
 
+[![GCodeSim screen](./public//GCodeSim.png)](https://gcodesim.netlify.app)
+
 ## TODO
 
 - ✅ Prepare 3D canvas
