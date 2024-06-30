@@ -22,7 +22,7 @@ const StyledTextField = styled(TextField)`
   min-height: 100%;
 
   & textarea {
-    width: 320px;
+    width: 20rem;
   }
 
   & div {

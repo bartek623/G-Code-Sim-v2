@@ -149,8 +149,8 @@ export const convertProgramToLinesData = (
       } else {
         if (radius) warningFn(ERROR_MSG.Roverrided);
 
-        if (center.x === undefined) center.x = prevLineValues.i;
-        else if (center.y === undefined) center.y = prevLineValues.j;
+        if (center.x === undefined) center.x = start.x + prevLineValues.i;
+        if (center.y === undefined) center.y = start.y + prevLineValues.j;
       }
     }
 
