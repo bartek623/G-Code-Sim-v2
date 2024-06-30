@@ -1,20 +1,16 @@
-import {
-  Button,
-  TextField,
-  TextFieldProps,
-  Typography,
-  styled,
-} from "@mui/material";
-import { RefObject, useRef } from "react";
+import { FormEvent, RefObject, useEffect, useRef } from "react";
+import { TextField, TextFieldProps, Typography, styled } from "@mui/material";
+
 import { SubdrawerContainer } from "./SubdrawerContentContainer";
 import { savedType } from "./types";
 import { getSavedStorage, setSavedStorage } from "./utils";
-import { NOTIFICATION_TYPES, NotificationInfoType } from "../../UI";
+import {
+  NOTIFICATION_TYPES,
+  NotificationInfoType,
+  DrawerBtnContainer,
+  DrawerBtn,
+} from "../../UI";
 import { showError } from "../../utils/utils";
-
-const StyledInput = styled(TextField)`
-  width: 100%;
-`;
 
 const StyledTypography = styled(Typography)`
   background-color: #f2f2f2;
@@ -23,10 +19,6 @@ const StyledTypography = styled(Typography)`
   padding: ${({ theme }) => theme.spacing(1)};
   white-space: pre-wrap;
   overflow-y: auto;
-`;
-
-const StyledButton = styled(Button)`
-  margin-top: auto;
 `;
 
 type SubdrawerSaveProps = {
@@ -40,10 +32,16 @@ export function SubdrawerSave({
   onClose,
   pushNotification,
 }: SubdrawerSaveProps) {
-  const inputRef = useRef<TextFieldProps>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const program = textFieldRef.current?.value as string;
 
-  const saveHandler = () => {
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const saveHandler = (e: FormEvent) => {
+    e.preventDefault();
+
     try {
       const data: savedType = {
         title: inputRef.current?.value as string,
@@ -76,12 +74,21 @@ export function SubdrawerSave({
   };
 
   return (
-    <SubdrawerContainer gap={3}>
-      <StyledInput label="title" variant="standard" inputRef={inputRef} />
+    <SubdrawerContainer component="form" onSubmit={saveHandler}>
+      <TextField
+        label="title"
+        variant="standard"
+        inputRef={inputRef}
+        fullWidth
+        autoFocus
+      />
       <StyledTypography paragraph>{program}</StyledTypography>
-      <StyledButton variant="contained" onClick={saveHandler}>
-        Save
-      </StyledButton>
+
+      <DrawerBtnContainer>
+        <DrawerBtn tooltip="Save to browser local storage" type="submit">
+          Save
+        </DrawerBtn>
+      </DrawerBtnContainer>
     </SubdrawerContainer>
   );
 }

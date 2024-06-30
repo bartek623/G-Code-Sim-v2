@@ -6,7 +6,7 @@ import { LineDataType } from "../../utils/types";
 import { Subdrawer } from "../Subdrawer";
 import { convertProgramToLinesData } from "./utils";
 import { DrawerTextField } from "./DrawerTextField";
-import { DrawerBtns } from "./DrawerBtns";
+import { MainDrawerBtns } from "./MainDrawerBtns";
 import {
   MAINDRAWER_LABEL,
   SUBDRAWER_DEFAULT,
@@ -97,7 +97,7 @@ export function Maindrawer({
       onModalOpen={openModalHandler}
     >
       <DrawerTextField textFieldRef={textFieldRef} />
-      <DrawerBtns
+      <MainDrawerBtns
         onRun={runProgramHandler}
         onShowGeo={toggleGeoHandler}
         showGeo={showGeo}

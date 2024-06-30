@@ -4,3 +4,4 @@ export * from "./ResetBtn";
 export * from "./InfoBtn";
 export * from "./LoadBtn";
 export * from "./DeleteBtn";
+export * from "./DrawerBtn";
