@@ -41,3 +41,26 @@ export const isProgramObjectValid = (
 
   return validProgram as savedType;
 };
+
+export const readUploadedFile = async (
+  file: File,
+  currPrograms: savedType[]
+) => {
+  let skipped = 0;
+  const newPrograms = [...currPrograms];
+
+  const data = await file.text();
+  const uploadedPrograms: savedType[] = JSON.parse(data);
+
+  uploadedPrograms.forEach((newProgram) => {
+    const validProgram = isProgramObjectValid(newProgram, newPrograms);
+
+    if (!validProgram) return ++skipped;
+
+    newPrograms.push(validProgram);
+  });
+
+  newPrograms.sort((a, b) => b.date - a.date);
+
+  return { newPrograms, skipped };
+};

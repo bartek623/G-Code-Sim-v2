@@ -21,17 +21,13 @@ const StyledTypography = styled(Typography)`
   overflow-y: auto;
 `;
 
-type SubdrawerSaveProps = {
+type SaveProps = {
   textFieldRef: RefObject<TextFieldProps>;
   onClose: () => void;
   pushNotification: (notification: NotificationInfoType) => void;
 };
 
-export function SubdrawerSave({
-  textFieldRef,
-  onClose,
-  pushNotification,
-}: SubdrawerSaveProps) {
+export function Save({ textFieldRef, onClose, pushNotification }: SaveProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const program = textFieldRef.current?.value as string;
 
