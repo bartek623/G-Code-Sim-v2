@@ -1,4 +1,4 @@
-import { savedType } from "./types";
+import { SAVED_TYPE, savedKeyType, savedType, savedValuesType } from "./types";
 
 const savedKey = "saved-programs";
 
@@ -20,4 +20,24 @@ export const getSavedStorage = () => {
     : [defaultElement];
 
   return saved;
+};
+
+export const isProgramObjectValid = (
+  program: savedType,
+  currPrograms: savedType[]
+): savedType | undefined => {
+  const validProgram: Record<string, savedValuesType> = {};
+
+  for (const key in SAVED_TYPE) {
+    const typedKey = key as savedKeyType;
+    if (typeof program[typedKey] !== typeof SAVED_TYPE[typedKey])
+      return undefined;
+
+    validProgram[typedKey] = program[typedKey];
+  }
+
+  if (currPrograms.some((currProgram) => currProgram.title === program.title))
+    return undefined;
+
+  return validProgram as savedType;
 };
