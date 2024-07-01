@@ -5,7 +5,11 @@ import { Download, UploadFile } from "@mui/icons-material";
 import { SubdrawerContainer } from "./SubdrawerContentContainer";
 import { savedType } from "./types";
 import { SubdrawerLoadElement } from "./SubdrawerLoadElement";
-import { getSavedStorage, setSavedStorage } from "./utils";
+import {
+  getSavedStorage,
+  isProgramObjectValid,
+  setSavedStorage,
+} from "./utils";
 import {
   NOTIFICATION_TYPES,
   NotificationInfoType,
@@ -65,18 +69,39 @@ export function SubdrawerLoad({
   ));
 
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
+    if (!e.target.files?.length) return;
 
     const reader = new FileReader();
     reader.onload = (event) => {
       if (!event.target?.result) return;
 
-      const programs = JSON.parse(event.target.result as string);
+      const programs: savedType[] = JSON.parse(event.target.result as string);
 
-      console.log([...programs, ...savedPrograms]);
+      let skipped = 0;
+      const newPrograms = [...savedPrograms];
+      programs.forEach((newProgram) => {
+        const validProgram = isProgramObjectValid(newProgram, newPrograms);
+
+        if (!validProgram) return ++skipped;
+
+        newPrograms.push(validProgram);
+      });
+
+      newPrograms.sort((a, b) => b.date - a.date);
+      setSavedStorage(newPrograms);
+      setSavedPrograms(newPrograms);
+
+      if (skipped)
+        pushNotification({
+          message: `${skipped} elements have been skipped during processing. Please review and ensure all elements are valid and names are unique.`,
+          type: NOTIFICATION_TYPES.warning,
+        });
     };
     reader.readAsText(e.target.files[0]);
-    // TODO concat or replace uploaded data with current
+  };
+
+  const test = () => {
+    console.log(1);
   };
 
   return (
@@ -90,7 +115,13 @@ export function SubdrawerLoad({
           component="label"
         >
           <UploadFile />
-          <input type="file" accept=".json" hidden onChange={uploadHandler} />
+          <input
+            type="file"
+            accept=".json"
+            hidden
+            onChange={uploadHandler}
+            onInput={test}
+          />
         </DrawerBtn>
 
         <DrawerBtn

@@ -60,7 +60,7 @@ export function SubdrawerSave({
           "The title you entered is already taken! Try another one."
         );
 
-      currentPrograms.push(data);
+      currentPrograms.unshift(data);
 
       setSavedStorage(currentPrograms);
       pushNotification({

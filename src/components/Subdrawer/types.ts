@@ -1,5 +1,12 @@
-export type savedType = {
-  title: string;
-  code: string;
-  date: number;
+import { ValuesType } from "../../utils/types";
+
+export const SAVED_TYPE = {
+  title: String(),
+  code: String(),
+  date: Number(),
 };
+
+export type savedType = typeof SAVED_TYPE;
+
+export type savedKeyType = keyof savedType;
+export type savedValuesType = ValuesType<typeof SAVED_TYPE>;
