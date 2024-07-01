@@ -16,17 +16,13 @@ const StyledContainer = styled(Paper)`
     ${({ theme }) => theme.spacing(1.5)};
 `;
 
-type SubdrawerLoadElementProps = {
+type LoadElementProps = {
   data: savedType;
   onDelete: (title: string) => void;
   onLoad: (code: string, title: string) => void;
 };
 
-export function SubdrawerLoadElement({
-  data,
-  onDelete,
-  onLoad,
-}: SubdrawerLoadElementProps) {
+export function LoadElement({ data, onDelete, onLoad }: LoadElementProps) {
   const title =
     data.title.length > 16 ? data.title.slice(0, 13) + "..." : data.title;
 

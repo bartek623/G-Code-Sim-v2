@@ -6,17 +6,32 @@ type BtnProps = ButtonProps & {
   onClick?: () => void;
   children: ReactNode;
   download?: string;
+  color?:
+    | "inherit"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "info"
+    | "warning";
 };
 
 export function DrawerBtn({
   children,
   tooltip,
   onClick,
+  color = "primary",
   ...restProps
 }: BtnProps) {
   return (
     <Tooltip title={tooltip}>
-      <Button fullWidth variant="contained" onClick={onClick} {...restProps}>
+      <Button
+        color={color}
+        fullWidth
+        variant="contained"
+        onClick={onClick}
+        {...restProps}
+      >
         {children}
       </Button>
     </Tooltip>
