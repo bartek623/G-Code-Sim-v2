@@ -9,7 +9,8 @@ import { Notifications, MenuBtn } from "./UI";
 import {
   NotificationInfoType,
   SnackbarStateType,
-  AUTOHIDE_TIME,
+  AUTOHIDE_TIME_RATE,
+  MIN_AUTOHIDE_TIME,
 } from "./UI/Notifications";
 
 const StyledContainer = styled(Container)`
@@ -53,7 +54,7 @@ function App() {
     setSnackbarTimer(
       setTimeout(() => {
         hideNotificationHandler();
-      }, AUTOHIDE_TIME)
+      }, MIN_AUTOHIDE_TIME + AUTOHIDE_TIME_RATE * notification.message.length)
     );
 
     setSnackbarState({ ...notification, open: true });
