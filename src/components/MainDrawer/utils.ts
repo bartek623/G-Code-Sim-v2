@@ -197,13 +197,14 @@ export const addLinesNumbering = (program: string) => {
   const withComments = program
     .trim()
     .split("\n")
-    .map((line) => {
+    .map((line): string => {
       if (line.includes("N")) {
-        currentLineNumber ||= Number(/N\w/.exec(line)?.slice(1));
+        currentLineNumber =
+          Number(/N\w+/.exec(line)?.at(0)?.slice(1)) || currentLineNumber;
         return line;
       } else {
         currentLineNumber = Math.ceil((currentLineNumber + 1) / 10) * 10;
-        return `N${currentLineNumber} ${line}`;
+        return `N${currentLineNumber} ${line.trim()}`;
       }
     })
     .join("\n");

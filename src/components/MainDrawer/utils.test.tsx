@@ -1,8 +1,12 @@
 import { LINE_TYPE } from "../../utils/types";
 import { ERROR_MSG } from "./constants";
-import { convertProgramToLinesData } from "./utils";
+import {
+  addLinesNumbering,
+  convertProgramToLinesData,
+  removeLinesNumbering,
+} from "./utils";
 
-const getErrorMsg = (msg: string) => "[0] " + msg;
+const getErrorMsg = (msg: string) => "[N10] " + msg;
 
 describe("gcode interpreter testing", () => {
   test("positioning", () => {
@@ -130,7 +134,7 @@ describe("gcode interpreter error throwing", () => {
   });
 
   test("wrong command", () => {
-    const programString = "X1 Y1 G01";
+    const programString = "X1 Y1";
 
     expect(() => {
       convertProgramToLinesData(programString);
@@ -177,5 +181,59 @@ describe("gcode interpreter error throwing", () => {
     expect(() => {
       convertProgramToLinesData(programString);
     }).toThrow(getErrorMsg(ERROR_MSG.noRsolution));
+  });
+});
+
+describe("adding lines numbering to program", () => {
+  test("without numbering", () => {
+    const program =
+      "G01 X0 Y.5\nG02 X.5 Y1 R.5\nG01 X1 Y1\nG03 X4 Y1 R5\nG01 X4.5 Y1\nG02 X5 Y.5 J-.5\nG01 X5 Y0";
+    const numberedProgram =
+      "N10 G01 X0 Y.5\nN20 G02 X.5 Y1 R.5\nN30 G01 X1 Y1\nN40 G03 X4 Y1 R5\nN50 G01 X4.5 Y1\nN60 G02 X5 Y.5 J-.5\nN70 G01 X5 Y0";
+
+    expect(addLinesNumbering(program)).toMatch(numberedProgram);
+  });
+
+  test("with numbering", () => {
+    const program =
+      "N10 G01 X0 Y.5\nN15 G02 X.5 Y1 R.5\nN20 G01 X1 Y1\nN30 G03 X4 Y1 R5\nN40 G01 X4.5 Y1\nN50 G02 X5 Y.5 J-.5\nN60 G01 X5 Y0";
+
+    expect(addLinesNumbering(program)).toMatch(program);
+  });
+
+  test("with partly numbered", () => {
+    const program =
+      "G01 X0 Y.5\nN15 G02 X.5 Y1 R.5\nG01 X1 Y1\nN30 G03 X4 Y1 R5\nG01 X4.5 Y1\nN45 G02 X5 Y.5 J-.5\nG01 X5 Y0";
+    const numberedProgram =
+      "N10 G01 X0 Y.5\nN15 G02 X.5 Y1 R.5\nN20 G01 X1 Y1\nN30 G03 X4 Y1 R5\nN40 G01 X4.5 Y1\nN45 G02 X5 Y.5 J-.5\nN50 G01 X5 Y0";
+
+    expect(addLinesNumbering(program)).toMatch(numberedProgram);
+  });
+});
+
+describe("removing lines numbering from program", () => {
+  test("without numbering", () => {
+    const program =
+      "G01 X0 Y.5\nG02 X.5 Y1 R.5\nG01 X1 Y1\nG03 X4 Y1 R5\nG01 X4.5 Y1\nG02 X5 Y.5 J-.5\nG01 X5 Y0";
+
+    expect(removeLinesNumbering(program)).toMatch(program);
+  });
+
+  test("with numbering", () => {
+    const program =
+      "N10 G01 X0 Y.5\nN15 G02 X.5 Y1 R.5\nN20 G01 X1 Y1\nN30 G03 X4 Y1 R5\nN40 G01 X4.5 Y1\nN50 G02 X5 Y.5 J-.5\nN60 G01 X5 Y0";
+    const unnumberedProgram =
+      "G01 X0 Y.5\nG02 X.5 Y1 R.5\nG01 X1 Y1\nG03 X4 Y1 R5\nG01 X4.5 Y1\nG02 X5 Y.5 J-.5\nG01 X5 Y0";
+
+    expect(removeLinesNumbering(program)).toMatch(unnumberedProgram);
+  });
+
+  test("with partly numbered", () => {
+    const program =
+      "G01 X0 Y.5\nN15 G02 X.5 Y1 R.5\nG01 X1 Y1\nN30 G03 X4 Y1 R5\nG01 X4.5 Y1\nN45 G02 X5 Y.5 J-.5\nG01 X5 Y0";
+    const unnumberedProgram =
+      "G01 X0 Y.5\nG02 X.5 Y1 R.5\nG01 X1 Y1\nG03 X4 Y1 R5\nG01 X4.5 Y1\nG02 X5 Y.5 J-.5\nG01 X5 Y0";
+
+    expect(removeLinesNumbering(program)).toMatch(unnumberedProgram);
   });
 });

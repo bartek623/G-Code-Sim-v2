@@ -78,7 +78,12 @@ export function Maindrawer({
   };
 
   const toggleNumberingHandler = () => {
-    setNumberLines((prev) => !prev);
+    setNumberLines((prev) => {
+      const msg = `${prev ? "Hiding" : "Showing"} lines numbering`;
+      pushNotification({ message: msg, type: NOTIFICATION_TYPES.info });
+
+      return !prev;
+    });
   };
 
   const toggleGeoHandler = () => {

@@ -7,7 +7,7 @@ import {
   subdrawerState,
 } from "../MainDrawer/constants";
 import { Drawer, NotificationInfoType } from "../../UI";
-import { Save } from "./SubdrawerSave";
+import { Save } from "./Save";
 import { Load } from "./Load";
 import { SaveInfoModal } from "./SaveInfoModal";
 import { LoadInfoModal } from "./LoadInfoModal";
@@ -47,7 +47,7 @@ export function Subdrawer({
       {state.mode === SUBDRAWER_MODES.save && (
         <>
           <Save
-            textFieldRef={textFieldRef}
+            program={(textFieldRef.current?.value as string).trim()}
             onClose={onClose}
             pushNotification={pushNotification}
           />
