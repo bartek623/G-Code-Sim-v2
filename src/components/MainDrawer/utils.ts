@@ -67,7 +67,7 @@ export const convertProgramToLinesData = (
   program: string,
   warningFn: (msg: string) => void = () => {}
 ): LineDataType[] | undefined => {
-  const programLines = program.split("\n");
+  const programLines = program.trim().split("\n");
   const currentToolPosition = { x: 0, y: 0 };
   const prevLineValues = {
     x: 0,
@@ -75,28 +75,36 @@ export const convertProgramToLinesData = (
     r: 0,
     i: 0,
     j: 0,
+    n: 0,
   };
 
-  const linesData: LineDataType[] = programLines.map((line, i) => {
+  const linesData: LineDataType[] = programLines.map((line) => {
     const start: PointType = { ...currentToolPosition };
-    let type: LineType | undefined = undefined;
+    let type: LineType | undefined;
     const end: PointType = { x: prevLineValues.x, y: prevLineValues.y };
     const center: TempPoint = { x: undefined, y: undefined };
     let counterClockwise = false;
     let radius: number | undefined;
+    let lineNumber: number | undefined;
 
-    const singleCommands = line.split(" ");
+    const commandLine = line.trim();
+    const singleCommands = commandLine.split(" ");
 
-    const errorMsg = (msg: string) => `[${i}] ${msg}`;
+    if (!commandLine.includes("N")) {
+      lineNumber = prevLineValues.n =
+        Math.ceil((prevLineValues.n + 1) / 10) * 10;
+    }
 
-    if (singleCommands[0][0] !== GCODE_CMD.G)
-      throw new Error(errorMsg(ERROR_MSG.line));
+    const errorMsg = (msg: string) => `[N${lineNumber}] ${msg}`;
 
     singleCommands.forEach((command) => {
       const code = command[0];
       const value = +command.slice(1);
 
       switch (code) {
+        case GCODE_CMD.N:
+          lineNumber = prevLineValues.n = Math.round(value);
+          break;
         case GCODE_CMD.G: {
           const lineInfo = getLineType(value, errorMsg(ERROR_MSG.G));
           type = lineInfo.type;
@@ -126,8 +134,13 @@ export const convertProgramToLinesData = (
             throw new Error(errorMsg(ERROR_MSG.Rtype));
           radius = prevLineValues.r = value;
           break;
+        default:
+          warningFn(ERROR_MSG.unknownCommand + command);
+          break;
       }
     });
+
+    if (!type) throw new Error(errorMsg(ERROR_MSG.line));
 
     if (type === LINE_TYPE.ARC) {
       if (center.x === undefined && center.y === undefined) {
@@ -177,4 +190,39 @@ export const convertProgramToLinesData = (
   });
 
   return linesData;
+};
+
+export const addLinesNumbering = (program: string) => {
+  let currentLineNumber = 0;
+  const withComments = program
+    .trim()
+    .split("\n")
+    .map((line): string => {
+      if (line.includes("N")) {
+        currentLineNumber =
+          Number(/N\w+/.exec(line)?.at(0)?.slice(1)) || currentLineNumber;
+        return line;
+      } else {
+        currentLineNumber = Math.ceil((currentLineNumber + 1) / 10) * 10;
+        return `N${currentLineNumber} ${line.trim()}`;
+      }
+    })
+    .join("\n");
+
+  return withComments;
+};
+
+export const removeLinesNumbering = (program: string) => {
+  const withoutComments = program
+    .trim()
+    .split("\n")
+    .map((line) =>
+      line
+        .split(" ")
+        .filter((cmd) => !cmd.includes("N"))
+        .join(" ")
+    )
+    .join("\n");
+
+  return withoutComments;
 };

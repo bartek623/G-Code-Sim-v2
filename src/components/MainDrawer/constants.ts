@@ -10,6 +10,7 @@ export const GCODE_CMD = {
   I: "I",
   J: "J",
   R: "R",
+  N: "N",
 } as const;
 
 export const GCODE = {
@@ -47,7 +48,7 @@ export const SUBDRAWER_DEFAULT: subdrawerState = {
 
 export const ERROR_MSG = {
   G: "Invalid G code. Please use a valid G code for the machining operation.",
-  line: "Incorrect command line format. Ensure that a valid G code is specified at the beginning of the command line.",
+  line: "Incorrect command line format. Ensure that a valid G code is specified.",
   Xnegative:
     "'X' value must be non-negative. Please provide valid, positive coordinates.",
   Ynegative:
@@ -62,4 +63,5 @@ export const ERROR_MSG = {
   noRsolution:
     "No solution for the provided 'R' argument. The distance between points is longer than the diameter of the circle.",
   Roverrided: "'R' argument overridden by 'I' and 'J'.",
+  unknownCommand: "Unknown command: ",
 };

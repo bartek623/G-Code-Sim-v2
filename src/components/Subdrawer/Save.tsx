@@ -1,5 +1,5 @@
-import { FormEvent, RefObject, useEffect, useRef } from "react";
-import { TextField, TextFieldProps, Typography, styled } from "@mui/material";
+import { FormEvent, useEffect, useRef } from "react";
+import { TextField, Typography, styled } from "@mui/material";
 
 import { SubdrawerContainer } from "./SubdrawerContentContainer";
 import { savedType } from "./types";
@@ -22,14 +22,13 @@ const StyledTypography = styled(Typography)`
 `;
 
 type SaveProps = {
-  textFieldRef: RefObject<TextFieldProps>;
+  program: string;
   onClose: () => void;
   pushNotification: (notification: NotificationInfoType) => void;
 };
 
-export function Save({ textFieldRef, onClose, pushNotification }: SaveProps) {
+export function Save({ program, onClose, pushNotification }: SaveProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const program = textFieldRef.current?.value as string;
 
   useEffect(() => {
     inputRef.current?.focus();
