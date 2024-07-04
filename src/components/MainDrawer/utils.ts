@@ -31,47 +31,47 @@ const getCenterWithRadius = (
   errorMsg: string
 ) => {
   const distanceBetweenPointsSquared =
-    (end.x - start.x) ** 2 + (end.y - start.y) ** 2;
+    (end.x - start.x) ** 2 + (end.z - start.z) ** 2;
   const diameterSquared = 4 * radius ** 2;
-  const center = { x: 0, y: 0 };
+  const center = { x: 0, z: 0 };
 
   if (diameterSquared < distanceBetweenPointsSquared) {
     throw new Error(errorMsg);
   } else if (diameterSquared > distanceBetweenPointsSquared) {
     const xMid = (end.x + start.x) / 2;
-    const yMid = (end.y + start.y) / 2;
+    const yMid = (end.z + start.z) / 2;
 
     const sign = (radius / Math.abs(radius)) * dir;
 
     center.x =
       xMid -
       (radius ** 2 - distanceBetweenPointsSquared / 4) ** 0.5 *
-        ((start.y - end.y) / distanceBetweenPointsSquared ** 0.5) *
+        ((start.z - end.z) / distanceBetweenPointsSquared ** 0.5) *
         sign;
-    center.y =
+    center.z =
       yMid -
       (radius ** 2 - distanceBetweenPointsSquared / 4) ** 0.5 *
         ((end.x - start.x) / distanceBetweenPointsSquared ** 0.5) *
         sign;
   } else {
     center.x = (end.x + start.x) / 2;
-    center.y = (end.y + start.y) / 2;
+    center.z = (end.z + start.z) / 2;
   }
 
   return center;
 };
 
-type TempPoint = { x: unknown; y: unknown };
+type TempPoint = { x: unknown; z: unknown };
 
 export const convertProgramToLinesData = (
   program: string,
   warningFn: (msg: string) => void = () => {}
 ): LineDataType[] | undefined => {
   const programLines = program.trim().split("\n");
-  const currentToolPosition = { x: 0, y: 0 };
+  const currentToolPosition: PointType = { x: 0, z: 0 };
   const prevLineValues = {
     x: 0,
-    y: 0,
+    z: 0,
     r: 0,
     i: 0,
     j: 0,
@@ -81,8 +81,8 @@ export const convertProgramToLinesData = (
   const linesData: LineDataType[] = programLines.map((line) => {
     const start: PointType = { ...currentToolPosition };
     let type: LineType | undefined;
-    const end: PointType = { x: prevLineValues.x, y: prevLineValues.y };
-    const center: TempPoint = { x: undefined, y: undefined };
+    const end: PointType = { x: prevLineValues.x, z: prevLineValues.z };
+    const center: TempPoint = { x: undefined, z: undefined };
     let counterClockwise = false;
     let radius: number | undefined;
     let lineNumber: number | undefined;
@@ -115,9 +115,9 @@ export const convertProgramToLinesData = (
           if (value < 0) throw new Error(errorMsg(ERROR_MSG.Xnegative));
           end.x = prevLineValues.x = value;
           break;
-        case GCODE_CMD.Y:
-          if (value < 0) throw new Error(errorMsg(ERROR_MSG.Ynegative));
-          end.y = prevLineValues.y = value;
+        case GCODE_CMD.Z:
+          if (value < 0) throw new Error(errorMsg(ERROR_MSG.Znegative));
+          end.z = prevLineValues.z = value;
           break;
         case GCODE_CMD.I:
           if (type !== LINE_TYPE.ARC)
@@ -127,7 +127,7 @@ export const convertProgramToLinesData = (
         case GCODE_CMD.J:
           if (type !== LINE_TYPE.ARC)
             throw new Error(errorMsg(ERROR_MSG.Jtype));
-          center.y = prevLineValues.j = start.y + value;
+          center.z = prevLineValues.j = start.z + value;
           break;
         case GCODE_CMD.R:
           if (type !== LINE_TYPE.ARC)
@@ -143,7 +143,7 @@ export const convertProgramToLinesData = (
     if (!type) throw new Error(errorMsg(ERROR_MSG.line));
 
     if (type === LINE_TYPE.ARC) {
-      if (center.x === undefined && center.y === undefined) {
+      if (center.x === undefined && center.z === undefined) {
         if (!radius) {
           warningFn(errorMsg(ERROR_MSG.IJRmissing));
           radius = prevLineValues.r;
@@ -158,17 +158,17 @@ export const convertProgramToLinesData = (
           errorMsg(ERROR_MSG.noRsolution)
         );
         center.x = calculatedCenter.x;
-        center.y = calculatedCenter.y;
+        center.z = calculatedCenter.z;
       } else {
         if (radius) warningFn(ERROR_MSG.Roverrided);
 
         if (center.x === undefined) center.x = start.x + prevLineValues.i;
-        if (center.y === undefined) center.y = start.y + prevLineValues.j;
+        if (center.z === undefined) center.z = start.z + prevLineValues.j;
       }
     }
 
     currentToolPosition.x = end.x as number;
-    currentToolPosition.y = end.y as number;
+    currentToolPosition.z = end.z as number;
 
     if (type === LINE_TYPE.ARC) {
       const lineData: LineDataType = {

@@ -8,7 +8,7 @@ export type ValuesType<T> = T[keyof T];
 
 export type LineType = ValuesType<typeof LINE_TYPE>;
 
-export type PointType = { x: number; y: number };
+export type PointType = { x: number; z: number };
 
 export type LinesType =
   | {
