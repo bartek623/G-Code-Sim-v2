@@ -1,10 +1,14 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TextFieldProps } from "@mui/material";
 
 import { Drawer } from "../../UI";
 import { LineDataType } from "../../utils/types";
 import { Subdrawer } from "../Subdrawer";
-import { convertProgramToLinesData } from "./utils";
+import {
+  addLinesNumbering,
+  convertProgramToLinesData,
+  removeLinesNumbering,
+} from "./utils";
 import { DrawerTextField } from "./DrawerTextField";
 import { MainDrawerBtns } from "./MainDrawerBtns";
 import {
@@ -40,13 +44,23 @@ export function Maindrawer({
 }: DrawerProps) {
   const [openModal, setOpenModal] = useState(false);
   const [subdrawer, setSubdrawer] = useState<subdrawerState>(SUBDRAWER_DEFAULT);
+  const [numberLines, setNumberLines] = useState(false);
   const textFieldRef = useRef<TextFieldProps>(null);
+
+  useEffect(() => {
+    if (!textFieldRef.current?.value) return;
+    const program = textFieldRef.current.value as string;
+
+    textFieldRef.current.value = numberLines
+      ? addLinesNumbering(program)
+      : removeLinesNumbering(program);
+  });
 
   const runProgramHandler = () => {
     try {
-      const program = textFieldRef.current?.value as string;
+      if (!textFieldRef.current?.value) return;
 
-      if (!program.length) return;
+      const program = textFieldRef.current.value as string;
 
       const showWarning = (message: string) => {
         pushNotification({ message, type: NOTIFICATION_TYPES.warning });
@@ -61,6 +75,10 @@ export function Maindrawer({
       showError(err, pushNotification);
       setLinesData([]);
     }
+  };
+
+  const toggleNumberingHandler = () => {
+    setNumberLines((prev) => !prev);
   };
 
   const toggleGeoHandler = () => {
@@ -98,6 +116,8 @@ export function Maindrawer({
     >
       <DrawerTextField textFieldRef={textFieldRef} />
       <MainDrawerBtns
+        isNumbered={numberLines}
+        onToggleNumbering={toggleNumberingHandler}
         onRun={runProgramHandler}
         onShowGeo={toggleGeoHandler}
         showGeo={showGeo}
