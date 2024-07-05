@@ -11,13 +11,15 @@ type LineSegmentProps = {
 export function LineSegment({ showGeometry, line }: LineSegmentProps) {
   return (
     <>
-      <Line
-        points={line.points}
-        color={line.positioning ? POSITION_LINE_COLOR : LINE_COLOR}
-        dashed
-        dashSize={0}
-        gapSize={line.lineLength}
-      />
+      {!showGeometry && (
+        <Line
+          points={line.points}
+          color={line.positioning ? POSITION_LINE_COLOR : LINE_COLOR}
+          dashed
+          dashSize={0}
+          gapSize={line.lineLength}
+        />
+      )}
 
       {showGeometry && !line.positioning && (
         <PointsToGeometry pointsData={line.points} />

@@ -42,7 +42,10 @@ export function ListMenu({ children, tooltip, listItems }: ListMenuProps) {
 
       <Menu open={!!anchorEl} anchorEl={anchorEl} onClose={handleClose}>
         {listItems.map((item) => (
-          <MenuItem onClick={itemClickHandler(item.action)}>
+          <MenuItem
+            onClick={itemClickHandler(item.action)}
+            key={item.text + Math.random()}
+          >
             {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
             <ListItemText>{item.text}</ListItemText>
           </MenuItem>

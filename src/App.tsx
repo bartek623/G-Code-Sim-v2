@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { Container, CssBaseline, ThemeProvider, styled } from "@mui/material";
 
@@ -12,6 +12,7 @@ import {
   AUTOHIDE_TIME_RATE,
   MIN_AUTOHIDE_TIME,
 } from "./UI/Notifications";
+import { Group } from "three";
 
 const StyledContainer = styled(Container)`
   position: relative;
@@ -30,6 +31,7 @@ function App() {
   const [snackbarTimer, setSnackbarTimer] = useState<
     ReturnType<typeof setTimeout> | undefined
   >(undefined);
+  const groupRef = useRef<Group>(null!);
 
   const openMenuHandler = () => {
     setIsDrawerOpen(true);
@@ -65,7 +67,11 @@ function App() {
       <CssBaseline />
       <StyledContainer disableGutters maxWidth={false}>
         <MenuBtn onClick={openMenuHandler} />
-        <CanvasThreeD linesData={lines} showGeo={showGeometry} />
+        <CanvasThreeD
+          linesData={lines}
+          showGeo={showGeometry}
+          groupRef={groupRef}
+        />
       </StyledContainer>
       <Maindrawer
         isOpen={isDrawerOpen}
@@ -74,6 +80,7 @@ function App() {
         setShowGeo={setShowGeometry}
         showGeo={showGeometry}
         pushNotification={pushNotificationHandler}
+        meshRef={groupRef}
       />
       <Notifications
         snackbarState={snackbarState}

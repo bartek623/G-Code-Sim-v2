@@ -28,7 +28,7 @@ type SaveProps = {
 };
 
 export function Save({ program, onClose, pushNotification }: SaveProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null!);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -39,7 +39,7 @@ export function Save({ program, onClose, pushNotification }: SaveProps) {
 
     try {
       const data: savedType = {
-        title: inputRef.current?.value as string,
+        title: inputRef.current.value as string,
         code: program,
         date: Date.now(),
       };

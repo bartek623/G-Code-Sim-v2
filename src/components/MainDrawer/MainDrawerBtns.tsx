@@ -1,5 +1,6 @@
 import {
   Add,
+  FileDownload,
   Folder,
   FormatListNumbered,
   PlayArrow,
@@ -12,6 +13,9 @@ import { SUBDRAWER_MODES, subdrawerModesType } from "./constants";
 import { DrawerBtn } from "../../UI/Btns/DrawerBtn";
 import { DrawerBtnContainer } from "../../UI/Drawer/DrawerBtnContainer";
 import { ListMenu } from "../../UI/Btns/ListMenuBtn";
+import { RefObject } from "react";
+import { Group } from "three";
+import { STLExporter } from "three/examples/jsm/Addons.js";
 
 type DrawerBtnsProps = {
   onAddNumbering: () => void;
@@ -20,6 +24,7 @@ type DrawerBtnsProps = {
   onShowGeo: () => void;
   showGeo: boolean;
   onSubOpen: (mode: subdrawerModesType) => void;
+  meshRef: RefObject<Group>;
 };
 
 export function MainDrawerBtns({
@@ -29,6 +34,7 @@ export function MainDrawerBtns({
   onShowGeo,
   showGeo,
   onSubOpen,
+  meshRef,
 }: DrawerBtnsProps) {
   const onSaveHandler = () => {
     onSubOpen(SUBDRAWER_MODES.save);
@@ -36,6 +42,22 @@ export function MainDrawerBtns({
 
   const onLoadHandler = () => {
     onSubOpen(SUBDRAWER_MODES.load);
+  };
+
+  const onExportSTL = () => {
+    if (!meshRef.current) return;
+
+    const exporter = new STLExporter();
+    const result = exporter.parse(meshRef.current);
+
+    const blob = new Blob([result], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "GCodeModel.stl";
+    link.click();
+    link.remove();
   };
 
   return (
@@ -60,6 +82,14 @@ export function MainDrawerBtns({
         variant={showGeo ? "outlined" : "contained"}
       >
         <ViewInAr />
+      </DrawerBtn>
+
+      <DrawerBtn
+        disabled={!showGeo}
+        tooltip="Export model to .stl file"
+        onClick={onExportSTL}
+      >
+        <FileDownload />
       </DrawerBtn>
 
       <ListMenu
