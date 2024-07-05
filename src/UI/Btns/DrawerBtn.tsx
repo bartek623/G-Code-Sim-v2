@@ -25,15 +25,17 @@ export function DrawerBtn({
 }: BtnProps) {
   return (
     <Tooltip title={tooltip}>
-      <Button
-        color={color}
-        fullWidth
-        variant="contained"
-        onClick={onClick}
-        {...restProps}
-      >
-        {children}
-      </Button>
+      <span>
+        <Button
+          color={color}
+          fullWidth
+          variant="contained"
+          onClick={onClick}
+          {...restProps}
+        >
+          {children}
+        </Button>
+      </span>
     </Tooltip>
   );
 }

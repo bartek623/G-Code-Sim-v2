@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { RefObject, useRef, useState } from "react";
 import { TextFieldProps } from "@mui/material";
 
 import { Drawer } from "../../UI";
@@ -24,6 +24,7 @@ import {
 } from "../../UI/Notifications";
 import { showError } from "../../utils/utils";
 import { InfoModal } from "./InfoModal";
+import { Group } from "three";
 
 type DrawerProps = {
   isOpen: boolean;
@@ -32,6 +33,7 @@ type DrawerProps = {
   setShowGeo: (callback: (show: boolean) => boolean) => void;
   showGeo: boolean;
   pushNotification: (notification: NotificationInfoType) => void;
+  meshRef: RefObject<Group>;
 };
 
 export function Maindrawer({
@@ -41,16 +43,17 @@ export function Maindrawer({
   setShowGeo,
   showGeo,
   pushNotification,
+  meshRef,
 }: DrawerProps) {
   const [openModal, setOpenModal] = useState(false);
   const [subdrawer, setSubdrawer] = useState<subdrawerState>(SUBDRAWER_DEFAULT);
-  const textFieldRef = useRef<TextFieldProps>(null);
+  const textFieldRef = useRef<TextFieldProps>(null!);
 
   const runProgramHandler = () => {
     try {
-      if (!textFieldRef.current?.value) return;
-
       const program = textFieldRef.current.value as string;
+
+      if (!program.trim().length) return;
 
       const showWarning = (message: string) => {
         pushNotification({ message, type: NOTIFICATION_TYPES.warning });
@@ -68,15 +71,17 @@ export function Maindrawer({
   };
 
   const addNumberingHandler = () => {
-    if (!textFieldRef.current?.value) return;
     const program = textFieldRef.current.value as string;
+
+    if (!program.trim().length) return;
 
     textFieldRef.current.value = addLinesNumbering(program);
   };
 
   const removeNumberingHandler = () => {
-    if (!textFieldRef.current?.value) return;
     const program = textFieldRef.current.value as string;
+
+    if (!program.trim().length) return;
 
     textFieldRef.current.value = removeLinesNumbering(program);
   };
@@ -122,6 +127,7 @@ export function Maindrawer({
         onShowGeo={toggleGeoHandler}
         showGeo={showGeo}
         onSubOpen={openSubHandler}
+        meshRef={meshRef}
       />
       <Subdrawer
         state={subdrawer}

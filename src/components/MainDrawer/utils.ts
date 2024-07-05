@@ -67,6 +67,8 @@ export const convertProgramToLinesData = (
   program: string,
   warningFn: (msg: string) => void = () => {}
 ): LineDataType[] | undefined => {
+  if (!program.trim().length) return;
+
   const programLines = program.trim().split("\n");
   const currentToolPosition: PointType = { x: 0, z: 0 };
   const prevLineValues = {
