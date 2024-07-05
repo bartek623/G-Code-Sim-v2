@@ -76,6 +76,11 @@ export function Maindrawer({
     if (!program.trim().length) return;
 
     textFieldRef.current.value = addLinesNumbering(program);
+
+    pushNotification({
+      message: "Added lines numbering",
+      type: NOTIFICATION_TYPES.info,
+    });
   };
 
   const removeNumberingHandler = () => {
@@ -84,6 +89,11 @@ export function Maindrawer({
     if (!program.trim().length) return;
 
     textFieldRef.current.value = removeLinesNumbering(program);
+
+    pushNotification({
+      message: "Removed lines numbering",
+      type: NOTIFICATION_TYPES.info,
+    });
   };
 
   const toggleGeoHandler = () => {
