@@ -1,9 +1,9 @@
 import { Button, ButtonProps, Tooltip } from "@mui/material";
-import { ReactNode } from "react";
+import { MouseEvent, ReactNode } from "react";
 
 type BtnProps = ButtonProps & {
   tooltip: string;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   children: ReactNode;
   download?: string;
   color?:

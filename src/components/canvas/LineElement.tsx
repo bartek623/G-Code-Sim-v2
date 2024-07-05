@@ -22,8 +22,8 @@ export function LineElement({ linesData, showGeometry }: LineElementProps) {
 
   linesData.forEach((lineData) => {
     const { type, start, end } = lineData;
-    const startPoint = new Vector2(start.x, start.y);
-    const endPoint = new Vector2(end.x, end.y);
+    const startPoint = new Vector2(start.x, start.z);
+    const endPoint = new Vector2(end.x, end.z);
 
     if (type === LINE_TYPE.ARC) {
       const { curvePoints, curveLength } = getCurvePoints(lineData);

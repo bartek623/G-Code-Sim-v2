@@ -6,7 +6,7 @@ export const TEXT_FIELD_COLOR = "#abb2bf";
 export const GCODE_CMD = {
   G: "G",
   X: "X",
-  Y: "Y",
+  Z: "Z",
   I: "I",
   J: "J",
   R: "R",
@@ -51,8 +51,8 @@ export const ERROR_MSG = {
   line: "Incorrect command line format. Ensure that a valid G code is specified.",
   Xnegative:
     "'X' value must be non-negative. Please provide valid, positive coordinates.",
-  Ynegative:
-    "'Y' value must be non-negative. Please provide valid, positive coordinates.",
+  Znegative:
+    "'Z' value must be non-negative. Please provide valid, positive coordinates.",
   Itype: "'I' argument is only applicable for arc commands (G02 or G03).",
   Jtype: "'J' argument is only applicable for arc commands (G02 or G03).",
   Rtype: "'R' argument is only applicable for arc commands (G02 or G03).",

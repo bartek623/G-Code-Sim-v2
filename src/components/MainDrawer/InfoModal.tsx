@@ -24,7 +24,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
       </ModalText>
 
       <ModalText title="How to read G-code commands?">
-        G-code command structure: <b>G</b>[ ] <b>X</b>[ ] <b>Y</b>[ ] <b>R</b>[
+        G-code command structure: <b>G</b>[ ] <b>X</b>[ ] <b>Z</b>[ ] <b>R</b>[
         ] <b>I</b>[ ] <b>J</b>[ ]
         <List sx={{ listStyleType: "disc", listStylePosition: "inside" }}>
           <ListItem>
@@ -34,7 +34,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
             behavior.
           </ListItem>
           <ListItem>
-            <b>X</b> and <b>Y</b> coordinates denote the horizontal and vertical
+            <b>X</b> and <b>Z</b> coordinates denote the horizontal and vertical
             positions of the tool on the workpiece, specifying the precise
             location for machining operations.
           </ListItem>
@@ -52,13 +52,13 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
       <ModalText title="G-code commands">
         <ModalText title="G00 - rapid positioning" titleColor="inherit">
           The <b>G00</b> command moves the machine at maximum speed from a
-          current position to a specified point with X and Y elements. This
+          current position to a specified point with X and Z elements. This
           results in a straight line movement. For this simulator G00 do not
           draw line on a plane.
         </ModalText>
         <ModalText title="G01 - linear interpolation" titleColor="inherit">
           The <b>G01</b> command instructs the machine to move in a straight
-          line from a current position to specified point with X and Y
+          line from a current position to specified point with X and Z
           arguments.
         </ModalText>
         <ModalText
@@ -67,9 +67,9 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
         >
           The <b>G02</b> command tells the machine to move clockwise in a
           circular pattern. It starts with current position and moves to a
-          specified point with X and Y arguments. Also there is need to define
+          specified point with X and Z arguments. Also there is need to define
           its center point. It can be achieved with I and J arguments or R. I
-          and J are respectively X and Y center offset relative to the starting
+          and J are respectively X and Z center offset relative to the starting
           point, where R is a radius of the circle. If R is negative machine
           moves by longest possible arc.
         </ModalText>
