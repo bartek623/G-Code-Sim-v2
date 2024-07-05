@@ -61,7 +61,7 @@ export function MainDrawerBtns({
   };
 
   return (
-    <DrawerBtnContainer padding={1} paddingX={3} overflow="auto">
+    <DrawerBtnContainer padding={1} paddingX={3}>
       <ListMenu
         tooltip="Add/remove lines numbering"
         listItems={[
