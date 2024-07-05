@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { TextFieldProps } from "@mui/material";
 
 import { Drawer } from "../../UI";
@@ -47,14 +47,16 @@ export function Maindrawer({
   const [numberLines, setNumberLines] = useState(false);
   const textFieldRef = useRef<TextFieldProps>(null);
 
-  useEffect(() => {
+  const updateTextField = useCallback(() => {
     if (!textFieldRef.current?.value) return;
     const program = textFieldRef.current.value as string;
 
     textFieldRef.current.value = numberLines
       ? addLinesNumbering(program)
       : removeLinesNumbering(program);
-  });
+  }, [numberLines]);
+
+  useEffect(updateTextField, [updateTextField]);
 
   const runProgramHandler = () => {
     try {
@@ -71,6 +73,7 @@ export function Maindrawer({
       if (!linesData) return;
 
       setLinesData(linesData);
+      updateTextField();
     } catch (err) {
       showError(err, pushNotification);
       setLinesData([]);
