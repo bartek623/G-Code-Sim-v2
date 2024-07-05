@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { TextFieldProps } from "@mui/material";
 
 import { Drawer } from "../../UI";
@@ -44,19 +44,7 @@ export function Maindrawer({
 }: DrawerProps) {
   const [openModal, setOpenModal] = useState(false);
   const [subdrawer, setSubdrawer] = useState<subdrawerState>(SUBDRAWER_DEFAULT);
-  const [numberLines, setNumberLines] = useState(false);
   const textFieldRef = useRef<TextFieldProps>(null);
-
-  const updateTextField = useCallback(() => {
-    if (!textFieldRef.current?.value) return;
-    const program = textFieldRef.current.value as string;
-
-    textFieldRef.current.value = numberLines
-      ? addLinesNumbering(program)
-      : removeLinesNumbering(program);
-  }, [numberLines]);
-
-  useEffect(updateTextField, [updateTextField]);
 
   const runProgramHandler = () => {
     try {
@@ -73,20 +61,24 @@ export function Maindrawer({
       if (!linesData) return;
 
       setLinesData(linesData);
-      updateTextField();
     } catch (err) {
       showError(err, pushNotification);
       setLinesData([]);
     }
   };
 
-  const toggleNumberingHandler = () => {
-    setNumberLines((prev) => {
-      const msg = `${prev ? "Removing" : "Adding"} lines numbering`;
-      pushNotification({ message: msg, type: NOTIFICATION_TYPES.info });
+  const addNumberingHandler = () => {
+    if (!textFieldRef.current?.value) return;
+    const program = textFieldRef.current.value as string;
 
-      return !prev;
-    });
+    textFieldRef.current.value = addLinesNumbering(program);
+  };
+
+  const removeNumberingHandler = () => {
+    if (!textFieldRef.current?.value) return;
+    const program = textFieldRef.current.value as string;
+
+    textFieldRef.current.value = removeLinesNumbering(program);
   };
 
   const toggleGeoHandler = () => {
@@ -124,8 +116,8 @@ export function Maindrawer({
     >
       <DrawerTextField textFieldRef={textFieldRef} />
       <MainDrawerBtns
-        isNumbered={numberLines}
-        onToggleNumbering={toggleNumberingHandler}
+        onAddNumbering={addNumberingHandler}
+        onRemoveNumbering={removeNumberingHandler}
         onRun={runProgramHandler}
         onShowGeo={toggleGeoHandler}
         showGeo={showGeo}

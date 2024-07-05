@@ -1,6 +1,9 @@
 import {
+  Add,
+  Folder,
   FormatListNumbered,
   PlayArrow,
+  Remove,
   Save,
   Upload,
   ViewInAr,
@@ -8,10 +11,11 @@ import {
 import { SUBDRAWER_MODES, subdrawerModesType } from "./constants";
 import { DrawerBtn } from "../../UI/Btns/DrawerBtn";
 import { DrawerBtnContainer } from "../../UI/Drawer/DrawerBtnContainer";
+import { ListMenu } from "../../UI/Btns/ListMenuBtn";
 
 type DrawerBtnsProps = {
-  isNumbered: boolean;
-  onToggleNumbering: () => void;
+  onAddNumbering: () => void;
+  onRemoveNumbering: () => void;
   onRun: () => void;
   onShowGeo: () => void;
   showGeo: boolean;
@@ -19,8 +23,8 @@ type DrawerBtnsProps = {
 };
 
 export function MainDrawerBtns({
-  isNumbered,
-  onToggleNumbering,
+  onAddNumbering,
+  onRemoveNumbering,
   onRun,
   onShowGeo,
   showGeo,
@@ -35,14 +39,20 @@ export function MainDrawerBtns({
   };
 
   return (
-    <DrawerBtnContainer padding={1} paddingX={3}>
-      <DrawerBtn
-        tooltip="Toggle numbering"
-        onClick={onToggleNumbering}
-        variant={isNumbered ? "outlined" : "contained"}
+    <DrawerBtnContainer padding={1} paddingX={3} overflow="auto">
+      <ListMenu
+        tooltip="Add/remove lines numbering"
+        listItems={[
+          { action: onAddNumbering, icon: <Add />, text: "Add" },
+          {
+            action: onRemoveNumbering,
+            icon: <Remove />,
+            text: "Remove",
+          },
+        ]}
       >
         <FormatListNumbered />
-      </DrawerBtn>
+      </ListMenu>
 
       <DrawerBtn
         tooltip="Show 3D model"
@@ -52,13 +62,15 @@ export function MainDrawerBtns({
         <ViewInAr />
       </DrawerBtn>
 
-      <DrawerBtn tooltip="Save program" onClick={onSaveHandler}>
-        <Save />
-      </DrawerBtn>
-
-      <DrawerBtn tooltip="Load program" onClick={onLoadHandler}>
-        <Upload />
-      </DrawerBtn>
+      <ListMenu
+        tooltip="Save/load program"
+        listItems={[
+          { action: onSaveHandler, icon: <Save />, text: "Save" },
+          { action: onLoadHandler, icon: <Upload />, text: "Load" },
+        ]}
+      >
+        <Folder />
+      </ListMenu>
 
       <DrawerBtn tooltip="Run program" onClick={onRun}>
         <PlayArrow />
