@@ -25,7 +25,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
 
       <ModalText title="How to read G-code commands?">
         G-code command structure: <b>G</b>[ ] <b>X</b>[ ] <b>Z</b>[ ] <b>R</b>[
-        ] <b>I</b>[ ] <b>J</b>[ ]
+        ] <b>I</b>[ ] <b>K</b>[ ]
         <List sx={{ listStyleType: "disc", listStylePosition: "inside" }}>
           <ListItem>
             <b>G</b> specifies the type of operation or motion a machinge tool
@@ -43,7 +43,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
             specific G-code commands.
           </ListItem>
           <ListItem>
-            <b>I</b> and <b>J</b> coordinates play a crucial role in circular
+            <b>I</b> and <b>K</b> coordinates play a crucial role in circular
             interpolation, delineating the center of arcs or circles
           </ListItem>
         </List>
@@ -68,8 +68,8 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
           The <b>G02</b> command tells the machine to move clockwise in a
           circular pattern. It starts with current position and moves to a
           specified point with X and Z arguments. Also there is need to define
-          its center point. It can be achieved with I and J arguments or R. I
-          and J are respectively X and Z center offset relative to the starting
+          its center point. It can be achieved with I and K arguments or R. I
+          and K are respectively X and Z center offset relative to the starting
           point, where R is a radius of the circle. If R is negative machine
           moves by longest possible arc.
         </ModalText>

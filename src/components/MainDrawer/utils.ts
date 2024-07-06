@@ -68,15 +68,19 @@ export const convertProgramToLinesData = (
   warningFn: (msg: string) => void = () => {}
 ): LineDataType[] | undefined => {
   if (!program.trim().length) return;
+  if (program.includes("M")) warningFn(ERROR_MSG.M);
 
-  const programLines = program.trim().split("\n");
+  const programLines = program
+    .trim()
+    .split("\n")
+    .filter((line) => !line.includes("M") && line.trim().length);
   const currentToolPosition: PointType = { x: 0, z: 0 };
   const prevLineValues = {
     x: 0,
     z: 0,
     r: 0,
     i: 0,
-    j: 0,
+    k: 0,
     n: 0,
   };
 
@@ -126,10 +130,10 @@ export const convertProgramToLinesData = (
             throw new Error(errorMsg(ERROR_MSG.Itype));
           center.x = prevLineValues.i = start.x + value;
           break;
-        case GCODE_CMD.J:
+        case GCODE_CMD.K:
           if (type !== LINE_TYPE.ARC)
-            throw new Error(errorMsg(ERROR_MSG.Jtype));
-          center.z = prevLineValues.j = start.z + value;
+            throw new Error(errorMsg(ERROR_MSG.Ktype));
+          center.z = prevLineValues.k = start.z + value;
           break;
         case GCODE_CMD.R:
           if (type !== LINE_TYPE.ARC)
@@ -147,7 +151,7 @@ export const convertProgramToLinesData = (
     if (type === LINE_TYPE.ARC) {
       if (center.x === undefined && center.z === undefined) {
         if (!radius) {
-          warningFn(errorMsg(ERROR_MSG.IJRmissing));
+          warningFn(errorMsg(ERROR_MSG.IKRmissing));
           radius = prevLineValues.r;
         }
 
@@ -165,7 +169,7 @@ export const convertProgramToLinesData = (
         if (radius) warningFn(ERROR_MSG.Roverrided);
 
         if (center.x === undefined) center.x = start.x + prevLineValues.i;
-        if (center.z === undefined) center.z = start.z + prevLineValues.j;
+        if (center.z === undefined) center.z = start.z + prevLineValues.k;
       }
     }
 

@@ -8,9 +8,10 @@ export const GCODE_CMD = {
   X: "X",
   Z: "Z",
   I: "I",
-  J: "J",
+  K: "K",
   R: "R",
   N: "N",
+  M: "M",
 } as const;
 
 export const GCODE = {
@@ -48,20 +49,21 @@ export const SUBDRAWER_DEFAULT: subdrawerState = {
 
 export const ERROR_MSG = {
   G: "Invalid G code. Please use a valid G code for the machining operation.",
+  M: "M codes are not supported and may result in incomplete simulation.",
   line: "Incorrect command line format. Ensure that a valid G code is specified.",
   Xnegative:
     "'X' value must be non-negative. Please provide valid, positive coordinates.",
   Znegative:
     "'Z' value must be non-negative. Please provide valid, positive coordinates.",
   Itype: "'I' argument is only applicable for arc commands (G02 or G03).",
-  Jtype: "'J' argument is only applicable for arc commands (G02 or G03).",
+  Ktype: "'K' argument is only applicable for arc commands (G02 or G03).",
   Rtype: "'R' argument is only applicable for arc commands (G02 or G03).",
-  IJRmissing:
-    "Missing argument 'I' and 'J' or 'R'. 'R' from the previous line will be utilized as a substitute.",
+  IKRmissing:
+    "Missing argument 'I' and 'K' or 'R'. 'R' from the previous line will be utilized as a substitute.",
   command:
     "Unable to process the command. Check the command syntax and try again.",
   noRsolution:
     "No solution for the provided 'R' argument. The distance between points is longer than the diameter of the circle.",
-  Roverrided: "'R' argument overridden by 'I' and 'J'.",
+  Roverrided: "'R' argument overridden by 'I' and 'K'.",
   unknownCommand: "Unknown command: ",
 };

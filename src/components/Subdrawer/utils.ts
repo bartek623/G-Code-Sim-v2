@@ -5,7 +5,7 @@ const savedKey = "saved-programs";
 // This is saved element by default, created only if local storage was empty
 const defaultElement: savedType = {
   title: "DEFAULT MOCKUP ELEMENT",
-  code: "G02 X1 Z1 R1\nG01 X4 Z1\nG02 X5 Z0 J-1",
+  code: "G02 X1 Z1 R1\nG01 X4 Z1\nG02 X5 Z0 K-1",
   date: Date.now(),
 };
 

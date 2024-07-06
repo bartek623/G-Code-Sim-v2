@@ -40,8 +40,8 @@ export function DrawerBtn({
         color={color}
         fullWidth
         variant="contained"
-        {...restProps}
         {...adjustedBtnProps}
+        {...restProps}
       >
         {children}
       </StyledBtn>
