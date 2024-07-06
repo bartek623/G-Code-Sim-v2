@@ -5,9 +5,9 @@ import {
   DrawerBtnContainer,
   NOTIFICATION_TYPES,
   NotificationInfoType,
-} from "../../UI";
-import { readUploadedFile } from "./utils";
-import { savedType } from "./types";
+} from "../../../UI";
+import { readUploadedFile } from "../utils";
+import { savedType } from "../types";
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 
 type LoadBtnsProps = {

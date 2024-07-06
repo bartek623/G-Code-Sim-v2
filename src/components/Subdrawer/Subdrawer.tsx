@@ -7,10 +7,10 @@ import {
   subdrawerState,
 } from "../MainDrawer/constants";
 import { Drawer, NotificationInfoType } from "../../UI";
-import { Save } from "./Save";
-import { Load } from "./Load";
-import { SaveInfoModal } from "./SaveInfoModal";
-import { LoadInfoModal } from "./LoadInfoModal";
+import { Save } from "./Save/Save";
+import { Load } from "./Load/Load";
+import { SaveInfoModal } from "./Save/SaveInfoModal";
+import { LoadInfoModal } from "./Load/LoadInfoModal";
 
 type SubdrawerProps = {
   state: subdrawerState;

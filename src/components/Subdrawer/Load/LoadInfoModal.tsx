@@ -1,4 +1,4 @@
-import { Modal, ModalText } from "../../UI/Modal";
+import { Modal, ModalText } from "../../../UI/Modal";
 
 type LoadInfoModalProps = {
   isOpen: boolean;

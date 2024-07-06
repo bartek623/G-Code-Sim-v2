@@ -6,8 +6,8 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import { savedType } from "./types";
-import { DeleteBtn, LoadBtn } from "../../UI";
+import { savedType } from "../types";
+import { DeleteBtn, LoadBtn } from "../../../UI";
 
 const StyledContainer = styled(Paper)`
   display: flex;
@@ -20,11 +20,24 @@ type LoadElementProps = {
   data: savedType;
   onDelete: (title: string) => void;
   onLoad: (code: string, title: string) => void;
+  searchText: string;
 };
 
-export function LoadElement({ data, onDelete, onLoad }: LoadElementProps) {
+export function LoadElement({
+  data,
+  onDelete,
+  onLoad,
+  searchText,
+}: LoadElementProps) {
   const title =
     data.title.length > 16 ? data.title.slice(0, 13) + "..." : data.title;
+
+  const searchStartIndex = data.title.toLowerCase().indexOf(searchText);
+  const searchEndIndex = searchStartIndex + searchText.length;
+
+  const titleFirstPart = title.slice(0, searchStartIndex);
+  const titleHighlightedPart = title.slice(searchStartIndex, searchEndIndex);
+  const titleLastPart = title.slice(searchEndIndex);
 
   const date = new Date(data.date).toLocaleDateString();
 
@@ -40,7 +53,11 @@ export function LoadElement({ data, onDelete, onLoad }: LoadElementProps) {
     <StyledContainer variant="outlined">
       <Container disableGutters>
         <Tooltip title={data.title} followCursor>
-          <Typography variant="h6">{title}</Typography>
+          <Typography variant="h6">
+            {titleFirstPart}
+            <b>{titleHighlightedPart}</b>
+            {titleLastPart}
+          </Typography>
         </Tooltip>
         <Typography variant="subtitle2">{date}</Typography>
       </Container>
