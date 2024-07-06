@@ -1,6 +1,25 @@
-import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import {
+  Divider,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  MenuProps,
+  styled,
+} from "@mui/material";
 import { MouseEvent, ReactNode, useState } from "react";
 import { DrawerBtn } from "./DrawerBtn";
+
+const StyledMenu = styled((props: MenuProps) => (
+  <Menu
+    variant="menu"
+    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+    transformOrigin={{ vertical: "bottom", horizontal: "center" }}
+    {...props}
+  />
+))(({ theme }) => ({
+  "& .MuiPaper-root": { marginTop: theme.spacing(-0.5) },
+}));
 
 export type listItemObject = {
   action: () => void;
@@ -40,17 +59,34 @@ export function ListMenu({ children, tooltip, listItems }: ListMenuProps) {
         {children}
       </DrawerBtn>
 
-      <Menu open={!!anchorEl} anchorEl={anchorEl} onClose={handleClose}>
-        {listItems.map((item) => (
-          <MenuItem
-            onClick={itemClickHandler(item.action)}
+      <StyledMenu open={!!anchorEl} anchorEl={anchorEl} onClose={handleClose}>
+        {listItems.map((item, i, items) => (
+          <ListMenuItem
+            item={item}
+            onClickHandler={itemClickHandler}
+            isLast={i + 1 >= items.length}
             key={item.text + Math.random()}
-          >
-            {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-            <ListItemText>{item.text}</ListItemText>
-          </MenuItem>
+          />
         ))}
-      </Menu>
+      </StyledMenu>
+    </>
+  );
+}
+
+type ListMenuItemProps = {
+  item: listItemObject;
+  onClickHandler: (action: () => void) => () => void;
+  isLast: boolean;
+};
+
+function ListMenuItem({ item, onClickHandler, isLast }: ListMenuItemProps) {
+  return (
+    <>
+      <MenuItem onClick={onClickHandler(item.action)}>
+        {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+        <ListItemText>{item.text}</ListItemText>
+      </MenuItem>
+      {!isLast && <Divider />}
     </>
   );
 }

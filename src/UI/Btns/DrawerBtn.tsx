@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Tooltip } from "@mui/material";
+import { Button, ButtonProps, styled, Tooltip } from "@mui/material";
 import { MouseEvent, ReactNode } from "react";
 
 type BtnProps = ButtonProps & {
@@ -16,26 +16,35 @@ type BtnProps = ButtonProps & {
     | "warning";
 };
 
+const StyledBtn = styled(Button)(() => ({
+  "&.Mui-disabled": { pointerEvents: "auto" },
+}));
+
 export function DrawerBtn({
   children,
   tooltip,
   onClick,
   color = "primary",
+  disabled,
   ...restProps
 }: BtnProps) {
+  const adjustedBtnProps = {
+    disabled: disabled,
+    component: disabled ? "div" : undefined,
+    onClick: disabled ? undefined : onClick,
+  };
+
   return (
     <Tooltip title={tooltip}>
-      <span>
-        <Button
-          color={color}
-          fullWidth
-          variant="contained"
-          onClick={onClick}
-          {...restProps}
-        >
-          {children}
-        </Button>
-      </span>
+      <StyledBtn
+        color={color}
+        fullWidth
+        variant="contained"
+        {...adjustedBtnProps}
+        {...restProps}
+      >
+        {children}
+      </StyledBtn>
     </Tooltip>
   );
 }
