@@ -1,12 +1,13 @@
-import { RefObject, useEffect, useState } from "react";
+import { ChangeEvent, RefObject, useEffect, useState } from "react";
 import { Stack, TextFieldProps } from "@mui/material";
 
-import { SubdrawerContainer } from "./SubdrawerContentContainer";
-import { savedType } from "./types";
+import { SubdrawerContainer } from "../SubdrawerContentContainer";
+import { savedType } from "../types";
 import { LoadElement } from "./LoadElement";
-import { getSavedStorage, setSavedStorage } from "./utils";
-import { NOTIFICATION_TYPES, NotificationInfoType } from "../../UI";
+import { getSavedStorage, setSavedStorage } from "../utils";
+import { NOTIFICATION_TYPES, NotificationInfoType } from "../../../UI";
 import { LoadBtns } from "./LoadBtns";
+import { LoadSearch } from "./LoadSearch";
 
 type LoadProps = {
   textFieldRef: RefObject<TextFieldProps>;
@@ -22,6 +23,7 @@ export function Load({
   onRun,
 }: LoadProps) {
   const [savedPrograms, setSavedPrograms] = useState<savedType[]>([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     setSavedPrograms(getSavedStorage());
@@ -54,18 +56,37 @@ export function Load({
     });
   };
 
-  const LoadElements = savedPrograms.map((el) => (
-    <LoadElement
-      data={el}
-      key={el.title}
-      onDelete={deleteHandler}
-      onLoad={loadHandler}
-    />
-  ));
+  const searchHandler = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setSearchText(e.currentTarget.value.toLowerCase());
+  };
+
+  const LoadElements = savedPrograms
+    .filter((el) => el.title.toLowerCase().includes(searchText))
+    .map((el) => (
+      <LoadElement
+        data={el}
+        key={el.title}
+        onDelete={deleteHandler}
+        onLoad={loadHandler}
+        searchText={searchText}
+      />
+    ));
 
   return (
     <SubdrawerContainer>
-      <Stack spacing={1.5} overflow="auto">
+      <LoadSearch onChange={searchHandler} />
+      <Stack
+        borderTop={1}
+        borderBottom={1}
+        borderColor="grey.300"
+        spacing={1.5}
+        paddingTop={1}
+        paddingBottom={1}
+        overflow="auto"
+        height="100%"
+      >
         {LoadElements}
       </Stack>
       <LoadBtns
