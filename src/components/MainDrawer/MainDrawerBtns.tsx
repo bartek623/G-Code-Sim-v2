@@ -65,7 +65,11 @@ export function MainDrawerBtns({
       <ListMenu
         tooltip="Add/remove lines numbering"
         listItems={[
-          { action: onAddNumbering, icon: <Add />, text: "Add" },
+          {
+            action: onAddNumbering,
+            icon: <Add />,
+            text: "Add",
+          },
           {
             action: onRemoveNumbering,
             icon: <Remove />,
