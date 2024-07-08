@@ -1,4 +1,10 @@
-import { Button, ButtonProps, styled, Tooltip } from "@mui/material";
+import {
+  Button,
+  ButtonProps,
+  styled,
+  Tooltip,
+  tooltipClasses,
+} from "@mui/material";
 import { MouseEvent, ReactNode } from "react";
 
 type BtnProps = ButtonProps & {
@@ -35,7 +41,21 @@ export function DrawerBtn({
   };
 
   return (
-    <Tooltip title={tooltip}>
+    <Tooltip
+      title={tooltip}
+      disableInteractive
+      placement="top"
+      slotProps={{
+        popper: {
+          sx: {
+            [`&.${tooltipClasses.popper}[data-popper-placement*="top"] .${tooltipClasses.tooltip}`]:
+              {
+                margin: 0,
+              },
+          },
+        },
+      }}
+    >
       <StyledBtn
         color={color}
         fullWidth
