@@ -29,8 +29,8 @@ export function LoadElement({
   onLoad,
   searchText,
 }: LoadElementProps) {
-  const title =
-    data.title.length > 16 ? data.title.slice(0, 13) + "..." : data.title;
+  const isTitleLong = data.title.length > 16;
+  const title = isTitleLong ? data.title.slice(0, 13) + "..." : data.title;
 
   const searchStartIndex = data.title.toLowerCase().indexOf(searchText);
   const searchEndIndex = searchStartIndex + searchText.length;
@@ -52,7 +52,7 @@ export function LoadElement({
   return (
     <StyledContainer variant="outlined">
       <Container disableGutters>
-        <Tooltip title={data.title} followCursor>
+        <Tooltip title={isTitleLong ? data.title : ""} followCursor>
           <Typography variant="h6">
             {titleFirstPart}
             <b>{titleHighlightedPart}</b>
