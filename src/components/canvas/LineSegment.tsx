@@ -2,13 +2,15 @@ import { Line } from "@react-three/drei";
 import { LINE_COLOR, POSITION_LINE_COLOR } from "./constants";
 import { PointsToGeometry } from "./PointsToGeometry";
 import { LineElementType } from "./types";
+import { useGeometryContext } from "../../store";
 
 type LineSegmentProps = {
-  showGeometry: boolean;
   line: LineElementType;
 };
 
-export function LineSegment({ showGeometry, line }: LineSegmentProps) {
+export function LineSegment({ line }: LineSegmentProps) {
+  const { showGeometry } = useGeometryContext();
+
   return (
     <>
       {!showGeometry && (

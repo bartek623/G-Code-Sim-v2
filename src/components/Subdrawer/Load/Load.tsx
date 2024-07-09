@@ -5,25 +5,21 @@ import { SubdrawerContainer } from "../SubdrawerContentContainer";
 import { savedType } from "../types";
 import { LoadElement } from "./LoadElement";
 import { getSavedStorage, setSavedStorage } from "../utils";
-import { NOTIFICATION_TYPES, NotificationInfoType } from "../../../UI";
+import { NOTIFICATION_TYPES } from "../../../UI";
 import { LoadBtns } from "./LoadBtns";
 import { LoadSearch } from "./LoadSearch";
+import { useNotificationsContext } from "../../../store";
 
 type LoadProps = {
   textFieldRef: RefObject<TextFieldProps>;
   onClose: () => void;
-  pushNotification: (notification: NotificationInfoType) => void;
   onRun: () => void;
 };
 
-export function Load({
-  textFieldRef,
-  onClose,
-  pushNotification,
-  onRun,
-}: LoadProps) {
+export function Load({ textFieldRef, onClose, onRun }: LoadProps) {
   const [savedPrograms, setSavedPrograms] = useState<savedType[]>([]);
   const [searchText, setSearchText] = useState("");
+  const { pushNotification } = useNotificationsContext();
 
   useEffect(() => {
     setSavedPrograms(getSavedStorage());
@@ -90,7 +86,6 @@ export function Load({
         {LoadElements}
       </Stack>
       <LoadBtns
-        pushNotification={pushNotification}
         updatePrograms={updatePrograms}
         currentPrograms={savedPrograms}
       />

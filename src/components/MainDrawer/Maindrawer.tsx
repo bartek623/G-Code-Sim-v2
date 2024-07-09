@@ -1,8 +1,7 @@
-import { RefObject, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { TextFieldProps } from "@mui/material";
 
 import { Drawer } from "../../UI";
-import { LineDataType } from "../../utils/types";
 import { Subdrawer } from "../Subdrawer";
 import {
   addLinesNumbering,
@@ -18,33 +17,19 @@ import {
   subdrawerModesType,
   subdrawerState,
 } from "./constants";
-import {
-  NOTIFICATION_TYPES,
-  NotificationInfoType,
-} from "../../UI/Notifications";
+import { NOTIFICATION_TYPES } from "../../UI/Notifications";
 import { showError } from "../../utils/utils";
 import { InfoModal } from "./InfoModal";
-import { Group } from "three";
+import { useGeometryContext, useNotificationsContext } from "../../store";
 
 type DrawerProps = {
   isOpen: boolean;
   onClose: () => void;
-  setLinesData: (data: LineDataType[]) => void;
-  setShowGeo: (callback: (show: boolean) => boolean) => void;
-  showGeo: boolean;
-  pushNotification: (notification: NotificationInfoType) => void;
-  meshRef: RefObject<Group>;
 };
 
-export function Maindrawer({
-  isOpen,
-  onClose,
-  setLinesData,
-  setShowGeo,
-  showGeo,
-  pushNotification,
-  meshRef,
-}: DrawerProps) {
+export function Maindrawer({ isOpen, onClose }: DrawerProps) {
+  const { setShowGeometry, setLines } = useGeometryContext();
+  const { pushNotification } = useNotificationsContext();
   const [openModal, setOpenModal] = useState(false);
   const [subdrawer, setSubdrawer] = useState<subdrawerState>(SUBDRAWER_DEFAULT);
   const textFieldRef = useRef<TextFieldProps>(null!);
@@ -63,10 +48,10 @@ export function Maindrawer({
 
       if (!linesData) return;
 
-      setLinesData(linesData);
+      setLines(linesData);
     } catch (err) {
       showError(err, pushNotification);
-      setLinesData([]);
+      setLines([]);
     }
   };
 
@@ -97,7 +82,7 @@ export function Maindrawer({
   };
 
   const toggleGeoHandler = () => {
-    setShowGeo((prev) => {
+    setShowGeometry((prev) => {
       const msg = `${prev ? "Hiding" : "Showing"} model`;
       pushNotification({ message: msg, type: NOTIFICATION_TYPES.info });
 
@@ -135,15 +120,12 @@ export function Maindrawer({
         onRemoveNumbering={removeNumberingHandler}
         onRun={runProgramHandler}
         onShowGeo={toggleGeoHandler}
-        showGeo={showGeo}
         onSubOpen={openSubHandler}
-        meshRef={meshRef}
       />
       <Subdrawer
         state={subdrawer}
         onClose={closeSubHandler}
         textFieldRef={textFieldRef}
-        pushNotification={pushNotification}
         onRun={runProgramHandler}
       />
       <InfoModal isOpen={openModal} onClose={closeModalHandler} />

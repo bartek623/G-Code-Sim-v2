@@ -4,13 +4,9 @@ import { TextField, Typography, styled } from "@mui/material";
 import { SubdrawerContainer } from "../SubdrawerContentContainer";
 import { savedType } from "../types";
 import { getSavedStorage, setSavedStorage } from "../utils";
-import {
-  NOTIFICATION_TYPES,
-  NotificationInfoType,
-  DrawerBtnContainer,
-  DrawerBtn,
-} from "../../../UI";
+import { NOTIFICATION_TYPES, DrawerBtnContainer, DrawerBtn } from "../../../UI";
 import { showError } from "../../../utils/utils";
+import { useNotificationsContext } from "../../../store";
 
 const StyledTypography = styled(Typography)`
   background-color: #f2f2f2;
@@ -24,10 +20,10 @@ const StyledTypography = styled(Typography)`
 type SaveProps = {
   program: string;
   onClose: () => void;
-  pushNotification: (notification: NotificationInfoType) => void;
 };
 
-export function Save({ program, onClose, pushNotification }: SaveProps) {
+export function Save({ program, onClose }: SaveProps) {
+  const { pushNotification } = useNotificationsContext();
   const inputRef = useRef<HTMLInputElement>(null!);
 
   useEffect(() => {
