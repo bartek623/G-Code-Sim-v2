@@ -6,7 +6,7 @@ import {
   SUBDRAWER_MODES,
   subdrawerState,
 } from "../MainDrawer/constants";
-import { Drawer, NotificationInfoType } from "../../UI";
+import { Drawer } from "../../UI";
 import { Save } from "./Save/Save";
 import { Load } from "./Load/Load";
 import { SaveInfoModal } from "./Save/SaveInfoModal";
@@ -16,7 +16,6 @@ type SubdrawerProps = {
   state: subdrawerState;
   onClose: () => void;
   textFieldRef: RefObject<TextFieldProps>;
-  pushNotification: (notification: NotificationInfoType) => void;
   onRun: () => void;
 };
 
@@ -24,7 +23,6 @@ export function Subdrawer({
   state,
   onClose,
   textFieldRef,
-  pushNotification,
   onRun,
 }: SubdrawerProps) {
   const [openModal, setOpenModal] = useState(false);
@@ -49,19 +47,13 @@ export function Subdrawer({
           <Save
             program={(textFieldRef.current?.value as string).trim()}
             onClose={onClose}
-            pushNotification={pushNotification}
           />
           <SaveInfoModal isOpen={openModal} onClose={closeModalHandler} />
         </>
       )}
       {state.mode === SUBDRAWER_MODES.load && (
         <>
-          <Load
-            textFieldRef={textFieldRef}
-            onClose={onClose}
-            pushNotification={pushNotification}
-            onRun={onRun}
-          />
+          <Load textFieldRef={textFieldRef} onClose={onClose} onRun={onRun} />
           <LoadInfoModal isOpen={openModal} onClose={closeModalHandler} />
         </>
       )}

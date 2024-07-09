@@ -13,18 +13,15 @@ import { SUBDRAWER_MODES, subdrawerModesType } from "./constants";
 import { DrawerBtn } from "../../UI/Btns/DrawerBtn";
 import { DrawerBtnContainer } from "../../UI/Drawer/DrawerBtnContainer";
 import { ListMenuBtn } from "../../UI/Btns/ListMenuBtn";
-import { RefObject } from "react";
-import { Group } from "three";
 import { STLExporter } from "three/examples/jsm/Addons.js";
+import { useGeometryContext } from "../../store";
 
 type DrawerBtnsProps = {
   onAddNumbering: () => void;
   onRemoveNumbering: () => void;
   onRun: () => void;
   onShowGeo: () => void;
-  showGeo: boolean;
   onSubOpen: (mode: subdrawerModesType) => void;
-  meshRef: RefObject<Group>;
 };
 
 export function MainDrawerBtns({
@@ -32,10 +29,10 @@ export function MainDrawerBtns({
   onRemoveNumbering,
   onRun,
   onShowGeo,
-  showGeo,
   onSubOpen,
-  meshRef,
 }: DrawerBtnsProps) {
+  const { geometryRef, showGeometry } = useGeometryContext();
+
   const onSaveHandler = () => {
     onSubOpen(SUBDRAWER_MODES.save);
   };
@@ -45,10 +42,10 @@ export function MainDrawerBtns({
   };
 
   const onExportSTL = () => {
-    if (!meshRef.current) return;
+    if (!geometryRef.current) return;
 
     const exporter = new STLExporter();
-    const result = exporter.parse(meshRef.current);
+    const result = exporter.parse(geometryRef.current);
 
     const blob = new Blob([result], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -83,13 +80,13 @@ export function MainDrawerBtns({
       <DrawerBtn
         tooltip="Show 3D model"
         onClick={onShowGeo}
-        variant={showGeo ? "outlined" : "contained"}
+        variant={showGeometry ? "outlined" : "contained"}
       >
         <ViewInAr />
       </DrawerBtn>
 
       <DrawerBtn
-        disabled={!showGeo}
+        disabled={!showGeometry}
         tooltip="Export model to .stl file"
         onClick={onExportSTL}
       >

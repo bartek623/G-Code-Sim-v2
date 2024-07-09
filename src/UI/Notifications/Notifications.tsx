@@ -1,20 +1,20 @@
 import { Alert, Snackbar } from "@mui/material";
-import { SnackbarStateType } from "./types";
+import { useNotificationsContext } from "../../store";
 
-type NotificationsProps = {
-  snackbarState: SnackbarStateType;
-  onClose: () => void;
-};
-
-export function Notifications({ snackbarState, onClose }: NotificationsProps) {
+export function Notifications() {
+  const { snackbarState, hideNotification } = useNotificationsContext();
   return (
     <Snackbar
       open={snackbarState.open}
-      onClose={onClose}
+      onClose={hideNotification}
       anchorOrigin={{ horizontal: "right", vertical: "top" }}
       sx={{ maxWidth: "500px" }}
     >
-      <Alert severity={snackbarState.type} onClose={onClose} variant="filled">
+      <Alert
+        severity={snackbarState.type}
+        onClose={hideNotification}
+        variant="filled"
+      >
         {snackbarState.message}
       </Alert>
     </Snackbar>
