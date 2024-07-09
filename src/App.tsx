@@ -16,7 +16,7 @@ import { Group } from "three";
 
 const StyledContainer = styled(Container)`
   position: relative;
-  height: 100vh;
+  height: 100dvh;
 `;
 
 function App() {

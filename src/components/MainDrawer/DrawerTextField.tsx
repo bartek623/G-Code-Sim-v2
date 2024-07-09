@@ -8,11 +8,19 @@ const StyledContainer = styled(Container)`
   margin-top: ${({ theme }) => theme.spacing(1.5)};
   height: 100%;
   overflow-y: auto;
+
+  ${(props) => props.theme.breakpoints.down("sm")} {
+    width: 100vw;
+  }
 `;
 
 const StyledTextField = styled(TextField)`
   border-radius: ${({ theme }) => theme.spacing(1)};
   overflow: hidden;
+
+  ${(props) => props.theme.breakpoints.down("sm")} {
+    width: 100%;
+  }
 
   & label,
   & textarea {
