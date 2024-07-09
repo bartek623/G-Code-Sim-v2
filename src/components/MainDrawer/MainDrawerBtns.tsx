@@ -12,7 +12,7 @@ import {
 import { SUBDRAWER_MODES, subdrawerModesType } from "./constants";
 import { DrawerBtn } from "../../UI/Btns/DrawerBtn";
 import { DrawerBtnContainer } from "../../UI/Drawer/DrawerBtnContainer";
-import { ListMenu } from "../../UI/Btns/ListMenuBtn";
+import { ListMenuBtn } from "../../UI/Btns/ListMenuBtn";
 import { RefObject } from "react";
 import { Group } from "three";
 import { STLExporter } from "three/examples/jsm/Addons.js";
@@ -62,7 +62,7 @@ export function MainDrawerBtns({
 
   return (
     <DrawerBtnContainer padding={1} paddingX={3}>
-      <ListMenu
+      <ListMenuBtn
         tooltip="Add/remove lines numbering"
         listItems={[
           {
@@ -78,7 +78,7 @@ export function MainDrawerBtns({
         ]}
       >
         <FormatListNumbered />
-      </ListMenu>
+      </ListMenuBtn>
 
       <DrawerBtn
         tooltip="Show 3D model"
@@ -96,7 +96,7 @@ export function MainDrawerBtns({
         <FileDownload />
       </DrawerBtn>
 
-      <ListMenu
+      <ListMenuBtn
         tooltip="Save/load program"
         listItems={[
           { action: onSaveHandler, icon: <Save />, text: "Save" },
@@ -104,7 +104,7 @@ export function MainDrawerBtns({
         ]}
       >
         <Folder />
-      </ListMenu>
+      </ListMenuBtn>
 
       <DrawerBtn tooltip="Run program" onClick={onRun}>
         <PlayArrow />
