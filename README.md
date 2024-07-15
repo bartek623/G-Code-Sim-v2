@@ -9,4 +9,4 @@ Lines of programs can be auto-numbered according to the N-code standard.
 
 ## Demo
 [![GCodeSim screen](./public//GCodeSim.png)](https://gcodesim.netlify.app)
-(Click the image below to redirect to the hosted app)
+(Click the image to redirect to the hosted app)
