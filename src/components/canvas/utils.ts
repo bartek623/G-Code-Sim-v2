@@ -20,10 +20,9 @@ export const getCurvePoints = (lineData: LineDataType) => {
     center.z,
     radius,
     radius,
-    angleStart + angleEnd,
-    angleEnd + angleEnd,
-    !counterClockwise,
-    -angleEnd
+    angleStart,
+    angleEnd,
+    !counterClockwise
   );
 
   return {

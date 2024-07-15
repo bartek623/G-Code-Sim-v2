@@ -4,7 +4,7 @@ export const showError = (
   err: unknown,
   notificationHandler: (notification: NotificationInfoType) => void
 ) => {
-  let msg = "Unknown Error";
+  let msg = "Unknown error";
   if (err instanceof Error) msg = err.message;
 
   console.error(err);

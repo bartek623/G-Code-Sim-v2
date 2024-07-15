@@ -6,9 +6,28 @@ import {
 } from "../../utils/types";
 import { ERROR_MSG, GCODE, GCODE_CMD } from "./constants";
 
+type LinePropsType = {
+  type: LineType | undefined;
+  start: { x: number; z: number };
+  end: { x: number; z: number };
+  center: { x: number | undefined; z: number | undefined };
+  counterClockwise: boolean | undefined;
+  radius: number | undefined;
+  lineNumber: number;
+};
+
+type cmdValuesType = {
+  x: number;
+  z: number;
+  r: number;
+  i: number;
+  k: number;
+  n: number;
+};
+
 type LineData = { type: LineType; counterClockwise?: boolean };
 
-const getLineType = (code: number, errorMsg: string): LineData => {
+const getLineType = (code: number): LineData => {
   switch (code) {
     case GCODE.POSITIONING:
       return { type: LINE_TYPE.POSITIONING };
@@ -19,7 +38,7 @@ const getLineType = (code: number, errorMsg: string): LineData => {
     case GCODE.COUNTERCLOCKWISE_ARC:
       return { type: LINE_TYPE.ARC, counterClockwise: true };
     default:
-      throw new Error(errorMsg);
+      throw new Error(ERROR_MSG.G);
   }
 };
 
@@ -27,8 +46,7 @@ const getCenterWithRadius = (
   radius: number,
   start: PointType,
   end: PointType,
-  dir: 1 | -1,
-  errorMsg: string
+  dir: 1 | -1
 ) => {
   const distanceBetweenPointsSquared =
     (end.x - start.x) ** 2 + (end.z - start.z) ** 2;
@@ -36,7 +54,7 @@ const getCenterWithRadius = (
   const center = { x: 0, z: 0 };
 
   if (diameterSquared < distanceBetweenPointsSquared) {
-    throw new Error(errorMsg);
+    throw new Error(ERROR_MSG.noRsolution);
   } else if (diameterSquared > distanceBetweenPointsSquared) {
     const xMid = (end.x + start.x) / 2;
     const yMid = (end.z + start.z) / 2;
@@ -61,21 +79,95 @@ const getCenterWithRadius = (
   return center;
 };
 
-type TempPoint = { x: unknown; z: unknown };
+const calcCenter = (
+  lineProps: LinePropsType,
+  prevValues: cmdValuesType,
+  warningFn: (msg: string) => void
+) => {
+  if (lineProps.center.x === undefined && lineProps.center.z === undefined) {
+    if (!lineProps.radius) {
+      warningFn(ERROR_MSG.IKRmissing);
+      lineProps.radius = prevValues.r;
+    }
+
+    const dir = lineProps.counterClockwise ? -1 : 1;
+    const calculatedCenter = getCenterWithRadius(
+      lineProps.radius,
+      lineProps.start,
+      lineProps.end,
+      dir
+    );
+    lineProps.center.x = calculatedCenter.x;
+    lineProps.center.z = calculatedCenter.z;
+  } else {
+    if (lineProps.radius) warningFn(ERROR_MSG.Roverrided);
+
+    if (lineProps.center.x === undefined)
+      lineProps.center.x = lineProps.start.x + prevValues.i;
+    if (lineProps.center.z === undefined)
+      lineProps.center.z = lineProps.start.z + prevValues.k;
+  }
+};
+
+const readCommands =
+  (
+    lineProps: LinePropsType,
+    prevValues: cmdValuesType,
+    warningFn: (msg: string) => void
+  ) =>
+  (command: string) => {
+    const code = command[0];
+    const value = +command.slice(1);
+
+    if (isNaN(value)) throw new Error(ERROR_MSG.invalidValueType);
+
+    switch (code) {
+      case GCODE_CMD.N:
+        lineProps.lineNumber = prevValues.n = Math.round(value);
+        break;
+      case GCODE_CMD.G: {
+        const lineInfo = getLineType(value);
+        lineProps.type = lineInfo.type;
+        lineProps.counterClockwise = !!lineInfo.counterClockwise;
+        break;
+      }
+      case GCODE_CMD.X:
+        if (value < 0) throw new Error(ERROR_MSG.Xnegative);
+        lineProps.end.x = prevValues.x = value;
+        break;
+      case GCODE_CMD.Z:
+        if (value < 0) throw new Error(ERROR_MSG.Znegative);
+        lineProps.end.z = prevValues.z = value;
+        break;
+      case GCODE_CMD.I:
+        if (lineProps.type !== LINE_TYPE.ARC) throw new Error(ERROR_MSG.Itype);
+        lineProps.center.x = prevValues.i = lineProps.start.x + value;
+        break;
+      case GCODE_CMD.K:
+        if (lineProps.type !== LINE_TYPE.ARC) throw new Error(ERROR_MSG.Ktype);
+        lineProps.center.z = prevValues.k = lineProps.start.z + value;
+        break;
+      case GCODE_CMD.R:
+        if (lineProps.type !== LINE_TYPE.ARC) throw new Error(ERROR_MSG.Rtype);
+        lineProps.radius = prevValues.r = value;
+        break;
+      default:
+        warningFn(ERROR_MSG.unknownCommand + command);
+    }
+  };
 
 export const convertProgramToLinesData = (
   program: string,
   warningFn: (msg: string) => void = () => {}
 ): LineDataType[] | undefined => {
-  if (!program.trim().length) return;
+  if (!program.length) return;
   if (program.includes("M")) warningFn(ERROR_MSG.M);
 
   const programLines = program
-    .trim()
     .split("\n")
     .filter((line) => !line.includes("M") && line.trim().length);
   const currentToolPosition: PointType = { x: 0, z: 0 };
-  const prevLineValues = {
+  const prevValues = {
     x: 0,
     z: 0,
     r: 0,
@@ -85,114 +177,66 @@ export const convertProgramToLinesData = (
   };
 
   const linesData: LineDataType[] = programLines.map((line) => {
-    const start: PointType = { ...currentToolPosition };
-    let type: LineType | undefined;
-    const end: PointType = { x: prevLineValues.x, z: prevLineValues.z };
-    const center: TempPoint = { x: undefined, z: undefined };
-    let counterClockwise = false;
-    let radius: number | undefined;
-    let lineNumber: number | undefined;
+    const lineProps: LinePropsType = {
+      type: undefined,
+      start: { ...currentToolPosition },
+      end: { x: prevValues.x, z: prevValues.z },
+      center: { x: undefined, z: undefined },
+      counterClockwise: undefined,
+      radius: undefined,
+      lineNumber: prevValues.n,
+    };
+
+    const numberedWarningFn = (msg: string) =>
+      warningFn(`[N${lineProps.lineNumber}] ${msg}`);
 
     const commandLine = line.trim();
     const singleCommands = commandLine.split(" ");
 
     if (!commandLine.includes("N")) {
-      lineNumber = prevLineValues.n =
-        Math.ceil((prevLineValues.n + 1) / 10) * 10;
+      lineProps.lineNumber = prevValues.n =
+        Math.ceil((prevValues.n + 1) / 10) * 10;
     }
 
-    const errorMsg = (msg: string) => `[N${lineNumber}] ${msg}`;
+    try {
+      singleCommands.forEach(
+        readCommands(lineProps, prevValues, numberedWarningFn)
+      );
 
-    singleCommands.forEach((command) => {
-      const code = command[0];
-      const value = +command.slice(1);
+      if (!lineProps.type) throw new Error(ERROR_MSG.line);
 
-      switch (code) {
-        case GCODE_CMD.N:
-          lineNumber = prevLineValues.n = Math.round(value);
-          break;
-        case GCODE_CMD.G: {
-          const lineInfo = getLineType(value, errorMsg(ERROR_MSG.G));
-          type = lineInfo.type;
-          counterClockwise = !!lineInfo.counterClockwise;
-          break;
-        }
-        case GCODE_CMD.X:
-          if (value < 0) throw new Error(errorMsg(ERROR_MSG.Xnegative));
-          end.x = prevLineValues.x = value;
-          break;
-        case GCODE_CMD.Z:
-          if (value < 0) throw new Error(errorMsg(ERROR_MSG.Znegative));
-          end.z = prevLineValues.z = value;
-          break;
-        case GCODE_CMD.I:
-          if (type !== LINE_TYPE.ARC)
-            throw new Error(errorMsg(ERROR_MSG.Itype));
-          center.x = prevLineValues.i = start.x + value;
-          break;
-        case GCODE_CMD.K:
-          if (type !== LINE_TYPE.ARC)
-            throw new Error(errorMsg(ERROR_MSG.Ktype));
-          center.z = prevLineValues.k = start.z + value;
-          break;
-        case GCODE_CMD.R:
-          if (type !== LINE_TYPE.ARC)
-            throw new Error(errorMsg(ERROR_MSG.Rtype));
-          radius = prevLineValues.r = value;
-          break;
-        default:
-          warningFn(ERROR_MSG.unknownCommand + command);
-          break;
-      }
-    });
+      if (lineProps.type === LINE_TYPE.ARC)
+        calcCenter(lineProps, prevValues, numberedWarningFn);
 
-    if (!type) throw new Error(errorMsg(ERROR_MSG.line));
+      currentToolPosition.x = lineProps.end.x as number;
+      currentToolPosition.z = lineProps.end.z as number;
 
-    if (type === LINE_TYPE.ARC) {
-      if (center.x === undefined && center.z === undefined) {
-        if (!radius) {
-          warningFn(errorMsg(ERROR_MSG.IKRmissing));
-          radius = prevLineValues.r;
-        }
-
-        const dir = counterClockwise ? -1 : 1;
-        const calculatedCenter = getCenterWithRadius(
-          radius,
-          start,
-          end,
-          dir,
-          errorMsg(ERROR_MSG.noRsolution)
-        );
-        center.x = calculatedCenter.x;
-        center.z = calculatedCenter.z;
-      } else {
-        if (radius) warningFn(ERROR_MSG.Roverrided);
-
-        if (center.x === undefined) center.x = start.x + prevLineValues.i;
-        if (center.z === undefined) center.z = start.z + prevLineValues.k;
-      }
+      if (lineProps.type === LINE_TYPE.ARC) {
+        const lineData: LineDataType = {
+          type: lineProps.type,
+          start: lineProps.start,
+          end: lineProps.end,
+          center: lineProps.center as PointType,
+          counterClockwise: lineProps.counterClockwise,
+        };
+        return lineData;
+      } else if (
+        lineProps.type === LINE_TYPE.LINE ||
+        lineProps.type === LINE_TYPE.POSITIONING
+      ) {
+        const lineData: LineDataType = {
+          type: lineProps.type,
+          start: lineProps.start,
+          end: lineProps.end,
+        };
+        return lineData;
+      } else throw new Error(ERROR_MSG.command);
+    } catch (err) {
+      if (err instanceof Error)
+        // throw Error with line number
+        throw new Error(`[N${lineProps.lineNumber}] ${err.message}`);
+      else throw new Error("Unknown error");
     }
-
-    currentToolPosition.x = end.x as number;
-    currentToolPosition.z = end.z as number;
-
-    if (type === LINE_TYPE.ARC) {
-      const lineData: LineDataType = {
-        type,
-        start,
-        end,
-        center: center as PointType,
-        counterClockwise,
-      };
-      return lineData;
-    } else if (type === LINE_TYPE.LINE || type === LINE_TYPE.POSITIONING) {
-      const lineData: LineDataType = {
-        type,
-        start,
-        end,
-      };
-      return lineData;
-    } else throw new Error(errorMsg(ERROR_MSG.command));
   });
 
   return linesData;

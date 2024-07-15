@@ -8,7 +8,7 @@ import {
 
 const getErrorMsg = (msg: string) => "[N10] " + msg;
 
-describe("gcode interpreter testing", () => {
+describe("#convertProgramToLinesData - gcode interpreter testing", () => {
   test("positioning", () => {
     const programString = "G00 X1 Z3";
     expect(convertProgramToLinesData(programString)).toStrictEqual([
@@ -124,7 +124,7 @@ describe("gcode interpreter testing", () => {
   });
 });
 
-describe("gcode interpreter error throwing", () => {
+describe("#convertProgramToLinesData - gcode interpreter error throwing", () => {
   test("wrong gcode", () => {
     const programString = "G020 X1 Z1";
 
@@ -184,7 +184,7 @@ describe("gcode interpreter error throwing", () => {
   });
 });
 
-describe("adding lines numbering to program", () => {
+describe("#addLinesNumbering", () => {
   test("without numbering", () => {
     const program =
       "G01 X0 Z.5\nG02 X.5 Z1 R.5\nG01 X1 Z1\nG03 X4 Z1 R5\nG01 X4.5 Z1\nG02 X5 Z.5 K-.5\nG01 X5 Z0";
@@ -211,7 +211,7 @@ describe("adding lines numbering to program", () => {
   });
 });
 
-describe("removing lines numbering from program", () => {
+describe("#removeLinesNumbering", () => {
   test("without numbering", () => {
     const program =
       "G01 X0 Z.5\nG02 X.5 Z1 R.5\nG01 X1 Z1\nG03 X4 Z1 R5\nG01 X4.5 Z1\nG02 X5 Z.5 K-.5\nG01 X5 Z0";

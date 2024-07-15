@@ -66,4 +66,5 @@ export const ERROR_MSG = {
     "No solution for the provided 'R' argument. The distance between points is longer than the diameter of the circle.",
   Roverrided: "'R' argument overridden by 'I' and 'K'.",
   unknownCommand: "Unknown command: ",
+  invalidValueType: "Please enter a valid number.",
 };
