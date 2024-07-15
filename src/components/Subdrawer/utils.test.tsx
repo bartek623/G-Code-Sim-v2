@@ -13,16 +13,12 @@ const invalidProgram: any = {
   date: "0",
 };
 
-describe("subdrawer utils tests", () => {
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
-  test("testing valid program validation", () => {
+describe("#isProgramObjectValid", () => {
+  test("valid program validation", () => {
     expect(isProgramObjectValid(validProgram, [])).toStrictEqual(validProgram);
   });
 
-  test("testing valid program with unnecessary fields validation", () => {
+  test("valid program with unnecessary fields validation", () => {
     const bonusFields = {
       test: "",
       field: 12,
@@ -34,15 +30,21 @@ describe("subdrawer utils tests", () => {
     ).toStrictEqual(validProgram);
   });
 
-  test("testing invalid program object types validation", () => {
+  test("invalid program object types validation", () => {
     expect(isProgramObjectValid(invalidProgram, [])).toBeUndefined();
   });
 
-  test("testing valid program object with occupied title validation", () => {
+  test("valid program object with occupied title validation", () => {
     expect(isProgramObjectValid(validProgram, [validProgram])).toBeUndefined();
   });
+});
 
-  test("read valid file test", async () => {
+describe("#readUploadedFile", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test("read valid file", async () => {
     const validProgram2: savedType = {
       ...validProgram,
       title: "test2",
@@ -67,7 +69,7 @@ describe("subdrawer utils tests", () => {
     File.prototype.text = originalText;
   });
 
-  test("read valid file test, skipped invalid program", async () => {
+  test("read valid file, skip invalid program", async () => {
     const programsString = JSON.stringify([validProgram, invalidProgram]);
 
     const originalText = File.prototype.text;
@@ -86,7 +88,7 @@ describe("subdrawer utils tests", () => {
     File.prototype.text = originalText;
   });
 
-  test("read valid file test, skipped duplicated program", async () => {
+  test("read valid file, skip duplicated program", async () => {
     const programsString = JSON.stringify([validProgram, validProgram]);
 
     const originalText = File.prototype.text;
@@ -105,7 +107,7 @@ describe("subdrawer utils tests", () => {
     File.prototype.text = originalText;
   });
 
-  test("read valid file test, skipped already saved program", async () => {
+  test("read valid file, skip already saved program", async () => {
     const validProgram2: savedType = {
       ...validProgram,
       title: "test2",
