@@ -1,4 +1,4 @@
-import { Euler, Vector3 } from "@react-three/fiber";
+import { Euler, Vector3 } from '@react-three/fiber';
 
 export const AMBIENT_LIGHT_INTENSITY = 0.6;
 export const DEFAULT_CAMERA_POS: Vector3 = [0, 0, 10];
@@ -12,15 +12,15 @@ export const GRID_SECTION_SIZE = 10;
 export const GRID_FADE_STRENGTH = 0;
 export const GRID_FADE_DISTANCE = 200;
 
-export const DARK_GREY = "#777";
-export const LIGHT_GREY = "#ddd";
-export const RED = "red";
+export const DARK_GREY = '#777';
+export const LIGHT_GREY = '#ddd';
+export const RED = 'red';
 
 export const CURVE_POINTS = 50;
 export const DASH_SIZE = 0.08;
 export const GAP_SIZE = 0.05;
 export const LINE_ANIMATION_RATE = 150;
-export const LINE_COLOR = "crimson";
-export const POSITION_LINE_COLOR = "royalblue";
+export const LINE_COLOR = 'crimson';
+export const POSITION_LINE_COLOR = 'royalblue';
 
 export const GEO_ROTATIONS = 100;

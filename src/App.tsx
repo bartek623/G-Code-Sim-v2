@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { Container, CssBaseline, styled } from '@mui/material';
+import { GlobalStore } from '@store';
+import { Notifications, MenuBtn } from '@UI';
+import { useState } from 'react';
 
-import { Container, CssBaseline, styled } from "@mui/material";
-
-import { CanvasThreeD, Maindrawer } from "./components";
-import { Notifications, MenuBtn } from "./UI";
-import { GlobalStore } from "./store";
+import { CanvasThreeD, Maindrawer } from './components';
 
 const StyledContainer = styled(Container)`
   position: relative;

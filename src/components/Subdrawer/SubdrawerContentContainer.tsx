@@ -1,9 +1,9 @@
-import { FormEvent, ReactNode } from "react";
-import { Stack, styled } from "@mui/material";
+import { Stack, styled } from '@mui/material';
+import { FormEvent, ReactNode } from 'react';
 
 type StyledContainerProps = {
   gap: number;
-  component: "form" | "div";
+  component: 'form' | 'div';
 };
 
 const StyledContainer = styled(Stack)<StyledContainerProps>`
@@ -16,14 +16,14 @@ const StyledContainer = styled(Stack)<StyledContainerProps>`
 type SubdrawerContainerProps = {
   children: ReactNode;
   gap?: number;
-  component?: "form" | "div";
+  component?: 'form' | 'div';
   onSubmit?: (e: FormEvent) => void;
 };
 
 export function SubdrawerContainer({
   children,
   gap = 1.5,
-  component = "div",
+  component = 'div',
   onSubmit = () => {},
 }: SubdrawerContainerProps) {
   return (

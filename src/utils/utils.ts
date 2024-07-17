@@ -1,10 +1,10 @@
-import { NOTIFICATION_TYPES, NotificationInfoType } from "../UI";
+import { NOTIFICATION_TYPES, NotificationInfoType } from '@UI';
 
 export const showError = (
   err: unknown,
-  notificationHandler: (notification: NotificationInfoType) => void
+  notificationHandler: (notification: NotificationInfoType) => void,
 ) => {
-  let msg = "Unknown error";
+  let msg = 'Unknown error';
   if (err instanceof Error) msg = err.message;
 
   console.error(err);

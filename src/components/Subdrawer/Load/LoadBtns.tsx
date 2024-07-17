@@ -1,10 +1,10 @@
-import { ChangeEvent, useState } from "react";
-import { Delete, Download, UploadFile } from "@mui/icons-material";
-import { DrawerBtn, DrawerBtnContainer, NOTIFICATION_TYPES } from "../../../UI";
-import { readUploadedFile } from "../utils";
-import { savedType } from "../types";
-import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import { useNotificationsContext } from "../../../store";
+import { Delete, Download, UploadFile } from '@mui/icons-material';
+import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
+import { useNotificationsContext } from '@store';
+import { DrawerBtn, DrawerBtnContainer, NOTIFICATION_TYPES } from '@UI';
+import { ChangeEvent, useState } from 'react';
+import { savedType } from '../types';
+import { readUploadedFile } from '../utils';
 
 type LoadBtnsProps = {
   updatePrograms: (programs: savedType[]) => void;
@@ -36,14 +36,14 @@ export function LoadBtns({ updatePrograms, currentPrograms }: LoadBtnsProps) {
 
     const { newPrograms, skipped } = await readUploadedFile(
       e.target.files[0],
-      currentPrograms
+      currentPrograms,
     );
     updatePrograms(newPrograms);
 
     if (skipped)
       pushNotification({
         message: `${skipped} ${
-          skipped > 1 ? "elements have" : "element has"
+          skipped > 1 ? 'elements have' : 'element has'
         } been skipped during processing. Please review and ensure all elements are valid and names are unique.`,
         type: NOTIFICATION_TYPES.warning,
       });
@@ -53,7 +53,7 @@ export function LoadBtns({ updatePrograms, currentPrograms }: LoadBtnsProps) {
         type: NOTIFICATION_TYPES.success,
       });
 
-    e.target.value = "";
+    e.target.value = '';
   };
 
   return (
@@ -62,15 +62,13 @@ export function LoadBtns({ updatePrograms, currentPrograms }: LoadBtnsProps) {
         <DrawerBtn
           tooltip="Delete all programs"
           color="error"
-          onClick={openDialogHandler}
-        >
+          onClick={openDialogHandler}>
           <Delete />
         </DrawerBtn>
 
         <DrawerBtn
           tooltip="Upload saved programs from JSON file"
-          component="label"
-        >
+          component="label">
           <UploadFile />
           <input type="file" accept=".json" hidden onChange={uploadHandler} />
         </DrawerBtn>
@@ -78,10 +76,9 @@ export function LoadBtns({ updatePrograms, currentPrograms }: LoadBtnsProps) {
         <DrawerBtn
           tooltip="Download saved programs to JSON file"
           href={`data:text/json;charset=utf-8,${encodeURIComponent(
-            JSON.stringify(currentPrograms)
+            JSON.stringify(currentPrograms),
           )}`}
-          download="GCodePrograms.json"
-        >
+          download="GCodePrograms.json">
           <Download />
         </DrawerBtn>
       </DrawerBtnContainer>

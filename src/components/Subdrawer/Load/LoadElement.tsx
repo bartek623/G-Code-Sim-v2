@@ -5,9 +5,9 @@ import {
   Tooltip,
   Typography,
   styled,
-} from "@mui/material";
-import { savedType } from "../types";
-import { DeleteBtn, LoadBtn } from "../../../UI";
+} from '@mui/material';
+import { DeleteBtn, LoadBtn } from '@UI';
+import { savedType } from '../types';
 
 const StyledContainer = styled(Paper)`
   display: flex;
@@ -30,7 +30,7 @@ export function LoadElement({
   searchText,
 }: LoadElementProps) {
   const isTitleLong = data.title.length > 16;
-  const title = isTitleLong ? data.title.slice(0, 13) + "..." : data.title;
+  const title = isTitleLong ? data.title.slice(0, 13) + '...' : data.title;
 
   const searchStartIndex = data.title.toLowerCase().indexOf(searchText);
   const searchEndIndex = searchStartIndex + searchText.length;
@@ -52,7 +52,7 @@ export function LoadElement({
   return (
     <StyledContainer variant="outlined">
       <Container disableGutters>
-        <Tooltip title={isTitleLong ? data.title : ""} followCursor>
+        <Tooltip title={isTitleLong ? data.title : ''} followCursor>
           <Typography variant="h6">
             {titleFirstPart}
             <b>{titleHighlightedPart}</b>
@@ -62,7 +62,7 @@ export function LoadElement({
         <Typography variant="subtitle2">{date}</Typography>
       </Container>
 
-      <Stack direction="row" sx={{ margin: "auto" }}>
+      <Stack direction="row" sx={{ margin: 'auto' }}>
         <LoadBtn onClick={loadHandler} />
         <DeleteBtn onClick={deleteHandler} />
       </Stack>

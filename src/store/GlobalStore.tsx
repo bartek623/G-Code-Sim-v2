@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
-import { NotificationsStore } from "./NotificationsContext";
-import { GeometryStore } from "./GeometryContext";
-import { ThemeProvider } from "@mui/material";
-import { theme } from "../theme";
+import { ThemeProvider } from '@mui/material';
+import { ReactNode } from 'react';
+import { theme } from '../theme';
+import { GeometryStore } from './GeometryContext';
+import { NotificationsStore } from './NotificationsContext';
 
 type GlobalStoreProps = {
   children: ReactNode | ReactNode[];

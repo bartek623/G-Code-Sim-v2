@@ -8,13 +8,11 @@ import {
   Save,
   Upload,
   ViewInAr,
-} from "@mui/icons-material";
-import { SUBDRAWER_MODES, subdrawerModesType } from "./constants";
-import { DrawerBtn } from "../../UI/Btns/DrawerBtn";
-import { DrawerBtnContainer } from "../../UI/Drawer/DrawerBtnContainer";
-import { ListMenuBtn } from "../../UI/Btns/ListMenuBtn";
-import { STLExporter } from "three/examples/jsm/Addons.js";
-import { useGeometryContext } from "../../store";
+} from '@mui/icons-material';
+import { useGeometryContext } from '@store';
+import { DrawerBtn, DrawerBtnContainer, ListMenuBtn } from '@UI';
+import { STLExporter } from 'three/examples/jsm/Addons.js';
+import { SUBDRAWER_MODES, subdrawerModesType } from './constants';
 
 type DrawerBtnsProps = {
   onAddNumbering: () => void;
@@ -47,12 +45,12 @@ export function MainDrawerBtns({
     const exporter = new STLExporter();
     const result = exporter.parse(geometryRef.current);
 
-    const blob = new Blob([result], { type: "text/plain" });
+    const blob = new Blob([result], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = url;
-    link.download = "GCodeModel.stl";
+    link.download = 'GCodeModel.stl';
     link.click();
     link.remove();
   };
@@ -65,41 +63,37 @@ export function MainDrawerBtns({
           {
             action: onAddNumbering,
             icon: <Add />,
-            text: "Add",
+            text: 'Add',
           },
           {
             action: onRemoveNumbering,
             icon: <Remove />,
-            text: "Remove",
+            text: 'Remove',
           },
-        ]}
-      >
+        ]}>
         <FormatListNumbered />
       </ListMenuBtn>
 
       <DrawerBtn
         tooltip="Show 3D model"
         onClick={onShowGeo}
-        variant={showGeometry ? "outlined" : "contained"}
-      >
+        variant={showGeometry ? 'outlined' : 'contained'}>
         <ViewInAr />
       </DrawerBtn>
 
       <DrawerBtn
         disabled={!showGeometry}
         tooltip="Export model to .stl file"
-        onClick={onExportSTL}
-      >
+        onClick={onExportSTL}>
         <FileDownload />
       </DrawerBtn>
 
       <ListMenuBtn
         tooltip="Save/load program"
         listItems={[
-          { action: onSaveHandler, icon: <Save />, text: "Save" },
-          { action: onLoadHandler, icon: <Upload />, text: "Load" },
-        ]}
-      >
+          { action: onSaveHandler, icon: <Save />, text: 'Save' },
+          { action: onLoadHandler, icon: <Upload />, text: 'Load' },
+        ]}>
         <Folder />
       </ListMenuBtn>
 

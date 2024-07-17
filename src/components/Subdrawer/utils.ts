@@ -1,11 +1,11 @@
-import { SAVED_TYPE, savedKeyType, savedType, savedValuesType } from "./types";
+import { SAVED_TYPE, savedKeyType, savedType, savedValuesType } from './types';
 
-const savedKey = "saved-programs";
+const savedKey = 'saved-programs';
 
 // This is saved element by default, created only if local storage was empty
 const defaultElement: savedType = {
-  title: "DEFAULT MOCKUP ELEMENT",
-  code: "G02 X1 Z1 R1\nG01 X4 Z1\nG02 X5 Z0 K-1",
+  title: 'DEFAULT MOCKUP ELEMENT',
+  code: 'G02 X1 Z1 R1\nG01 X4 Z1\nG02 X5 Z0 K-1',
   date: Date.now(),
 };
 
@@ -24,7 +24,7 @@ export const getSavedStorage = () => {
 
 export const isProgramObjectValid = (
   program: savedType,
-  currPrograms: savedType[]
+  currPrograms: savedType[],
 ): savedType | undefined => {
   const validProgram: Record<string, savedValuesType> = {};
 
@@ -44,7 +44,7 @@ export const isProgramObjectValid = (
 
 export const readUploadedFile = async (
   file: File,
-  currPrograms: savedType[]
+  currPrograms: savedType[],
 ) => {
   let skipped = 0;
   const newPrograms = [...currPrograms];

@@ -1,14 +1,14 @@
-import { ChangeEvent, RefObject, useEffect, useState } from "react";
-import { Stack, TextFieldProps } from "@mui/material";
+import { Stack, TextFieldProps } from '@mui/material';
+import { useNotificationsContext } from '@store';
+import { NOTIFICATION_TYPES } from '@UI';
+import { ChangeEvent, RefObject, useEffect, useState } from 'react';
 
-import { SubdrawerContainer } from "../SubdrawerContentContainer";
-import { savedType } from "../types";
-import { LoadElement } from "./LoadElement";
-import { getSavedStorage, setSavedStorage } from "../utils";
-import { NOTIFICATION_TYPES } from "../../../UI";
-import { LoadBtns } from "./LoadBtns";
-import { LoadSearch } from "./LoadSearch";
-import { useNotificationsContext } from "../../../store";
+import { SubdrawerContainer } from '../SubdrawerContentContainer';
+import { savedType } from '../types';
+import { getSavedStorage, setSavedStorage } from '../utils';
+import { LoadBtns } from './LoadBtns';
+import { LoadElement } from './LoadElement';
+import { LoadSearch } from './LoadSearch';
 
 type LoadProps = {
   textFieldRef: RefObject<TextFieldProps>;
@@ -18,7 +18,7 @@ type LoadProps = {
 
 export function Load({ textFieldRef, onClose, onRun }: LoadProps) {
   const [savedPrograms, setSavedPrograms] = useState<savedType[]>([]);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const { pushNotification } = useNotificationsContext();
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export function Load({ textFieldRef, onClose, onRun }: LoadProps) {
   };
 
   const searchHandler = (
-    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
     setSearchText(e.currentTarget.value.toLowerCase());
   };
@@ -81,8 +81,7 @@ export function Load({ textFieldRef, onClose, onRun }: LoadProps) {
         paddingTop={1}
         paddingBottom={1}
         overflow="auto"
-        height="100%"
-      >
+        height="100%">
         {LoadElements}
       </Stack>
       <LoadBtns

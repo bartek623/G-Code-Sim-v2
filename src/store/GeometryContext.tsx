@@ -1,3 +1,4 @@
+import { LineDataType } from '@utils';
 import {
   createContext,
   createRef,
@@ -6,9 +7,8 @@ import {
   RefObject,
   SetStateAction,
   useState,
-} from "react";
-import { Group } from "three";
-import { LineDataType } from "../utils/types";
+} from 'react';
+import { Group } from 'three';
 
 const geometryRef = createRef<Group>();
 
@@ -21,7 +21,7 @@ export type GeometryContextType = {
 };
 
 export const GeometryContext = createContext<GeometryContextType | undefined>(
-  undefined
+  undefined,
 );
 
 type GeometryStoreProps = {
@@ -34,8 +34,7 @@ export const GeometryStore = ({ children }: GeometryStoreProps) => {
 
   return (
     <GeometryContext.Provider
-      value={{ geometryRef, showGeometry, setShowGeometry, lines, setLines }}
-    >
+      value={{ geometryRef, showGeometry, setShowGeometry, lines, setLines }}>
       {children}
     </GeometryContext.Provider>
   );

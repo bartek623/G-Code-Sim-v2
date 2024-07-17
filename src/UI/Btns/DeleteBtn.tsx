@@ -1,5 +1,5 @@
-import { DeleteOutline } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
+import { DeleteOutline } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
 
 type DeleteBtnProps = { onClick: () => void };
 

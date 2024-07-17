@@ -1,12 +1,12 @@
-import { FormEvent, useEffect, useRef } from "react";
-import { TextField, Typography, styled } from "@mui/material";
+import { TextField, Typography, styled } from '@mui/material';
 
-import { SubdrawerContainer } from "../SubdrawerContentContainer";
-import { savedType } from "../types";
-import { getSavedStorage, setSavedStorage } from "../utils";
-import { NOTIFICATION_TYPES, DrawerBtnContainer, DrawerBtn } from "../../../UI";
-import { showError } from "../../../utils/utils";
-import { useNotificationsContext } from "../../../store";
+import { useNotificationsContext } from '@store';
+import { NOTIFICATION_TYPES, DrawerBtnContainer, DrawerBtn } from '@UI';
+import { showError } from '@utils';
+import { FormEvent, useEffect, useRef } from 'react';
+import { SubdrawerContainer } from '../SubdrawerContentContainer';
+import { savedType } from '../types';
+import { getSavedStorage, setSavedStorage } from '../utils';
 
 const StyledTypography = styled(Typography)`
   background-color: #f2f2f2;
@@ -40,15 +40,15 @@ export function Save({ program, onClose }: SaveProps) {
         date: Date.now(),
       };
 
-      if (program.length === 0) throw new Error("Your code is empty!");
+      if (program.length === 0) throw new Error('Your code is empty!');
 
-      if (data.title.length === 0) throw new Error("Set program title!");
+      if (data.title.length === 0) throw new Error('Set program title!');
 
       const currentPrograms = getSavedStorage();
 
       if (currentPrograms.some((el) => el.title === data.title))
         throw new Error(
-          "The title you entered is already taken! Try another one."
+          'The title you entered is already taken! Try another one.',
         );
 
       currentPrograms.unshift(data);

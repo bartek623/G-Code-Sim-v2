@@ -1,6 +1,6 @@
-import { Ref } from "react";
+import { CameraControls, Environment, Grid } from '@react-three/drei';
+import { Ref } from 'react';
 
-import { CameraControls, Environment, Grid } from "@react-three/drei";
 import {
   AMBIENT_LIGHT_INTENSITY,
   DARK_GREY,
@@ -14,7 +14,7 @@ import {
   GRID_ROTATION,
   GRID_SECTION_SIZE,
   LIGHT_GREY,
-} from "./constants";
+} from './constants';
 
 type CanvasSetupProps = {
   cameraControlsRef: Ref<CameraControls>;
@@ -23,7 +23,7 @@ type CanvasSetupProps = {
 export function CanvasSetup({ cameraControlsRef }: CanvasSetupProps) {
   return (
     <>
-      <ambientLight color={"#000"} intensity={AMBIENT_LIGHT_INTENSITY} />
+      <ambientLight color={'#000'} intensity={AMBIENT_LIGHT_INTENSITY} />
       <directionalLight position={DIRECT_LIGHT_POS} />
       <directionalLight position={DIRECT_LIGHT_POS2} />
       <Grid

@@ -1,11 +1,11 @@
-import { Vector2 } from "three";
-import { LINE_TYPE } from "../../utils/types";
-import { getCurvePoints, lineAnimation } from "./utils";
-import { useFrame } from "@react-three/fiber";
-import { LineSegment } from "./LineSegment";
-import { LineElementType } from "./types";
-import { LINE_ANIMATION_RATE } from "./constants";
-import { useGeometryContext } from "../../store";
+import { useFrame } from '@react-three/fiber';
+import { useGeometryContext } from '@store';
+import { LINE_TYPE } from '@utils';
+import { Vector2 } from 'three';
+import { LINE_ANIMATION_RATE } from './constants';
+import { LineSegment } from './LineSegment';
+import { LineElementType } from './types';
+import { getCurvePoints, lineAnimation } from './utils';
 
 export const LineElement = () => {
   const { geometryRef, lines: linesData } = useGeometryContext();
@@ -56,7 +56,7 @@ export const LineElement = () => {
     const rate = animationLength / LINE_ANIMATION_RATE;
 
     geometryRef.current?.children
-      .filter((object) => object.type === "Line2")
+      .filter((object) => object.type === 'Line2')
       .forEach(lineAnimation(lines, animationProgress, rate));
 
     animationProgress += rate;

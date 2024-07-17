@@ -1,4 +1,4 @@
-import { styled, TextField, TextFieldProps } from "@mui/material";
+import { styled, TextField, TextFieldProps } from '@mui/material';
 
 const StyledSearch = styled(TextField)`
   & input {

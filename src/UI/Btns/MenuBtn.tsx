@@ -1,5 +1,5 @@
-import { Menu } from "@mui/icons-material";
-import { IconButton, styled } from "@mui/material";
+import { Menu } from '@mui/icons-material';
+import { IconButton, styled } from '@mui/material';
 
 const StyledIconBtn = styled(IconButton)`
   position: absolute;

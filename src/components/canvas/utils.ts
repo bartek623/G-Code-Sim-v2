@@ -1,7 +1,7 @@
-import { EllipseCurve, Object3D } from "three";
-import { CURVE_POINTS, DASH_SIZE, GAP_SIZE } from "./constants";
-import { LINE_TYPE, LineDataType } from "../../utils/types";
-import { LineElementType } from "./types";
+import { LINE_TYPE, LineDataType } from '@utils';
+import { EllipseCurve, Object3D } from 'three';
+import { CURVE_POINTS, DASH_SIZE, GAP_SIZE } from './constants';
+import { LineElementType } from './types';
 
 export const getCurvePoints = (lineData: LineDataType) => {
   if (lineData.type !== LINE_TYPE.ARC)
@@ -12,7 +12,7 @@ export const getCurvePoints = (lineData: LineDataType) => {
   const angleEnd = Math.atan2(end.z - center.z, end.x - center.x);
 
   const radius = Math.sqrt(
-    (center.x - start.x) ** 2 + (center.z - start.z) ** 2
+    (center.x - start.x) ** 2 + (center.z - start.z) ** 2,
   );
 
   const curve = new EllipseCurve(
@@ -22,7 +22,7 @@ export const getCurvePoints = (lineData: LineDataType) => {
     radius,
     angleStart,
     angleEnd,
-    !counterClockwise
+    !counterClockwise,
   );
 
   return {

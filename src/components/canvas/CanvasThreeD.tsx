@@ -1,12 +1,11 @@
-import { useRef } from "react";
+import { CameraControls } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { ResetBtn } from '@UI';
+import { useRef } from 'react';
 
-import { Canvas } from "@react-three/fiber";
-import { CameraControls } from "@react-three/drei";
-
-import { CanvasSetup } from "./CanvasSetup";
-import { LineElement } from "./LineElement";
-import { ResetBtn } from "../../UI";
-import { DEFAULT_CAMERA_POS } from "./constants";
+import { CanvasSetup } from './CanvasSetup';
+import { DEFAULT_CAMERA_POS } from './constants';
+import { LineElement } from './LineElement';
 
 export function CanvasThreeD() {
   const cameraControlsRef = useRef<CameraControls>(null!);

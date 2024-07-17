@@ -1,5 +1,5 @@
-import { InfoOutlined } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
+import { InfoOutlined } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
 
 type InfoBtnProps = {
   onClick: () => void;

@@ -1,10 +1,10 @@
-import { createContext, ReactNode, useState } from "react";
 import {
   AUTOHIDE_TIME_RATE,
   MIN_AUTOHIDE_TIME,
   NotificationInfoType,
   SnackbarStateType,
-} from "../UI";
+} from '@UI';
+import { createContext, ReactNode, useRef, useState } from 'react';
 
 export type NotificationsContextType = {
   pushNotification: (notification: NotificationInfoType) => void;
@@ -21,31 +21,30 @@ type NotificationsStoreProps = {
 };
 
 export const NotificationsStore = ({ children }: NotificationsStoreProps) => {
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const [snackbarState, setSnackbarState] = useState<SnackbarStateType>({
     open: false,
-    message: "",
-    type: "success",
+    message: '',
+    type: 'success',
   });
-  const [snackbarTimer, setSnackbarTimer] = useState<
-    ReturnType<typeof setTimeout> | undefined
-  >(undefined);
 
   const hideNotification = (
     _?: React.SyntheticEvent | Event,
-    reason?: string
+    reason?: string,
   ) => {
-    if (reason === "clickaway") return;
+    if (reason === 'clickaway') return;
 
     setSnackbarState((prev) => ({ ...prev, open: false }));
   };
 
   const pushNotification = (notification: NotificationInfoType) => {
-    clearTimeout(snackbarTimer);
+    clearTimeout(timerRef.current);
 
-    setSnackbarTimer(
-      setTimeout(() => {
+    timerRef.current = setTimeout(
+      () => {
         hideNotification();
-      }, MIN_AUTOHIDE_TIME + AUTOHIDE_TIME_RATE * notification.message.length)
+      },
+      MIN_AUTOHIDE_TIME + AUTOHIDE_TIME_RATE * notification.message.length,
     );
 
     setSnackbarState({ ...notification, open: true });
@@ -53,8 +52,7 @@ export const NotificationsStore = ({ children }: NotificationsStoreProps) => {
 
   return (
     <NotificationsContext.Provider
-      value={{ pushNotification, hideNotification, snackbarState }}
-    >
+      value={{ pushNotification, hideNotification, snackbarState }}>
       {children}
     </NotificationsContext.Provider>
   );

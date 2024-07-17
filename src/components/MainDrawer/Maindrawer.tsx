@@ -1,26 +1,25 @@
-import { useRef, useState } from "react";
-import { TextFieldProps } from "@mui/material";
+import { TextFieldProps } from '@mui/material';
+import { useGeometryContext, useNotificationsContext } from '@store';
+import { NOTIFICATION_TYPES, Drawer } from '@UI';
+import { showError } from '@utils';
+import { useRef, useState } from 'react';
 
-import { Drawer } from "../../UI";
-import { Subdrawer } from "../Subdrawer";
-import {
-  addLinesNumbering,
-  convertProgramToLinesData,
-  removeLinesNumbering,
-} from "./utils";
-import { DrawerTextField } from "./DrawerTextField";
-import { MainDrawerBtns } from "./MainDrawerBtns";
+import { Subdrawer } from '../Subdrawer';
 import {
   MAINDRAWER_LABEL,
   SUBDRAWER_DEFAULT,
   SUBDRAWER_MODES,
   subdrawerModesType,
   subdrawerState,
-} from "./constants";
-import { NOTIFICATION_TYPES } from "../../UI/Notifications";
-import { showError } from "../../utils/utils";
-import { InfoModal } from "./InfoModal";
-import { useGeometryContext, useNotificationsContext } from "../../store";
+} from './constants';
+import { DrawerTextField } from './DrawerTextField';
+import { InfoModal } from './InfoModal';
+import { MainDrawerBtns } from './MainDrawerBtns';
+import {
+  addLinesNumbering,
+  convertProgramToLinesData,
+  removeLinesNumbering,
+} from './utils';
 
 type DrawerProps = {
   isOpen: boolean;
@@ -63,7 +62,7 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
     textFieldRef.current.value = addLinesNumbering(program);
 
     pushNotification({
-      message: "Added lines numbering",
+      message: 'Added lines numbering',
       type: NOTIFICATION_TYPES.info,
     });
   };
@@ -76,14 +75,14 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
     textFieldRef.current.value = removeLinesNumbering(program);
 
     pushNotification({
-      message: "Removed lines numbering",
+      message: 'Removed lines numbering',
       type: NOTIFICATION_TYPES.info,
     });
   };
 
   const toggleGeoHandler = () => {
     setShowGeometry((prev) => {
-      const msg = `${prev ? "Hiding" : "Showing"} model`;
+      const msg = `${prev ? 'Hiding' : 'Showing'} model`;
       pushNotification({ message: msg, type: NOTIFICATION_TYPES.info });
 
       return !prev;
@@ -112,8 +111,7 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
       onClose={onClose}
       label={MAINDRAWER_LABEL}
       variant="persistent"
-      onModalOpen={openModalHandler}
-    >
+      onModalOpen={openModalHandler}>
       <DrawerTextField textFieldRef={textFieldRef} />
       <MainDrawerBtns
         onAddNumbering={addNumberingHandler}
