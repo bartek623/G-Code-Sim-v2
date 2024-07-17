@@ -1,1 +1,1 @@
-export * from "./CanvasThreeD";
+export * from './CanvasThreeD';

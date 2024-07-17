@@ -1,5 +1,5 @@
-import { DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import { ReactNode } from "react";
+import { DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { ReactNode } from 'react';
 
 type ModalTextProps = {
   title: string;
@@ -10,13 +10,13 @@ type ModalTextProps = {
 export function ModalText({
   title,
   children,
-  titleColor = "primary",
+  titleColor = 'primary',
 }: ModalTextProps) {
   return (
     <>
       <DialogTitle color={titleColor}>{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText component={"div"}>{children}</DialogContentText>
+        <DialogContentText component={'div'}>{children}</DialogContentText>
       </DialogContent>
     </>
   );

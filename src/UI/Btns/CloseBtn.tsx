@@ -1,5 +1,5 @@
-import { Close } from "@mui/icons-material";
-import { IconButton, IconButtonProps } from "@mui/material";
+import { Close } from '@mui/icons-material';
+import { IconButton, IconButtonProps } from '@mui/material';
 
 type CloseBtnProps = IconButtonProps & {
   onClose: () => void;

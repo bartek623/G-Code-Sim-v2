@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import { Breakpoint, Dialog, styled } from "@mui/material";
-import { CloseBtn } from "../Btns";
+import { Breakpoint, Dialog, styled } from '@mui/material';
+import { ReactNode } from 'react';
+import { CloseBtn } from '../Btns';
 
 const StyledCloseBtn = styled(CloseBtn)`
   position: absolute;
@@ -15,15 +15,14 @@ type ModalProps = {
   size?: Breakpoint;
 };
 
-export function Modal({ isOpen, onClose, children, size = "sm" }: ModalProps) {
+export function Modal({ isOpen, onClose, children, size = 'sm' }: ModalProps) {
   return (
     <Dialog
       open={isOpen}
       onClose={onClose}
       fullWidth
       maxWidth={size}
-      scroll="body"
-    >
+      scroll="body">
       <StyledCloseBtn onClose={onClose} />
       {children}
     </Dialog>

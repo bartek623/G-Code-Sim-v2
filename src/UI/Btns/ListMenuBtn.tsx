@@ -1,6 +1,6 @@
-import { MouseEvent, ReactNode, useState } from "react";
-import { DrawerBtn } from "./DrawerBtn";
-import { listItemObject, ListMenuItem, ListMenu } from "../ListMenu";
+import { MouseEvent, ReactNode, useState } from 'react';
+import { listItemObject, ListMenuItem, ListMenu } from '../ListMenu';
+import { DrawerBtn } from './DrawerBtn';
 
 type ListMenuBtnProps = {
   tooltip: string;
@@ -41,18 +41,16 @@ export function ListMenuBtn({
     <>
       <DrawerBtn
         tooltip={tooltip}
-        variant={anchorEl ? "outlined" : "contained"}
+        variant={anchorEl ? 'outlined' : 'contained'}
         onMouseOver={handleOpen}
-        onMouseLeave={setHoverTimer}
-      >
+        onMouseLeave={setHoverTimer}>
         {children}
       </DrawerBtn>
 
       <ListMenu
         anchorEl={anchorEl}
         onHover={clearHoverTimer}
-        onUnhover={setHoverTimer}
-      >
+        onUnhover={setHoverTimer}>
         {listItems.map((item, i, items) => (
           <ListMenuItem
             item={item}

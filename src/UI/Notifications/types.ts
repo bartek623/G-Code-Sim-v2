@@ -1,10 +1,10 @@
-import { ValuesType } from "@utils";
+import { ValuesType } from '@utils';
 
 export const NOTIFICATION_TYPES = {
-  success: "success",
-  error: "error",
-  info: "info",
-  warning: "warning",
+  success: 'success',
+  error: 'error',
+  info: 'info',
+  warning: 'warning',
 } as const;
 
 type NotificationType = ValuesType<typeof NOTIFICATION_TYPES>;
@@ -15,4 +15,4 @@ export type SnackbarStateType = {
   type: NotificationType;
 };
 
-export type NotificationInfoType = Omit<SnackbarStateType, "open">;
+export type NotificationInfoType = Omit<SnackbarStateType, 'open'>;

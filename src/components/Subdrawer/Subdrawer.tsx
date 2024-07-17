@@ -1,16 +1,16 @@
-import { RefObject, useState } from "react";
-import { TextFieldProps } from "@mui/material";
+import { TextFieldProps } from '@mui/material';
+import { Drawer } from '@UI';
+import { RefObject, useState } from 'react';
 
 import {
   SUBDRAWER_LABEL,
   SUBDRAWER_MODES,
   subdrawerState,
-} from "../MainDrawer/constants";
-import { Drawer } from "@UI";
-import { Save } from "./Save/Save";
-import { Load } from "./Load/Load";
-import { SaveInfoModal } from "./Save/SaveInfoModal";
-import { LoadInfoModal } from "./Load/LoadInfoModal";
+} from '../MainDrawer/constants';
+import { Load } from './Load/Load';
+import { LoadInfoModal } from './Load/LoadInfoModal';
+import { Save } from './Save/Save';
+import { SaveInfoModal } from './Save/SaveInfoModal';
 
 type SubdrawerProps = {
   state: subdrawerState;
@@ -40,8 +40,7 @@ export function Subdrawer({
       label={SUBDRAWER_LABEL[state.mode]}
       onClose={onClose}
       isOpen={state.open}
-      onModalOpen={openModalHandler}
-    >
+      onModalOpen={openModalHandler}>
       {state.mode === SUBDRAWER_MODES.save && (
         <>
           <Save

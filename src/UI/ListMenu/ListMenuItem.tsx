@@ -3,8 +3,8 @@ import {
   ListItemText,
   MenuItem,
   MenuItemProps,
-} from "@mui/material";
-import { ReactNode } from "react";
+} from '@mui/material';
+import { ReactNode } from 'react';
 
 export type listItemObject = {
   action: () => void;

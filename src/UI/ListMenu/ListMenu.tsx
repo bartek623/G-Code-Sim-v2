@@ -1,5 +1,5 @@
-import { Grow, MenuList, Paper, Popper, styled } from "@mui/material";
-import { ReactNode } from "react";
+import { Grow, MenuList, Paper, Popper, styled } from '@mui/material';
+import { ReactNode } from 'react';
 
 const StyledListContainer = styled(Paper)`
   margin: ${({ theme }) => theme.spacing(0.5)};
@@ -24,15 +24,13 @@ export function ListMenu({
       anchorEl={anchorEl}
       role={undefined}
       transition
-      disablePortal
-    >
+      disablePortal>
       {({ TransitionProps }) => (
         <Grow
           {...TransitionProps}
           style={{
-            transformOrigin: "center bottom",
-          }}
-        >
+            transformOrigin: 'center bottom',
+          }}>
           <StyledListContainer>
             <MenuList onMouseOver={onHover} onMouseLeave={onUnhover}>
               {children}

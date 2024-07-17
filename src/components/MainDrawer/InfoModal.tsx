@@ -1,9 +1,9 @@
-import { List, ListItem as MuiListItem } from "@mui/material";
-import { Modal, ModalText } from "@UI";
-import { ReactNode } from "react";
+import { List, ListItem as MuiListItem } from '@mui/material';
+import { Modal, ModalText } from '@UI';
+import { ReactNode } from 'react';
 
 const ListItem = ({ children }: { children: ReactNode }) => (
-  <MuiListItem sx={{ display: "list-item" }}>{children}</MuiListItem>
+  <MuiListItem sx={{ display: 'list-item' }}>{children}</MuiListItem>
 );
 
 type InfoModalProps = {
@@ -26,7 +26,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
       <ModalText title="How to read G-code commands?">
         G-code command structure: <b>G</b>[ ] <b>X</b>[ ] <b>Z</b>[ ] <b>R</b>[
         ] <b>I</b>[ ] <b>K</b>[ ]
-        <List sx={{ listStyleType: "disc", listStylePosition: "inside" }}>
+        <List sx={{ listStyleType: 'disc', listStylePosition: 'inside' }}>
           <ListItem>
             <b>G</b> specifies the type of operation or motion a machinge tool
             should undertake. It is essentially a preparatory command that
@@ -63,8 +63,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
         </ModalText>
         <ModalText
           title="G02 - circular interpolation clockwise"
-          titleColor="inherit"
-        >
+          titleColor="inherit">
           The <b>G02</b> command tells the machine to move clockwise in a
           circular pattern. It starts with current position and moves to a
           specified point with X and Z arguments. Also there is need to define
@@ -75,8 +74,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
         </ModalText>
         <ModalText
           title="G03 - circular interpolation counterclockwise"
-          titleColor="inherit"
-        >
+          titleColor="inherit">
           The <b>G03</b> command is similar to G02 but directs the tool to
           execute a counterclockwise circular interpolation.
         </ModalText>

@@ -1,5 +1,5 @@
-import { LineDataType, LINE_TYPE, PointType, LineType } from "@utils";
-import { ERROR_MSG, GCODE, GCODE_CMD } from "./constants";
+import { LineDataType, LINE_TYPE, PointType, LineType } from '@utils';
+import { ERROR_MSG, GCODE, GCODE_CMD } from './constants';
 
 type LinePropsType = {
   type: LineType | undefined;
@@ -41,7 +41,7 @@ const getCenterWithRadius = (
   radius: number,
   start: PointType,
   end: PointType,
-  dir: 1 | -1
+  dir: 1 | -1,
 ) => {
   const distanceBetweenPointsSquared =
     (end.x - start.x) ** 2 + (end.z - start.z) ** 2;
@@ -77,7 +77,7 @@ const getCenterWithRadius = (
 const calcCenter = (
   lineProps: LinePropsType,
   prevValues: cmdValuesType,
-  warningFn: (msg: string) => void
+  warningFn: (msg: string) => void,
 ) => {
   if (lineProps.center.x === undefined && lineProps.center.z === undefined) {
     if (!lineProps.radius) {
@@ -90,7 +90,7 @@ const calcCenter = (
       lineProps.radius,
       lineProps.start,
       lineProps.end,
-      dir
+      dir,
     );
     lineProps.center.x = calculatedCenter.x;
     lineProps.center.z = calculatedCenter.z;
@@ -108,7 +108,7 @@ const readCommands =
   (
     lineProps: LinePropsType,
     prevValues: cmdValuesType,
-    warningFn: (msg: string) => void
+    warningFn: (msg: string) => void,
   ) =>
   (command: string) => {
     const code = command[0];
@@ -153,14 +153,14 @@ const readCommands =
 
 export const convertProgramToLinesData = (
   program: string,
-  warningFn: (msg: string) => void = () => {}
+  warningFn: (msg: string) => void = () => {},
 ): LineDataType[] | undefined => {
   if (!program.length) return;
-  if (program.includes("M")) warningFn(ERROR_MSG.M);
+  if (program.includes('M')) warningFn(ERROR_MSG.M);
 
   const programLines = program
-    .split("\n")
-    .filter((line) => !line.includes("M") && line.trim().length);
+    .split('\n')
+    .filter((line) => !line.includes('M') && line.trim().length);
   const currentToolPosition: PointType = { x: 0, z: 0 };
   const prevValues = {
     x: 0,
@@ -186,16 +186,16 @@ export const convertProgramToLinesData = (
       warningFn(`[N${lineProps.lineNumber}] ${msg}`);
 
     const commandLine = line.trim();
-    const singleCommands = commandLine.split(" ");
+    const singleCommands = commandLine.split(' ');
 
-    if (!commandLine.includes("N")) {
+    if (!commandLine.includes('N')) {
       lineProps.lineNumber = prevValues.n =
         Math.ceil((prevValues.n + 1) / 10) * 10;
     }
 
     try {
       singleCommands.forEach(
-        readCommands(lineProps, prevValues, numberedWarningFn)
+        readCommands(lineProps, prevValues, numberedWarningFn),
       );
 
       if (!lineProps.type) throw new Error(ERROR_MSG.line);
@@ -230,7 +230,7 @@ export const convertProgramToLinesData = (
       if (err instanceof Error)
         // throw Error with line number
         throw new Error(`[N${lineProps.lineNumber}] ${err.message}`);
-      else throw new Error("Unknown error");
+      else throw new Error('Unknown error');
     }
   });
 
@@ -241,9 +241,9 @@ export const addLinesNumbering = (program: string) => {
   let currentLineNumber = 0;
   const withComments = program
     .trim()
-    .split("\n")
+    .split('\n')
     .map((line): string => {
-      if (line.includes("N")) {
+      if (line.includes('N')) {
         currentLineNumber =
           Number(/N\w+/.exec(line)?.at(0)?.slice(1)) || currentLineNumber;
         return line;
@@ -252,7 +252,7 @@ export const addLinesNumbering = (program: string) => {
         return `N${currentLineNumber} ${line.trim()}`;
       }
     })
-    .join("\n");
+    .join('\n');
 
   return withComments;
 };
@@ -260,14 +260,14 @@ export const addLinesNumbering = (program: string) => {
 export const removeLinesNumbering = (program: string) => {
   const withoutComments = program
     .trim()
-    .split("\n")
+    .split('\n')
     .map((line) =>
       line
-        .split(" ")
-        .filter((cmd) => !cmd.includes("N"))
-        .join(" ")
+        .split(' ')
+        .filter((cmd) => !cmd.includes('N'))
+        .join(' '),
     )
-    .join("\n");
+    .join('\n');
 
   return withoutComments;
 };

@@ -1,5 +1,5 @@
-import { UploadOutlined } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
+import { UploadOutlined } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
 
 type LoadBtnProps = { onClick: () => void };
 

@@ -1,4 +1,4 @@
-import { ValuesType } from "@utils";
+import { ValuesType } from '@utils';
 
 export const SAVED_TYPE = {
   title: String(),

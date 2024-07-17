@@ -1,5 +1,5 @@
-import { DoubleSide, LatheGeometry, Vector2 } from "three";
-import { GEO_ROTATIONS } from "./constants";
+import { DoubleSide, LatheGeometry, Vector2 } from 'three';
+import { GEO_ROTATIONS } from './constants';
 
 type PointsToGeometryProps = {
   pointsData: Vector2[];
@@ -7,11 +7,11 @@ type PointsToGeometryProps = {
 
 export function PointsToGeometry({ pointsData }: PointsToGeometryProps) {
   const rotatedPoints = pointsData.map((p) =>
-    p.rotateAround(new Vector2(0, 0), Math.PI / 2)
+    p.rotateAround(new Vector2(0, 0), Math.PI / 2),
   );
 
   const geometry = new LatheGeometry(rotatedPoints, GEO_ROTATIONS).rotateZ(
-    -Math.PI / 2
+    -Math.PI / 2,
   );
 
   return (

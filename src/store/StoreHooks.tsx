@@ -1,8 +1,8 @@
-import { Context, useContext } from "react";
-import { GeometryContext } from "./GeometryContext";
-import { NotificationsContext } from "./NotificationsContext";
+import { Context, useContext } from 'react';
+import { GeometryContext } from './GeometryContext';
+import { NotificationsContext } from './NotificationsContext';
 
-const CTX_ERROR_MSG = "Context hook must be inside provider";
+const CTX_ERROR_MSG = 'Context hook must be inside provider';
 
 function createContextHook<T>(Context: Context<T>) {
   return () => {

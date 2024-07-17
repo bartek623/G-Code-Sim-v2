@@ -1,8 +1,8 @@
-import { Line } from "@react-three/drei";
-import { LINE_COLOR, POSITION_LINE_COLOR } from "./constants";
-import { PointsToGeometry } from "./PointsToGeometry";
-import { LineElementType } from "./types";
-import { useGeometryContext } from "@store";
+import { Line } from '@react-three/drei';
+import { useGeometryContext } from '@store';
+import { LINE_COLOR, POSITION_LINE_COLOR } from './constants';
+import { PointsToGeometry } from './PointsToGeometry';
+import { LineElementType } from './types';
 
 type LineSegmentProps = {
   line: LineElementType;

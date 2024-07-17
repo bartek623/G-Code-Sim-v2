@@ -18,6 +18,6 @@ export const typography = {
   subtitle2: {
     fontSize: 12,
     letterSpacing: 1,
-    color: "#888",
+    color: '#888',
   },
 };
