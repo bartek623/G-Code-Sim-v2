@@ -1,9 +1,4 @@
-import {
-  LineDataType,
-  LINE_TYPE,
-  PointType,
-  LineType,
-} from "../../utils/types";
+import { LineDataType, LINE_TYPE, PointType, LineType } from "@utils";
 import { ERROR_MSG, GCODE, GCODE_CMD } from "./constants";
 
 type LinePropsType = {

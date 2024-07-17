@@ -5,10 +5,10 @@ import { SubdrawerContainer } from "../SubdrawerContentContainer";
 import { savedType } from "../types";
 import { LoadElement } from "./LoadElement";
 import { getSavedStorage, setSavedStorage } from "../utils";
-import { NOTIFICATION_TYPES } from "../../../UI";
+import { NOTIFICATION_TYPES } from "@UI";
 import { LoadBtns } from "./LoadBtns";
 import { LoadSearch } from "./LoadSearch";
-import { useNotificationsContext } from "../../../store";
+import { useNotificationsContext } from "@store";
 
 type LoadProps = {
   textFieldRef: RefObject<TextFieldProps>;

@@ -1,11 +1,11 @@
 import { Vector2 } from "three";
-import { LINE_TYPE } from "../../utils/types";
+import { LINE_TYPE } from "@utils";
 import { getCurvePoints, lineAnimation } from "./utils";
 import { useFrame } from "@react-three/fiber";
 import { LineSegment } from "./LineSegment";
 import { LineElementType } from "./types";
 import { LINE_ANIMATION_RATE } from "./constants";
-import { useGeometryContext } from "../../store";
+import { useGeometryContext } from "@store";
 
 export const LineElement = () => {
   const { geometryRef, lines: linesData } = useGeometryContext();

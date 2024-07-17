@@ -1,4 +1,4 @@
-import { NOTIFICATION_TYPES, NotificationInfoType } from "../UI";
+import { NOTIFICATION_TYPES, NotificationInfoType } from "@UI";
 
 export const showError = (
   err: unknown,

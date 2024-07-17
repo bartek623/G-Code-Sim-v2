@@ -1,5 +1,5 @@
 import { Alert, Snackbar } from "@mui/material";
-import { useNotificationsContext } from "../../store";
+import { useNotificationsContext } from "@store";
 
 export function Notifications() {
   const { snackbarState, hideNotification } = useNotificationsContext();

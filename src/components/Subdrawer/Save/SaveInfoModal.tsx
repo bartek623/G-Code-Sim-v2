@@ -1,4 +1,4 @@
-import { Modal, ModalText } from "../../../UI/Modal";
+import { Modal, ModalText } from "@UI";
 
 type SaveInfoModalProps = {
   isOpen: boolean;

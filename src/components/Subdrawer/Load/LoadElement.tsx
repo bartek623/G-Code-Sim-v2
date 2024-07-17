@@ -7,7 +7,7 @@ import {
   styled,
 } from "@mui/material";
 import { savedType } from "../types";
-import { DeleteBtn, LoadBtn } from "../../../UI";
+import { DeleteBtn, LoadBtn } from "@UI";
 
 const StyledContainer = styled(Paper)`
   display: flex;

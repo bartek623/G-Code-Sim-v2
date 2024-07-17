@@ -1,12 +1,12 @@
 import { FormEvent, useEffect, useRef } from "react";
 import { TextField, Typography, styled } from "@mui/material";
 
+import { NOTIFICATION_TYPES, DrawerBtnContainer, DrawerBtn } from "@UI";
+import { showError } from "@utils";
+import { useNotificationsContext } from "@store";
 import { SubdrawerContainer } from "../SubdrawerContentContainer";
 import { savedType } from "../types";
 import { getSavedStorage, setSavedStorage } from "../utils";
-import { NOTIFICATION_TYPES, DrawerBtnContainer, DrawerBtn } from "../../../UI";
-import { showError } from "../../../utils/utils";
-import { useNotificationsContext } from "../../../store";
 
 const StyledTypography = styled(Typography)`
   background-color: #f2f2f2;

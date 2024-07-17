@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Breakpoint, Dialog, styled } from "@mui/material";
-import { CloseBtn } from "..";
+import { CloseBtn } from "../Btns";
 
 const StyledCloseBtn = styled(CloseBtn)`
   position: absolute;

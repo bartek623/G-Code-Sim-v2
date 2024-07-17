@@ -6,7 +6,7 @@ import {
   SUBDRAWER_MODES,
   subdrawerState,
 } from "../MainDrawer/constants";
-import { Drawer } from "../../UI";
+import { Drawer } from "@UI";
 import { Save } from "./Save/Save";
 import { Load } from "./Load/Load";
 import { SaveInfoModal } from "./Save/SaveInfoModal";

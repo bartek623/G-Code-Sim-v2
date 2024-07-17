@@ -1,4 +1,4 @@
-import { LINE_TYPE } from "../../utils/types";
+import { LINE_TYPE } from "@utils";
 import { ERROR_MSG } from "./constants";
 import {
   addLinesNumbering,

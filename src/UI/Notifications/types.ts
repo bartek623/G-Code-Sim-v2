@@ -1,4 +1,4 @@
-import { ValuesType } from "../../utils/types";
+import { ValuesType } from "@utils";
 
 export const NOTIFICATION_TYPES = {
   success: "success",

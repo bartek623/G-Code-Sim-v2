@@ -1,10 +1,10 @@
 import { ChangeEvent, useState } from "react";
 import { Delete, Download, UploadFile } from "@mui/icons-material";
-import { DrawerBtn, DrawerBtnContainer, NOTIFICATION_TYPES } from "../../../UI";
+import { DrawerBtn, DrawerBtnContainer, NOTIFICATION_TYPES } from "@UI";
 import { readUploadedFile } from "../utils";
 import { savedType } from "../types";
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import { useNotificationsContext } from "../../../store";
+import { useNotificationsContext } from "@store";
 
 type LoadBtnsProps = {
   updatePrograms: (programs: savedType[]) => void;

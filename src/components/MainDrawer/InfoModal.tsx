@@ -1,5 +1,5 @@
 import { List, ListItem as MuiListItem } from "@mui/material";
-import { Modal, ModalText } from "../../UI/Modal";
+import { Modal, ModalText } from "@UI";
 import { ReactNode } from "react";
 
 const ListItem = ({ children }: { children: ReactNode }) => (

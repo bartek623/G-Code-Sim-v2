@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { Group } from "three";
-import { LineDataType } from "../utils/types";
+import { LineDataType } from "@utils";
 
 const geometryRef = createRef<Group>();
 

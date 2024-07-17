@@ -10,11 +10,9 @@ import {
   ViewInAr,
 } from "@mui/icons-material";
 import { SUBDRAWER_MODES, subdrawerModesType } from "./constants";
-import { DrawerBtn } from "../../UI/Btns/DrawerBtn";
-import { DrawerBtnContainer } from "../../UI/Drawer/DrawerBtnContainer";
-import { ListMenuBtn } from "../../UI/Btns/ListMenuBtn";
+import { DrawerBtn, DrawerBtnContainer, ListMenuBtn } from "@UI";
 import { STLExporter } from "three/examples/jsm/Addons.js";
-import { useGeometryContext } from "../../store";
+import { useGeometryContext } from "@store";
 
 type DrawerBtnsProps = {
   onAddNumbering: () => void;

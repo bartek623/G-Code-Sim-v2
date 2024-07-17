@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { TextFieldProps } from "@mui/material";
 
-import { Drawer } from "../../UI";
 import { Subdrawer } from "../Subdrawer";
 import {
   addLinesNumbering,
@@ -17,10 +16,10 @@ import {
   subdrawerModesType,
   subdrawerState,
 } from "./constants";
-import { NOTIFICATION_TYPES } from "../../UI/Notifications";
-import { showError } from "../../utils/utils";
+import { NOTIFICATION_TYPES, Drawer } from "@UI";
+import { showError } from "@utils";
 import { InfoModal } from "./InfoModal";
-import { useGeometryContext, useNotificationsContext } from "../../store";
+import { useGeometryContext, useNotificationsContext } from "@store";
 
 type DrawerProps = {
   isOpen: boolean;

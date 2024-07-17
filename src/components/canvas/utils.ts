@@ -1,6 +1,6 @@
 import { EllipseCurve, Object3D } from "three";
 import { CURVE_POINTS, DASH_SIZE, GAP_SIZE } from "./constants";
-import { LINE_TYPE, LineDataType } from "../../utils/types";
+import { LINE_TYPE, LineDataType } from "@utils";
 import { LineElementType } from "./types";
 
 export const getCurvePoints = (lineData: LineDataType) => {

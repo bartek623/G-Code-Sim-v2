@@ -5,7 +5,7 @@ import { CameraControls } from "@react-three/drei";
 
 import { CanvasSetup } from "./CanvasSetup";
 import { LineElement } from "./LineElement";
-import { ResetBtn } from "../../UI";
+import { ResetBtn } from "@UI";
 import { DEFAULT_CAMERA_POS } from "./constants";
 
 export function CanvasThreeD() {
