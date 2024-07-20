@@ -1,7 +1,13 @@
-import { Stack, TextFieldProps } from '@mui/material';
+import { LinearProgress, Stack, TextFieldProps } from '@mui/material';
 import { useNotificationsContext } from '@store';
 import { NOTIFICATION_TYPES } from '@UI';
-import { ChangeEvent, RefObject, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  RefObject,
+  useEffect,
+  useState,
+  useTransition,
+} from 'react';
 
 import { SubdrawerContainer } from '../SubdrawerContentContainer';
 import { savedType } from '../types';
@@ -17,12 +23,13 @@ type LoadProps = {
 };
 
 export function Load({ textFieldRef, onClose, onRun }: LoadProps) {
+  const [isPending, startTransition] = useTransition();
   const [savedPrograms, setSavedPrograms] = useState<savedType[]>([]);
   const [searchText, setSearchText] = useState('');
   const { pushNotification } = useNotificationsContext();
 
   useEffect(() => {
-    setSavedPrograms(getSavedStorage());
+    startTransition(() => setSavedPrograms(getSavedStorage()));
   }, []);
 
   const updatePrograms = (programs: savedType[]) => {
@@ -73,17 +80,21 @@ export function Load({ textFieldRef, onClose, onRun }: LoadProps) {
   return (
     <SubdrawerContainer>
       <LoadSearch onChange={searchHandler} />
-      <Stack
-        borderTop={1}
-        borderBottom={1}
-        borderColor="grey.300"
-        spacing={1.5}
-        paddingTop={1}
-        paddingBottom={1}
-        overflow="auto"
-        height="100%">
-        {LoadElements}
-      </Stack>
+      {isPending ? (
+        <LinearProgress />
+      ) : (
+        <Stack
+          borderTop={1}
+          borderBottom={1}
+          borderColor="grey.300"
+          spacing={1.5}
+          paddingTop={1}
+          paddingBottom={1}
+          overflow="auto"
+          height="100%">
+          {LoadElements}
+        </Stack>
+      )}
       <LoadBtns
         updatePrograms={updatePrograms}
         currentPrograms={savedPrograms}
