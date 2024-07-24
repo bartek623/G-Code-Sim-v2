@@ -1,7 +1,7 @@
 import { CameraControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { ResetBtn } from '@UI';
-import { useRef } from 'react';
+import { memo, useRef } from 'react';
 
 import { CanvasSetup } from './CanvasSetup';
 import { DEFAULT_CAMERA_POS } from './constants';
@@ -24,3 +24,5 @@ export function CanvasThreeD() {
     </>
   );
 }
+
+export const MemoCanvas = memo(CanvasThreeD);
