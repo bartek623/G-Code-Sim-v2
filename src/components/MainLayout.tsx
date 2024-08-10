@@ -1,13 +1,14 @@
 import { Container, styled } from '@mui/material';
-import { useState } from 'react';
-import { MemoCanvas } from './canvas';
+import { lazy, memo, Suspense, useState } from 'react';
 import { Maindrawer } from './MainDrawer';
-import { MenuBtn } from '@/UI';
+import { LoadingScreen, MenuBtn } from '@/UI';
 
 const StyledContainer = styled(Container)`
   position: relative;
   height: 100dvh;
 `;
+
+const Canvas = memo(lazy(() => import('./canvas/CanvasThreeD')));
 
 export function MainLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
@@ -24,7 +25,9 @@ export function MainLayout() {
     <>
       <StyledContainer disableGutters maxWidth={false}>
         <MenuBtn onClick={openMenuHandler} />
-        <MemoCanvas />
+        <Suspense fallback={<LoadingScreen />}>
+          <Canvas />
+        </Suspense>
       </StyledContainer>
       <Maindrawer isOpen={isDrawerOpen} onClose={closeMenuHandler} />
     </>
