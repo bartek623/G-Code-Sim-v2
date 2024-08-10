@@ -3,3 +3,4 @@ export * from './Drawer';
 export * from './Notifications';
 export * from './Modal';
 export * from './ListMenu';
+export * from './LoadingScreen';
