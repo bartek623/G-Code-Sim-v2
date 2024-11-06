@@ -37,6 +37,7 @@ module.exports = {
           order: 'asc',
           caseInsensitive: true,
         },
+        endOfLine: 'auto',
       },
     ],
     'prettier/prettier': 'error',

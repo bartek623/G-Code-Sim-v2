@@ -5,9 +5,15 @@ import { Vector2 } from 'three';
 import { LINE_ANIMATION_RATE } from './constants';
 import { LineSegment } from './LineSegment';
 import { LineElementType } from './types';
-import { getCurvePoints, lineAnimation } from './utils';
+import { getCurrentPoint, getCurvePoints, lineAnimation } from './utils';
+import { Dispatch, memo } from 'react';
+import { LatheDispatchType } from './CanvasThreeD';
 
-export const LineElement = () => {
+type LineElementProps = {
+  updateLathePoints: Dispatch<Partial<LatheDispatchType>>;
+};
+
+export const LineElement = ({ updateLathePoints }: LineElementProps) => {
   const { geometryRef, lines: linesData } = useGeometryContext();
   const geometryPoints: Vector2[] = [];
   const lines: LineElementType[] = [];
@@ -50,8 +56,16 @@ export const LineElement = () => {
     }
   });
 
+  updateLathePoints({ type: 'clear' });
+
   useFrame(() => {
-    if (animationProgress > animationLength) return;
+    if (animationProgress > animationLength || !lines.length) return;
+
+    const currentPoint = getCurrentPoint(geometryPoints, animationProgress);
+    updateLathePoints({
+      type: 'add',
+      payload: currentPoint.clone(),
+    });
 
     const rate = animationLength / LINE_ANIMATION_RATE;
 
@@ -70,3 +84,5 @@ export const LineElement = () => {
     </group>
   );
 };
+
+export const LineElementMemo = memo(LineElement);

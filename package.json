@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.21",
+    "@react-three/csg": "^3.2.0",
     "@react-three/drei": "^9.108.1",
     "@react-three/fiber": "^8.16.8",
     "jest-environment-jsdom": "^29.7.0",
