@@ -8,7 +8,7 @@ const StyledTextField = styled(TextField)`
 `;
 
 export function MaterialInputs() {
-  const { setRadius, setLength } = useGeometryContext();
+  const { setRadius, setLength, cylinderSize } = useGeometryContext();
 
   const changeRadiusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setRadius(+e.target.value || 0);
@@ -25,6 +25,7 @@ export function MaterialInputs() {
         onChange={changeRadiusHandler}
         type="number"
         InputProps={{ inputProps: { min: 0 } }}
+        defaultValue={cylinderSize.radius}
       />
       <StyledTextField
         fullWidth
@@ -32,6 +33,7 @@ export function MaterialInputs() {
         onChange={changeLengthHandler}
         type="number"
         InputProps={{ inputProps: { min: 0 } }}
+        defaultValue={cylinderSize.length}
       />
     </DrawerInputContainer>
   );

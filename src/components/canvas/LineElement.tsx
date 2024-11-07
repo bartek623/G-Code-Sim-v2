@@ -66,6 +66,10 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
       const x = currentPoint.x;
       const y = Math.min(currentPoint.y, cylinderSize.radius);
       updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
+    } else {
+      const x = currentPoint.x;
+      const y = 0;
+      updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
     }
 
     const rate = animationLength / LINE_ANIMATION_RATE;

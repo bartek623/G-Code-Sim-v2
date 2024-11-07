@@ -35,16 +35,18 @@ function ThreeDView({
           />
         </Lathe>
       )}
-      <Cylinder
-        args={[radius, radius, currentLength]}
-        rotation={[0, 0, Math.PI / 2]}
-        position={[currentLength / 2 + offsetX, 0, 0]}>
-        <meshStandardMaterial
-          color={STEEL_COLOR}
-          roughness={0.5}
-          metalness={1}
-        />
-      </Cylinder>
+      {currentLength > 0 && (
+        <Cylinder
+          args={[radius, radius, currentLength]}
+          rotation={[0, 0, Math.PI / 2]}
+          position={[currentLength / 2 + offsetX, 0, 0]}>
+          <meshStandardMaterial
+            color={STEEL_COLOR}
+            roughness={0.5}
+            metalness={1}
+          />
+        </Cylinder>
+      )}
     </>
   );
 }
@@ -59,11 +61,13 @@ function TwoDView({ radius, length, currentLength, offsetX }: TwoDViewProps) {
 
   return (
     <>
-      <Plane
-        args={[currentLength, radius, Math.round(length / 2), 1]}
-        position={[currentLength / 2 + offsetX, radius / 2, 0]}>
-        <meshBasicMaterial color={STEEL_COLOR} wireframe side={DoubleSide} />
-      </Plane>
+      {offsetX <= length && (
+        <Plane
+          args={[currentLength, radius, Math.round(length / 2), 1]}
+          position={[currentLength / 2 + offsetX, radius / 2, 0]}>
+          <meshBasicMaterial color={STEEL_COLOR} wireframe side={DoubleSide} />
+        </Plane>
+      )}
       <Line points={cylinderOutlinePoints} color={STEEL_COLOR} />
     </>
   );
