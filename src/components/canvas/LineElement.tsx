@@ -10,11 +10,11 @@ import { Dispatch, memo } from 'react';
 import { LatheDispatchType } from './CanvasThreeD';
 
 type LineElementProps = {
-  updateLathePoints: Dispatch<Partial<LatheDispatchType>>;
+  updateLathePoints: Dispatch<LatheDispatchType>;
 };
 
 export const LineElement = ({ updateLathePoints }: LineElementProps) => {
-  const { geometryRef, lines: linesData } = useGeometryContext();
+  const { geometryRef, lines: linesData, cylinderSize } = useGeometryContext();
   const geometryPoints: Vector2[] = [];
   const lines: LineElementType[] = [];
 
@@ -62,10 +62,11 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
     if (animationProgress > animationLength || !lines.length) return;
 
     const currentPoint = getCurrentPoint(geometryPoints, animationProgress);
-    updateLathePoints({
-      type: 'add',
-      payload: currentPoint.clone(),
-    });
+    if (currentPoint.x <= cylinderSize.length) {
+      const x = currentPoint.x;
+      const y = Math.min(currentPoint.y, cylinderSize.radius);
+      updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
+    }
 
     const rate = animationLength / LINE_ANIMATION_RATE;
 
@@ -77,11 +78,13 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
   });
 
   return (
-    <group ref={geometryRef}>
-      {lines.map((line) => {
-        return <LineSegment key={Math.random()} line={line} />;
-      })}
-    </group>
+    <>
+      <group ref={geometryRef}>
+        {lines.map((line) => {
+          return <LineSegment key={Math.random()} line={line} />;
+        })}
+      </group>
+    </>
   );
 };
 

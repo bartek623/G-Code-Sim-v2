@@ -37,7 +37,7 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
     try {
       const program = textFieldRef.current.value as string;
 
-      if (!program.trim().length) return;
+      if (!program.trim().length) return setLines([]);
 
       const showWarning = (message: string) => {
         pushNotification({ message, type: NOTIFICATION_TYPES.warning });

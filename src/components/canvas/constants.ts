@@ -23,4 +23,6 @@ export const LINE_ANIMATION_RATE = 300;
 export const LINE_COLOR = 'crimson';
 export const POSITION_LINE_COLOR = 'royalblue';
 
+export const STEEL_COLOR = '#888';
+
 export const GEO_ROTATIONS = 100;

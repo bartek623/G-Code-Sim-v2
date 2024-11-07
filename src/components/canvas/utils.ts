@@ -73,7 +73,15 @@ export const getCurrentPoint = (points: Vector2[], progress: number) => {
   if (!startPoint || !endPoint)
     throw new Error('Cannot evaluate tool animation [no points]');
 
-  const lineProgress = (progress - prevLength) / (length - prevLength);
+  const currentProgress = progress - prevLength;
+  const currentLength = length - prevLength;
+  const lineProgress = currentProgress / currentLength;
 
-  return startPoint.clone().lerp(endPoint, lineProgress);
+  if (currentProgress <= 0) return startPoint.clone();
+  else if (currentLength - currentProgress < 0.05) return endPoint.clone();
+  else return startPoint.clone().lerp(endPoint, lineProgress);
+};
+
+export const prepareLathePoint = (point: Vector2) => {
+  return point.clone().rotateAround(new Vector2(0, 0), Math.PI / 2);
 };

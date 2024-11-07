@@ -1,4 +1,4 @@
-import { LineDataType } from '@utils';
+import { CylinderSizeType, LineDataType } from '@utils';
 import {
   createContext,
   createRef,
@@ -18,6 +18,8 @@ export type GeometryContextType = {
   geometryRef: RefObject<Group>;
   lines: LineDataType[];
   setLines: Dispatch<SetStateAction<LineDataType[]>>;
+  cylinderSize: CylinderSizeType;
+  setCylinderSize: Dispatch<SetStateAction<CylinderSizeType>>;
 };
 
 export const GeometryContext = createContext<GeometryContextType | undefined>(
@@ -30,11 +32,20 @@ type GeometryStoreProps = {
 
 export const GeometryStore = ({ children }: GeometryStoreProps) => {
   const [showGeometry, setShowGeometry] = useState(false);
+  const [cylinderSize, setCylinderSize] = useState({ radius: 2, length: 6 });
   const [lines, setLines] = useState<LineDataType[]>([]);
 
   return (
     <GeometryContext.Provider
-      value={{ geometryRef, showGeometry, setShowGeometry, lines, setLines }}>
+      value={{
+        geometryRef,
+        showGeometry,
+        setShowGeometry,
+        lines,
+        setLines,
+        cylinderSize,
+        setCylinderSize,
+      }}>
       {children}
     </GeometryContext.Provider>
   );
