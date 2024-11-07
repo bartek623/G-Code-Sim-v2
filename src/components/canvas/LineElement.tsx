@@ -5,10 +5,16 @@ import { Vector2 } from 'three';
 import { LINE_ANIMATION_RATE } from './constants';
 import { LineSegment } from './LineSegment';
 import { LineElementType } from './types';
-import { getCurvePoints, lineAnimation } from './utils';
+import { getCurrentPoint, getCurvePoints, lineAnimation } from './utils';
+import { Dispatch, memo } from 'react';
+import { LatheDispatchType } from './CanvasThreeD';
 
-export const LineElement = () => {
-  const { geometryRef, lines: linesData } = useGeometryContext();
+type LineElementProps = {
+  updateLathePoints: Dispatch<LatheDispatchType>;
+};
+
+export const LineElement = ({ updateLathePoints }: LineElementProps) => {
+  const { geometryRef, lines: linesData, cylinderSize } = useGeometryContext();
   const geometryPoints: Vector2[] = [];
   const lines: LineElementType[] = [];
 
@@ -50,8 +56,21 @@ export const LineElement = () => {
     }
   });
 
+  updateLathePoints({ type: 'clear' });
+
   useFrame(() => {
-    if (animationProgress > animationLength) return;
+    if (animationProgress > animationLength || !lines.length) return;
+
+    const currentPoint = getCurrentPoint(geometryPoints, animationProgress);
+    if (currentPoint.x <= cylinderSize.length) {
+      const x = currentPoint.x;
+      const y = Math.min(currentPoint.y, cylinderSize.radius);
+      updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
+    } else {
+      const x = currentPoint.x;
+      const y = 0;
+      updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
+    }
 
     const rate = animationLength / LINE_ANIMATION_RATE;
 
@@ -63,10 +82,14 @@ export const LineElement = () => {
   });
 
   return (
-    <group ref={geometryRef}>
-      {lines.map((line) => {
-        return <LineSegment key={Math.random()} line={line} />;
-      })}
-    </group>
+    <>
+      <group ref={geometryRef}>
+        {lines.map((line) => {
+          return <LineSegment key={Math.random()} line={line} />;
+        })}
+      </group>
+    </>
   );
 };
+
+export const LineElementMemo = memo(LineElement);

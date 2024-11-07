@@ -1,5 +1,5 @@
 import { LINE_TYPE, LineDataType } from '@utils';
-import { EllipseCurve, Object3D } from 'three';
+import { EllipseCurve, Object3D, Vector2 } from 'three';
 import { CURVE_POINTS, DASH_SIZE, GAP_SIZE } from './constants';
 import { LineElementType } from './types';
 
@@ -51,3 +51,37 @@ export const lineAnimation =
       }
     }
   };
+
+export const getCurrentPoint = (points: Vector2[], progress: number) => {
+  let startPoint: Vector2 | undefined;
+  let endPoint: Vector2 | undefined;
+  let length = 0;
+  let prevLength = 0;
+
+  for (const [i, point] of points.entries()) {
+    if (!points[i + 1]) return point;
+
+    length += point.distanceTo(points[i + 1]);
+
+    if (length >= progress) {
+      startPoint = point;
+      endPoint = points[i + 1];
+      break;
+    } else prevLength = length;
+  }
+
+  if (!startPoint || !endPoint)
+    throw new Error('Cannot evaluate tool animation [no points]');
+
+  const currentProgress = progress - prevLength;
+  const currentLength = length - prevLength;
+  const lineProgress = currentProgress / currentLength;
+
+  if (currentProgress <= 0) return startPoint.clone();
+  else if (currentLength - currentProgress < 0.05) return endPoint.clone();
+  else return startPoint.clone().lerp(endPoint, lineProgress);
+};
+
+export const prepareLathePoint = (point: Vector2) => {
+  return point.clone().rotateAround(new Vector2(0, 0), Math.PI / 2);
+};

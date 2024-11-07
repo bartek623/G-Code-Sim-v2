@@ -10,7 +10,7 @@ import {
   ViewInAr,
 } from '@mui/icons-material';
 import { useGeometryContext } from '@store';
-import { DrawerBtn, DrawerBtnContainer, ListMenuBtn } from '@UI';
+import { DrawerBtn, DrawerInputContainer, ListMenuBtn } from '@UI';
 import { STLExporter } from 'three/examples/jsm/Addons.js';
 import { SUBDRAWER_MODES, subdrawerModesType } from './constants';
 
@@ -56,7 +56,7 @@ export function MainDrawerBtns({
   };
 
   return (
-    <DrawerBtnContainer padding={1} paddingX={3}>
+    <DrawerInputContainer padding={1} paddingX={3}>
       <ListMenuBtn
         tooltip="Add/remove lines numbering"
         listItems={[
@@ -100,6 +100,6 @@ export function MainDrawerBtns({
       <DrawerBtn tooltip="Run program" onClick={onRun}>
         <PlayArrow />
       </DrawerBtn>
-    </DrawerBtnContainer>
+    </DrawerInputContainer>
   );
 }
