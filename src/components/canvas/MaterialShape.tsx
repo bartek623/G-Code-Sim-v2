@@ -74,6 +74,8 @@ export function MaterialShape({ latheState }: MaterialShapeProps) {
 
   const cylinderLength = cylinderSize.length - latheState.currentX;
 
+  if (!cylinderSize.radius || !cylinderSize.length) return;
+
   return (
     <>
       {showGeometry && (

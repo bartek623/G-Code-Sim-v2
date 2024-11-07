@@ -20,6 +20,7 @@ import {
   convertProgramToLinesData,
   removeLinesNumbering,
 } from './utils';
+import { MaterialInputs } from './MaterialInputs';
 
 type DrawerProps = {
   isOpen: boolean;
@@ -112,6 +113,7 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
       label={MAINDRAWER_LABEL}
       variant="persistent"
       onModalOpen={openModalHandler}>
+      <MaterialInputs />
       <DrawerTextField textFieldRef={textFieldRef} />
       <MainDrawerBtns
         onAddNumbering={addNumberingHandler}
