@@ -3,12 +3,12 @@ import { Canvas } from '@react-three/fiber';
 import { ResetBtn } from '@UI';
 import { useReducer, useRef } from 'react';
 
+import { Vector2 } from 'three';
 import { CanvasSetup } from './CanvasSetup';
 import { DEFAULT_CAMERA_POS } from './constants';
 import { LineElementMemo } from './LineElement';
-import { Vector2 } from 'three';
-import { prepareLathePoint } from './utils';
 import { MaterialShape } from './MaterialShape';
+import { prepareLathePoint } from './utils';
 
 export type LatheDispatchType = {
   type: 'add' | 'clear';

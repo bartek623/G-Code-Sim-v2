@@ -15,12 +15,12 @@ import {
 import { DrawerTextField } from './DrawerTextField';
 import { InfoModal } from './InfoModal';
 import { MainDrawerBtns } from './MainDrawerBtns';
+import { MaterialInputs } from './MaterialInputs';
 import {
   addLinesNumbering,
   convertProgramToLinesData,
   removeLinesNumbering,
 } from './utils';
-import { MaterialInputs } from './MaterialInputs';
 
 type DrawerProps = {
   isOpen: boolean;

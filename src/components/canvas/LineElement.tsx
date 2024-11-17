@@ -1,13 +1,13 @@
 import { useFrame } from '@react-three/fiber';
 import { useGeometryContext } from '@store';
 import { LINE_TYPE } from '@utils';
+import { Dispatch, memo } from 'react';
 import { Vector2 } from 'three';
+import { LatheDispatchType } from './CanvasThreeD';
 import { LINE_ANIMATION_RATE } from './constants';
 import { LineSegment } from './LineSegment';
 import { LineElementType } from './types';
 import { getCurrentPoint, getCurvePoints, lineAnimation } from './utils';
-import { Dispatch, memo } from 'react';
-import { LatheDispatchType } from './CanvasThreeD';
 
 type LineElementProps = {
   updateLathePoints: Dispatch<LatheDispatchType>;
