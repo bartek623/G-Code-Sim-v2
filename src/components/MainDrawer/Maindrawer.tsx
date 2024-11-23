@@ -28,7 +28,7 @@ type DrawerProps = {
 };
 
 export function Maindrawer({ isOpen, onClose }: DrawerProps) {
-  const { setShowGeometry, setLines } = useGeometryContext();
+  const { setShowGeometry, setLines, startingPoint } = useGeometryContext();
   const { pushNotification } = useNotificationsContext();
   const [openModal, setOpenModal] = useState(false);
   const [subdrawer, setSubdrawer] = useState<subdrawerState>(SUBDRAWER_DEFAULT);
@@ -44,7 +44,11 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
         pushNotification({ message, type: NOTIFICATION_TYPES.warning });
       };
 
-      const linesData = convertProgramToLinesData(program.trim(), showWarning);
+      const linesData = convertProgramToLinesData(
+        program.trim(),
+        showWarning,
+        startingPoint,
+      );
 
       if (!linesData) return;
 

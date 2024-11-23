@@ -1,11 +1,16 @@
-import { Cylinder, Lathe, Line, Plane } from '@react-three/drei';
+import { Cylinder, Lathe, Line, Plane, Points } from '@react-three/drei';
 import { DoubleSide, Vector2 } from 'three';
 import { LatheStateType } from './CanvasThreeD';
 import { GEO_ROTATIONS, STEEL_COLOR } from './constants';
 import { useGeometryContext } from '@/store';
+import { PointType } from '@/utils';
 
 type MaterialShapeProps = {
   latheState: LatheStateType;
+};
+
+type StartingPointProps = {
+  position: PointType;
 };
 
 type TwoDViewProps = {
@@ -73,8 +78,16 @@ function TwoDView({ radius, length, currentLength, offsetX }: TwoDViewProps) {
   );
 }
 
+function StartingPoint({ position }: StartingPointProps) {
+  return (
+    <Points positions={new Float32Array([position.x, position.z, 0])}>
+      <pointsMaterial size={0.1} color={'green'} />
+    </Points>
+  );
+}
+
 export function MaterialShape({ latheState }: MaterialShapeProps) {
-  const { cylinderSize, showGeometry } = useGeometryContext();
+  const { cylinderSize, showGeometry, startingPoint } = useGeometryContext();
 
   const cylinderLength = cylinderSize.length - latheState.currentX;
 
@@ -98,6 +111,7 @@ export function MaterialShape({ latheState }: MaterialShapeProps) {
           offsetX={latheState.currentX}
         />
       )}
+      <StartingPoint position={startingPoint} />
     </>
   );
 }

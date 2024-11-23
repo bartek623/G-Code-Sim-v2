@@ -1,4 +1,4 @@
-import { CylinderSizeType, LineDataType } from '@utils';
+import { CylinderSizeType, LineDataType, PointType } from '@utils';
 import {
   createContext,
   createRef,
@@ -9,6 +9,8 @@ import {
   useState,
 } from 'react';
 import { Group } from 'three';
+
+const TOOL_STARTING_OFFSET_MULTIPLIER = 1.5;
 
 const geometryRef = createRef<Group>();
 
@@ -21,6 +23,7 @@ export type GeometryContextType = {
   cylinderSize: CylinderSizeType;
   setRadius: (radius: number) => void;
   setLength: (length: number) => void;
+  startingPoint: PointType;
 };
 
 export const GeometryContext = createContext<GeometryContextType | undefined>(
@@ -43,6 +46,11 @@ export const GeometryStore = ({ children }: GeometryStoreProps) => {
     setCylinderSize((prev) => ({ ...prev, length }));
   };
 
+  const startingPoint: PointType = {
+    x: cylinderSize.length * TOOL_STARTING_OFFSET_MULTIPLIER,
+    z: cylinderSize.radius * TOOL_STARTING_OFFSET_MULTIPLIER,
+  };
+
   return (
     <GeometryContext.Provider
       value={{
@@ -54,6 +62,7 @@ export const GeometryStore = ({ children }: GeometryStoreProps) => {
         cylinderSize,
         setRadius,
         setLength,
+        startingPoint,
       }}>
       {children}
     </GeometryContext.Provider>
