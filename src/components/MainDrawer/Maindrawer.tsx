@@ -16,6 +16,7 @@ import { DrawerTextField } from './DrawerTextField';
 import { InfoModal } from './InfoModal';
 import { MainDrawerBtns } from './MainDrawerBtns';
 import { MaterialInputs } from './MaterialInputs';
+import { OperationsContainer } from './OperationsContainer';
 import {
   addLinesNumbering,
   convertProgramToLinesData,
@@ -118,6 +119,7 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
       variant="persistent"
       onModalOpen={openModalHandler}>
       <MaterialInputs />
+      <OperationsContainer textFieldRef={textFieldRef} />
       <DrawerTextField textFieldRef={textFieldRef} />
       <MainDrawerBtns
         onAddNumbering={addNumberingHandler}

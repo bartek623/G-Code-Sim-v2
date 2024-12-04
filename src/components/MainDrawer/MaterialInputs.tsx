@@ -1,11 +1,7 @@
-import { styled, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { useGeometryContext } from '@/store';
 import { DrawerInputContainer } from '@/UI';
-
-const StyledTextField = styled(TextField)`
-  max
-`;
 
 export function MaterialInputs() {
   const { setRadius, setLength, cylinderSize } = useGeometryContext();
@@ -19,7 +15,7 @@ export function MaterialInputs() {
 
   return (
     <DrawerInputContainer padding={1} paddingX={3}>
-      <StyledTextField
+      <TextField
         fullWidth
         label="Radius"
         onChange={changeRadiusHandler}
@@ -27,7 +23,7 @@ export function MaterialInputs() {
         InputProps={{ inputProps: { min: 0 } }}
         defaultValue={cylinderSize.radius}
       />
-      <StyledTextField
+      <TextField
         fullWidth
         label="Length"
         onChange={changeLengthHandler}
