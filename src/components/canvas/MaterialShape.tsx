@@ -4,6 +4,7 @@ import { LatheStateType } from './CanvasThreeD';
 import { GEO_ROTATIONS, STEEL_COLOR } from './constants';
 import { useGeometryContext } from '@/store';
 import { PointType } from '@/utils';
+import { prepareLathePoint } from './utils';
 
 type MaterialShapeProps = {
   latheState: LatheStateType;
@@ -20,18 +21,44 @@ type TwoDViewProps = {
   offsetX: number;
 };
 
-type ThreeDViewProps = { points: Vector2[] } & Omit<TwoDViewProps, 'length'>;
+type ThreeDViewProps = { points: Vector2[] } & TwoDViewProps;
 
 function ThreeDView({
   radius,
+  length,
   currentLength,
   offsetX,
   points,
 }: ThreeDViewProps) {
+  const cappedPoints = points.flatMap((point) => {
+    if (point.x > length) return [];
+
+    return point.y > radius
+      ? [prepareLathePoint(new Vector2(point.x, radius))]
+      : [prepareLathePoint(point)];
+  });
+
+  if (!points.find((point) => point.x <= 0))
+    cappedPoints.unshift(prepareLathePoint(new Vector2(0, radius)));
+
+  cappedPoints.unshift(prepareLathePoint(new Vector2(0, 0)));
+
+  if (!points.find((point) => point.x >= length))
+    cappedPoints.push(
+      prepareLathePoint(new Vector2(points.at(-1)?.x || length, radius)),
+      prepareLathePoint(new Vector2(length, radius)),
+    );
+
+  cappedPoints.push(prepareLathePoint(new Vector2(length, 0)));
+
+  console.log(points.toSorted((p1, p2) => p1.x - p2.x).map((p) => p.x));
+
   return (
     <>
       {points.length > 2 && (
-        <Lathe args={[points, GEO_ROTATIONS]} rotation={[0, 0, -Math.PI / 2]}>
+        <Lathe
+          args={[cappedPoints, GEO_ROTATIONS]}
+          rotation={[0, 0, -Math.PI / 2]}>
           <meshStandardMaterial
             color={STEEL_COLOR}
             roughness={0.5}
@@ -40,18 +67,16 @@ function ThreeDView({
           />
         </Lathe>
       )}
-      {currentLength > 0 && (
-        <Cylinder
-          args={[radius, radius, currentLength]}
-          rotation={[0, 0, Math.PI / 2]}
-          position={[currentLength / 2 + offsetX, 0, 0]}>
-          <meshStandardMaterial
-            color={STEEL_COLOR}
-            roughness={0.5}
-            metalness={1}
-          />
-        </Cylinder>
-      )}
+      {/* <Cylinder
+        args={[radius, radius, length]}
+        rotation={[0, 0, Math.PI / 2]}
+        position={[length / 2, 0, 0]}>
+        <meshStandardMaterial
+          color={STEEL_COLOR}
+          roughness={0.5}
+          metalness={1}
+        />
+      </Cylinder> */}
     </>
   );
 }
@@ -98,6 +123,7 @@ export function MaterialShape({ latheState }: MaterialShapeProps) {
       {showGeometry && (
         <ThreeDView
           radius={cylinderSize.radius}
+          length={cylinderSize.length}
           currentLength={cylinderLength}
           offsetX={latheState.currentX}
           points={latheState.points}

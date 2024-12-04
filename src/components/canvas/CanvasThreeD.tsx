@@ -8,7 +8,6 @@ import { CanvasSetup } from './CanvasSetup';
 import { DEFAULT_CAMERA_POS } from './constants';
 import { LineElementMemo } from './LineElement';
 import { MaterialShape } from './MaterialShape';
-import { prepareLathePoint } from './utils';
 
 export type LatheDispatchType = {
   type: 'add' | 'clear';
@@ -18,7 +17,7 @@ export type LatheDispatchType = {
 export type LatheStateType = { points: Vector2[]; currentX: number };
 
 const latheInitialState = {
-  points: [new Vector2(0, 0)],
+  points: [],
   currentX: 0,
 };
 
@@ -31,11 +30,7 @@ const latheReducer = function (
       if (!action.payload) return state;
       return {
         currentX: action.payload.x,
-        points: [
-          ...state.points.slice(0, -1),
-          prepareLathePoint(action.payload),
-          prepareLathePoint(new Vector2(action.payload.x, 0)),
-        ],
+        points: [...state.points, action.payload],
       };
     case 'clear':
       return latheInitialState;

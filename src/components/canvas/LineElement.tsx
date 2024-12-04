@@ -58,6 +58,7 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
 
   updateLathePoints({ type: 'clear' });
 
+  let lastX = -1;
   useFrame(() => {
     if (animationProgress > animationLength || !lines.length) return;
 
@@ -65,11 +66,10 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
     if (currentPoint.x <= cylinderSize.length) {
       const x = currentPoint.x;
       const y = Math.min(currentPoint.y, cylinderSize.radius);
-      updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
-    } else {
-      const x = currentPoint.x;
-      const y = 0;
-      updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
+      if (x !== lastX)
+        updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
+
+      lastX = x;
     }
 
     const rate = animationLength / LINE_ANIMATION_RATE;
