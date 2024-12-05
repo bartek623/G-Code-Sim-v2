@@ -1,8 +1,8 @@
 import { useFrame } from '@react-three/fiber';
 import { useGeometryContext } from '@store';
 import { LINE_TYPE } from '@utils';
-import { Dispatch, memo } from 'react';
-import { Vector2 } from 'three';
+import { Dispatch, memo, useRef } from 'react';
+import { Group, Vector2 } from 'three';
 import { LatheDispatchType } from './CanvasThreeD';
 import { LINE_ANIMATION_RATE } from './constants';
 import { LineSegment } from './LineSegment';
@@ -14,7 +14,8 @@ type LineElementProps = {
 };
 
 export const LineElement = ({ updateLathePoints }: LineElementProps) => {
-  const { geometryRef, lines: linesData, cylinderSize } = useGeometryContext();
+  const { lines: linesData, cylinderSize } = useGeometryContext();
+  const linesGeometryRef = useRef<Group>(null!);
   const geometryPoints: Vector2[] = [];
   const lines: LineElementType[] = [];
 
@@ -58,7 +59,7 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
 
   updateLathePoints({ type: 'clear' });
 
-  let lastX = -1;
+  const lastPoint = { x: -Infinity, y: -Infinity };
   useFrame(() => {
     if (animationProgress > animationLength || !lines.length) return;
 
@@ -66,15 +67,16 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
     if (currentPoint.x <= cylinderSize.length) {
       const x = currentPoint.x;
       const y = Math.min(currentPoint.y, cylinderSize.radius);
-      if (x !== lastX)
+      if (lastPoint.x !== x || lastPoint.y !== y)
         updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
 
-      lastX = x;
+      lastPoint.x = x;
+      lastPoint.y = y;
     }
 
     const rate = animationLength / LINE_ANIMATION_RATE;
 
-    geometryRef.current?.children
+    linesGeometryRef.current?.children
       .filter((object) => object.type === 'Line2')
       .forEach(lineAnimation(lines, animationProgress, rate));
 
@@ -83,7 +85,7 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
 
   return (
     <>
-      <group ref={geometryRef}>
+      <group ref={linesGeometryRef}>
         {lines.map((line) => {
           return <LineSegment key={Math.random()} line={line} />;
         })}

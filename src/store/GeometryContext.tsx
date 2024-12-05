@@ -8,16 +8,18 @@ import {
   SetStateAction,
   useState,
 } from 'react';
-import { Group } from 'three';
+import { Mesh } from 'three';
 
 const TOOL_STARTING_OFFSET_MULTIPLIER = 1.5;
 
-const geometryRef = createRef<Group>();
+const geometryRef = createRef<Mesh>();
 
 export type GeometryContextType = {
   showGeometry: boolean;
   setShowGeometry: Dispatch<SetStateAction<boolean>>;
-  geometryRef: RefObject<Group>;
+  showWorkpiece: boolean;
+  setShowWorkpiece: Dispatch<SetStateAction<boolean>>;
+  geometryRef: RefObject<Mesh>;
   lines: LineDataType[];
   setLines: Dispatch<SetStateAction<LineDataType[]>>;
   cylinderSize: CylinderSizeType;
@@ -36,6 +38,7 @@ type GeometryStoreProps = {
 
 export const GeometryStore = ({ children }: GeometryStoreProps) => {
   const [showGeometry, setShowGeometry] = useState(false);
+  const [showWorkpiece, setShowWorkpiece] = useState(true);
   const [cylinderSize, setCylinderSize] = useState({ radius: 2, length: 6 });
   const [lines, setLines] = useState<LineDataType[]>([]);
 
@@ -57,6 +60,8 @@ export const GeometryStore = ({ children }: GeometryStoreProps) => {
         geometryRef,
         showGeometry,
         setShowGeometry,
+        showWorkpiece,
+        setShowWorkpiece,
         lines,
         setLines,
         cylinderSize,

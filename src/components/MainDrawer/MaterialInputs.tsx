@@ -3,14 +3,20 @@ import { ChangeEvent } from 'react';
 import { useGeometryContext } from '@/store';
 import { DrawerInputContainer } from '@/UI';
 
-export function MaterialInputs() {
+type MaterialInputsProps = {
+  onRun: () => void;
+};
+
+export function MaterialInputs({ onRun }: MaterialInputsProps) {
   const { setRadius, setLength, cylinderSize } = useGeometryContext();
 
   const changeRadiusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setRadius(+e.target.value || 0);
+    onRun();
   };
   const changeLengthHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setLength(+e.target.value);
+    onRun();
   };
 
   return (

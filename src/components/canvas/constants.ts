@@ -26,3 +26,5 @@ export const POSITION_LINE_COLOR = 'royalblue';
 export const STEEL_COLOR = '#888';
 
 export const GEO_ROTATIONS = 100;
+export const TRANSPARENT_MATERIAL_OFFSET = 0.01;
+export const TRANSPARENT_MATERIAL_OPACITY = 0.5;

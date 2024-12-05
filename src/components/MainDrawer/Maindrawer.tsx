@@ -16,7 +16,6 @@ import { DrawerTextField } from './DrawerTextField';
 import { InfoModal } from './InfoModal';
 import { MainDrawerBtns } from './MainDrawerBtns';
 import { MaterialInputs } from './MaterialInputs';
-import { OperationsContainer } from './OperationsContainer';
 import {
   addLinesNumbering,
   convertProgramToLinesData,
@@ -29,7 +28,7 @@ type DrawerProps = {
 };
 
 export function Maindrawer({ isOpen, onClose }: DrawerProps) {
-  const { setShowGeometry, setLines, startingPoint } = useGeometryContext();
+  const { setLines, startingPoint } = useGeometryContext();
   const { pushNotification } = useNotificationsContext();
   const [openModal, setOpenModal] = useState(false);
   const [subdrawer, setSubdrawer] = useState<subdrawerState>(SUBDRAWER_DEFAULT);
@@ -86,15 +85,6 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
     });
   };
 
-  const toggleGeoHandler = () => {
-    setShowGeometry((prev) => {
-      const msg = `${prev ? 'Hiding' : 'Showing'} model`;
-      pushNotification({ message: msg, type: NOTIFICATION_TYPES.info });
-
-      return !prev;
-    });
-  };
-
   const openSubHandler = (mode: subdrawerModesType) => {
     setSubdrawer({ open: true, mode: SUBDRAWER_MODES[mode] });
   };
@@ -118,14 +108,12 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
       label={MAINDRAWER_LABEL}
       variant="persistent"
       onModalOpen={openModalHandler}>
-      <MaterialInputs />
-      <OperationsContainer textFieldRef={textFieldRef} />
+      <MaterialInputs onRun={runProgramHandler} />
       <DrawerTextField textFieldRef={textFieldRef} />
       <MainDrawerBtns
         onAddNumbering={addNumberingHandler}
         onRemoveNumbering={removeNumberingHandler}
         onRun={runProgramHandler}
-        onShowGeo={toggleGeoHandler}
         onSubOpen={openSubHandler}
       />
       <Subdrawer
