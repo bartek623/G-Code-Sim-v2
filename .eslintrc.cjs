@@ -18,26 +18,10 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          'parent',
-          'sibling',
-          'index',
-        ],
-        pathGroups: [
-          {
-            pattern: 'react',
-            group: 'builtin',
-            position: 'before',
-          },
-        ],
         alphabetize: {
           order: 'asc',
           caseInsensitive: true,
         },
-        endOfLine: 'auto',
       },
     ],
     'prettier/prettier': 'error',

@@ -1,20 +1,24 @@
 import { useFrame } from '@react-three/fiber';
-import { useGeometryContext } from '@store';
-import { LINE_TYPE } from '@utils';
-import { Vector2 } from 'three';
+import { CylinderSizeType, LINE_TYPE, LineDataType } from '@utils';
+import { Dispatch, memo, SetStateAction, useRef } from 'react';
+import { Group, Vector2 } from 'three';
 import { LINE_ANIMATION_RATE } from './constants';
 import { LineSegment } from './LineSegment';
 import { LineElementType } from './types';
 import { getCurrentPoint, getCurvePoints, lineAnimation } from './utils';
-import { Dispatch, memo } from 'react';
-import { LatheDispatchType } from './CanvasThreeD';
 
 type LineElementProps = {
-  updateLathePoints: Dispatch<LatheDispatchType>;
+  updateLathePoints: Dispatch<SetStateAction<Vector2[]>>;
+  linesData: LineDataType[];
+  cylinderSize: CylinderSizeType;
 };
 
-export const LineElement = ({ updateLathePoints }: LineElementProps) => {
-  const { geometryRef, lines: linesData, cylinderSize } = useGeometryContext();
+export const LineElement = ({
+  updateLathePoints,
+  linesData,
+  cylinderSize,
+}: LineElementProps) => {
+  const linesGeometryRef = useRef<Group>(null!);
   const geometryPoints: Vector2[] = [];
   const lines: LineElementType[] = [];
 
@@ -56,8 +60,9 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
     }
   });
 
-  updateLathePoints({ type: 'clear' });
+  updateLathePoints([]);
 
+  const lastPoint = { x: -Infinity, y: -Infinity };
   useFrame(() => {
     if (animationProgress > animationLength || !lines.length) return;
 
@@ -65,16 +70,16 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
     if (currentPoint.x <= cylinderSize.length) {
       const x = currentPoint.x;
       const y = Math.min(currentPoint.y, cylinderSize.radius);
-      updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
-    } else {
-      const x = currentPoint.x;
-      const y = 0;
-      updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
+      if (lastPoint.x !== x || lastPoint.y !== y)
+        updateLathePoints((prev) => [...prev, new Vector2(x, y)]);
+
+      lastPoint.x = x;
+      lastPoint.y = y;
     }
 
     const rate = animationLength / LINE_ANIMATION_RATE;
 
-    geometryRef.current?.children
+    linesGeometryRef.current?.children
       .filter((object) => object.type === 'Line2')
       .forEach(lineAnimation(lines, animationProgress, rate));
 
@@ -83,7 +88,7 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
 
   return (
     <>
-      <group ref={geometryRef}>
+      <group ref={linesGeometryRef}>
         {lines.map((line) => {
           return <LineSegment key={Math.random()} line={line} />;
         })}
