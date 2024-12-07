@@ -1,6 +1,5 @@
 import { Cylinder, Lathe, Line, Points } from '@react-three/drei';
 import { DoubleSide, Vector2 } from 'three';
-import { LatheStateType } from './CanvasThreeD';
 import {
   GEO_ROTATIONS,
   STEEL_COLOR,
@@ -12,7 +11,7 @@ import { useGeometryContext } from '@/store';
 import { PointType } from '@/utils';
 
 type MaterialShapeProps = {
-  latheState: LatheStateType;
+  latheState: Vector2[];
 };
 
 type StartingPointProps = {
@@ -37,11 +36,17 @@ function ThreeDView({ radius, length, points }: ThreeDViewProps) {
       : [prepareLathePoint(point)];
   });
 
+  // add beginning of the workpiece
   if (!points.find((point) => point.x <= 0))
     cappedPoints.unshift(prepareLathePoint(new Vector2(0, radius)));
 
   cappedPoints.unshift(prepareLathePoint(new Vector2(0, 0)));
 
+  // align last point to workpiece
+  const lastPoint = points.at(-1);
+  if (lastPoint && length - lastPoint.x < 0.05) lastPoint.x = length;
+
+  // add rest of the workpiece beyond tool path
   if (!points.find((point) => point.x >= length))
     cappedPoints.push(
       prepareLathePoint(new Vector2(points.at(-1)?.x || length, radius)),
@@ -68,10 +73,10 @@ function ThreeDView({ radius, length, points }: ThreeDViewProps) {
           args={[
             radius - TRANSPARENT_MATERIAL_OFFSET,
             radius - TRANSPARENT_MATERIAL_OFFSET,
-            length - TRANSPARENT_MATERIAL_OFFSET * 3,
+            length - TRANSPARENT_MATERIAL_OFFSET * 5,
           ]}
-          rotation={[0, 0, Math.PI / 2]}
-          position={[length / 2 + TRANSPARENT_MATERIAL_OFFSET, 0, 0]}>
+          rotation={[0, 0, -Math.PI / 2]}
+          position={[length / 2, 0, 0]}>
           <meshStandardMaterial
             color={STEEL_COLOR}
             transparent={true}
@@ -101,7 +106,7 @@ function TwoDView({ radius, length }: TwoDViewProps) {
 function StartingPoint({ position }: StartingPointProps) {
   return (
     <Points positions={new Float32Array([position.x, position.z, 0])}>
-      <pointsMaterial size={0.1} color={'green'} />
+      <pointsMaterial size={0.1} color={'#1976d2'} />
     </Points>
   );
 }
@@ -117,7 +122,7 @@ export function MaterialShape({ latheState }: MaterialShapeProps) {
         <ThreeDView
           radius={cylinderSize.radius}
           length={cylinderSize.length}
-          points={latheState.points}
+          points={latheState}
         />
       )}
       <TwoDView radius={cylinderSize.radius} length={cylinderSize.length} />

@@ -1,20 +1,23 @@
 import { useFrame } from '@react-three/fiber';
-import { useGeometryContext } from '@store';
-import { LINE_TYPE } from '@utils';
-import { Dispatch, memo, useRef } from 'react';
+import { CylinderSizeType, LINE_TYPE, LineDataType } from '@utils';
+import { Dispatch, memo, SetStateAction, useRef } from 'react';
 import { Group, Vector2 } from 'three';
-import { LatheDispatchType } from './CanvasThreeD';
 import { LINE_ANIMATION_RATE } from './constants';
 import { LineSegment } from './LineSegment';
 import { LineElementType } from './types';
 import { getCurrentPoint, getCurvePoints, lineAnimation } from './utils';
 
 type LineElementProps = {
-  updateLathePoints: Dispatch<LatheDispatchType>;
+  updateLathePoints: Dispatch<SetStateAction<Vector2[]>>;
+  linesData: LineDataType[];
+  cylinderSize: CylinderSizeType;
 };
 
-export const LineElement = ({ updateLathePoints }: LineElementProps) => {
-  const { lines: linesData, cylinderSize } = useGeometryContext();
+export const LineElement = ({
+  updateLathePoints,
+  linesData,
+  cylinderSize,
+}: LineElementProps) => {
   const linesGeometryRef = useRef<Group>(null!);
   const geometryPoints: Vector2[] = [];
   const lines: LineElementType[] = [];
@@ -57,7 +60,7 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
     }
   });
 
-  updateLathePoints({ type: 'clear' });
+  updateLathePoints([]);
 
   const lastPoint = { x: -Infinity, y: -Infinity };
   useFrame(() => {
@@ -68,7 +71,7 @@ export const LineElement = ({ updateLathePoints }: LineElementProps) => {
       const x = currentPoint.x;
       const y = Math.min(currentPoint.y, cylinderSize.radius);
       if (lastPoint.x !== x || lastPoint.y !== y)
-        updateLathePoints({ type: 'add', payload: new Vector2(x, y) });
+        updateLathePoints((prev) => [...prev, new Vector2(x, y)]);
 
       lastPoint.x = x;
       lastPoint.y = y;
