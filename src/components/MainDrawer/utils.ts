@@ -162,7 +162,7 @@ export const convertProgramToLinesData = (
   const programLines = program
     .split('\n')
     .filter((line) => !line.includes('M') && line.trim().length);
-  const currentToolPosition: PointType = startingPoint;
+  const currentToolPosition: PointType = { ...startingPoint };
   const prevValues = {
     x: 0,
     z: 0,

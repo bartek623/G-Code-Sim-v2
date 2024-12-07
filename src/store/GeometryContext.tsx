@@ -6,6 +6,7 @@ import {
   ReactNode,
   RefObject,
   SetStateAction,
+  useMemo,
   useState,
 } from 'react';
 import { Mesh } from 'three';
@@ -49,10 +50,13 @@ export const GeometryStore = ({ children }: GeometryStoreProps) => {
     setCylinderSize((prev) => ({ ...prev, length }));
   };
 
-  const startingPoint: PointType = {
-    x: cylinderSize.length * TOOL_STARTING_OFFSET_MULTIPLIER,
-    z: cylinderSize.radius * TOOL_STARTING_OFFSET_MULTIPLIER,
-  };
+  const startingPoint: PointType = useMemo(
+    () => ({
+      x: cylinderSize.length * TOOL_STARTING_OFFSET_MULTIPLIER,
+      z: cylinderSize.radius * TOOL_STARTING_OFFSET_MULTIPLIER,
+    }),
+    [cylinderSize],
+  );
 
   return (
     <GeometryContext.Provider

@@ -2,7 +2,7 @@ import { TextFieldProps } from '@mui/material';
 import { useGeometryContext, useNotificationsContext } from '@store';
 import { NOTIFICATION_TYPES, Drawer } from '@UI';
 import { showError } from '@utils';
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Subdrawer } from '../Subdrawer';
 import {
@@ -34,7 +34,7 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
   const [subdrawer, setSubdrawer] = useState<subdrawerState>(SUBDRAWER_DEFAULT);
   const textFieldRef = useRef<TextFieldProps>(null!);
 
-  const runProgramHandler = () => {
+  const runProgramHandler = useCallback(() => {
     try {
       const program = textFieldRef.current.value as string;
 
@@ -57,7 +57,12 @@ export function Maindrawer({ isOpen, onClose }: DrawerProps) {
       showError(err, pushNotification);
       setLines([]);
     }
-  };
+  }, [setLines, pushNotification, startingPoint]);
+
+  useEffect(() => {
+    // rerun whenever starting point changes
+    runProgramHandler();
+  }, [runProgramHandler, startingPoint]);
 
   const addNumberingHandler = () => {
     const program = textFieldRef.current.value as string;
